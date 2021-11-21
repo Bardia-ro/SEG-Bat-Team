@@ -2,6 +2,7 @@ from django import forms
 from django.core.validators import RegexValidator
 from .models import User
 
+
 #options for the 'experience' drop down box
 EXPERIENCE_CHOICES = [
 ('class D', 'Class D'),
@@ -13,7 +14,6 @@ EXPERIENCE_CHOICES = [
 ]
 
 class SignUpForm(forms.ModelForm):
-
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'bio','experience','personal_statement']
@@ -52,3 +52,10 @@ class SignUpForm(forms.ModelForm):
             personal_statement = self.cleaned_data.get('personal_statement')
         )
         return user
+
+
+class LogInForm(forms.Form):
+    """Form enabling registered users to log in."""
+
+    username = forms.CharField(label="Username")
+    password = forms.CharField(label="Password", widget=forms.PasswordInput())
