@@ -6,7 +6,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', {'user': request.user})
 
 def sign_up(request):
     if request.method == 'POST':
