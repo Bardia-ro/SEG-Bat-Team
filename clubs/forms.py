@@ -53,7 +53,6 @@ class SignUpForm(forms.ModelForm):
         )
         return user
 
-
 class LogInForm(forms.Form):
     """Form enabling registered users to log in."""
 

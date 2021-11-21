@@ -1,0 +1,20 @@
+{% extends  'base.html' %}
+{% block body %}
+    <div class="col-sm-12 col-md-6 offset-md-3">
+        <ul class="list-group">
+            <li class="list-group-item"><h3>{{user.first_name}} {{user.last_name}} ({{user.type}})</h3></li>
+            <li class="list-group-item">Username: {{user.username}}</li>
+            <li class="list-group-item">Email:  {{user.email}}</li>
+            <li class="list-group-item">Bio:  {{user.bio}}</li>
+            <li class="list-group-item">Experience level:  {{user.experience}}</li>
+            <li class="list-group-item">Personal statement:  {{user.personal_statement}}</li>
+        </ul>
+    </div>
+    <!-- <div class="row"> -->
+        <div class="col-sm-12 col-md-6 offset-md-3">
+            <a href={% url 'home' %}>
+                <button type="button" class="btn btn-primary">Edit profile</button>
+            </a>
+        </div>
+    <!-- </div> -->
+{% endblock %}
