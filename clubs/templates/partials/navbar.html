@@ -18,7 +18,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href={% url "profile" user_id=user.id%}>My Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Change Password</a></li>
+                    <li><a class="dropdown-item" href={% url "change_password" user_id=user.id %}>Change Password</a></li>
                     </ul>
                 </li>
             {% endif %}

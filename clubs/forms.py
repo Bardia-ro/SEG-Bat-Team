@@ -1,5 +1,6 @@
 from django import forms
 from django.core.validators import RegexValidator
+from django.contrib.auth.hashers import make_password
 from .models import User
 
 
@@ -13,12 +14,7 @@ EXPERIENCE_CHOICES = [
 ('master', 'Master'),
 ]
 
-class SignUpForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio','experience','personal_statement']
-        widgets = { 'bio': forms.Textarea(), 'personal_statement': forms.Textarea(),'experience': forms.Select(choices = EXPERIENCE_CHOICES)}
-
+class Password():
     new_password = forms.CharField(
         label='Password',
         widget=forms.PasswordInput(),
@@ -30,6 +26,14 @@ class SignUpForm(forms.ModelForm):
     )
     password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
 
+class SignUpForm(forms.ModelForm, Password):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio','experience','personal_statement']
+        widgets = { 'bio': forms.Textarea(), 'personal_statement': forms.Textarea(),'experience': forms.Select(choices = EXPERIENCE_CHOICES)}
+
+    new_password = Password.new_password
+    password_confirmation = Password.password_confirmation
 
     def clean(self):
         super().clean()
@@ -64,3 +68,22 @@ class EditProfileForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'email', 'bio','experience','personal_statement']
         widgets = { 'bio': forms.Textarea(), 'personal_statement': forms.Textarea(),'experience': forms.Select(choices = EXPERIENCE_CHOICES)}
+
+class ChangePasswordForm(forms.ModelForm, Password):
+    class Meta:
+        model = User
+        fields = []
+
+    new_password = Password.new_password
+    password_confirmation = Password.password_confirmation
+
+    def clean(self):
+        super().clean()
+        new_password = self.cleaned_data.get('new_password')
+        password_confirmation = self.cleaned_data.get('password_confirmation')
+        if new_password != password_confirmation:
+            self.add_error('password_confirmation', 'Confirmation does not match password.')
+
+    def save(self):
+        super().save(commit=False)
+        self.instance.password=make_password(self.cleaned_data.get('new_password'))
