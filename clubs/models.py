@@ -12,6 +12,7 @@ class User(AbstractUser):
         CLUBOWNER = 'CLUBOWNER', _('ClubOwner')
         OFFICER = 'OFFICER', _('Officer')
         MEMBER = 'MEMBER', _('Member')
+        APPLICANT = 'APPLICANT', _('Applicant')
 
     type = models.CharField(_("Type"), max_length=50, choices=UserTypes.choices , default=UserTypes.MEMBER)
 
@@ -33,6 +34,9 @@ class User(AbstractUser):
     experience = models.CharField(max_length = 520,blank = False)
     personal_statement = models.CharField(max_length=600,blank=False)
 
+class ApplicantCase(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args,**kwargs).filter(type = User.UserTypes.APPLICANT)
 
 class MemberCase(models.Manager):
     def get_queryset(self, *args, **kwargs):
@@ -57,6 +61,11 @@ class ClubOwner(User):
         proxy =True
 
 class Member(User):
-    objects = OwnerCase()
+    objects = MemberCase()
+    class Meta:
+        proxy =True
+
+class Applicant(User):
+    objects = ApplicantCase()
     class Meta:
         proxy =True
