@@ -14,7 +14,7 @@ class User(AbstractUser):
         MEMBER = 'MEMBER', _('Member')
         APPLICANT = 'APPLICANT', _('Applicant')
 
-    type = models.CharField(_("Type"), max_length=50, choices=UserTypes.choices , default=UserTypes.MEMBER)
+    type = models.CharField(_("Type"), max_length=50, choices=UserTypes.choices , default=UserTypes.APPLICANT)
 
     #will replace this with email instead of username
     username = models.CharField(
