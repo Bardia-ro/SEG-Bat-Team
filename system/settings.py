@@ -129,3 +129,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'clubs.User'
+AUTHENTICATION_BACKENDS = ['clubs.backends.EmailBackend']

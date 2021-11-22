@@ -16,7 +16,7 @@ EXPERIENCE_CHOICES = [
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio','experience','personal_statement']
+        fields = ['first_name', 'last_name', 'email', 'bio','experience','personal_statement']
         widgets = { 'bio': forms.Textarea(), 'personal_statement': forms.Textarea(),'experience': forms.Select(choices = EXPERIENCE_CHOICES)}
 
     new_password = forms.CharField(
@@ -42,7 +42,7 @@ class SignUpForm(forms.ModelForm):
         """Create a new user."""
         super().save(commit=False)
         user = User.objects.create_user(
-            self.cleaned_data.get('username'),
+            username= self.cleaned_data.get('email'),
             first_name=self.cleaned_data.get('first_name'),
             last_name=self.cleaned_data.get('last_name'),
             email=self.cleaned_data.get('email'),
@@ -57,5 +57,5 @@ class SignUpForm(forms.ModelForm):
 class LogInForm(forms.Form):
     """Form enabling registered users to log in."""
 
-    username = forms.CharField(label="Username")
+    username = forms.CharField(label="Email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
