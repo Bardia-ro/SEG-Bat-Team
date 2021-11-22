@@ -1,5 +1,5 @@
 from .models import User
-from .forms import SignUpForm, LogInForm
+from .forms import SignUpForm, LogInForm, EditProfileForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
@@ -37,6 +37,18 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
+
+@login_required #make sure user can only access their own edit profile page!!!!
+def edit_profile(request, user_id):
+    user = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', user_id=request.user.id)
+    else:
+        form = EditProfileForm(instance=user)
+    return render(request, 'edit_profile.html', {'form': form})
 
 @login_required
 def profile(request, user_id):
