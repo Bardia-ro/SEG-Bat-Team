@@ -5,7 +5,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-
+from .helpers import get_is_user_member
 
 def log_in(request):
     if request.method == 'POST':
@@ -19,13 +19,15 @@ def log_in(request):
                 return redirect('home') #change where this redirects to
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     form = LogInForm()
-    return render(request, 'log_in.html', {'form': form})
+    user_is_member = get_is_user_member(request.user)
+    return render(request, 'log_in.html', {'form': form, 'user_is_member':user_is_member})
 
 def log_out(request):
     logout(request)
     return redirect('home')
 
 def home(request):
+    user_is_member = get_is_user_member(request.user)
     return render(request, 'home.html')
 
 def sign_up(request):
@@ -37,4 +39,5 @@ def sign_up(request):
             return redirect('home')
     else:
         form = SignUpForm()
-    return render(request, 'sign_up.html', {'form': form})
+    user_is_member = get_is_user_member(request.user)
+    return render(request, 'sign_up.html', {'form': form, 'user_is_member':user_is_member})
