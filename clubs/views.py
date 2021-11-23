@@ -38,7 +38,19 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
-@login_required #make sure user can only access their own edit profile page!!!!
+
+def only_current_user(func):
+    def wrapper(request, user_id):
+        current_user_id = request.user.id
+        if current_user_id == user_id:
+            return func(request, user_id)
+        else:
+            return redirect('profile', user_id=user_id)
+
+    return wrapper
+
+@login_required
+@only_current_user
 def edit_profile(request, user_id):
     user = User.objects.get(id=user_id)
     if request.method == 'POST':
@@ -50,7 +62,8 @@ def edit_profile(request, user_id):
         form = EditProfileForm(instance=user)
     return render(request, 'edit_profile.html', {'form': form})
 
-@login_required #make sure user can only access their own edit profile page!!!!
+@login_required
+@only_current_user
 def change_password(request, user_id):
     user = User.objects.get(id=user_id)
     if request.method == 'POST':
