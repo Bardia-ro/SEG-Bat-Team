@@ -14,15 +14,15 @@
       {% endif %}
       <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="user-account-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <a class="nav-link dropdown-toggle" href="#" id="user-account-dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <span class="bi-person-circle"></span>
           </a>
-          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="user-account-dropdown">
-            <a class="dropdown-item" href={% url "profile" user_id=user.id%}>Profile</a>
-            <a class="dropdown-item" href={% url "change_password" user_id=user.id %}>Change password</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Log out</a>
-          </div>
+          <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="user-account-dropdown">
+            <li><a class="dropdown-item" href={% url "profile" user_id=user.id %}>Profile</a></li>
+            <li><a class="dropdown-item" href={% url "change_password" user_id=user.id %}>Change password</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Log out</a></li>
+          </ul>
         </li>
       </ul>
     </div>
