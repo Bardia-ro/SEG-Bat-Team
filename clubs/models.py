@@ -17,14 +17,7 @@ class User(AbstractUser):
     type = models.CharField(_("Type"), max_length=50, choices=UserTypes.choices , default=UserTypes.APPLICANT)
 
     #will replace this with email instead of username
-    username = models.CharField(
-        max_length=30,
-        unique=True,
-        validators=[RegexValidator(
-            regex=r'^@\w{3,}$',
-            message='Username must consist of @ followed by at least three alphanumericals'
-        )]
-    )
+    username = models.CharField(max_length=50, unique = True)
 
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
@@ -33,6 +26,20 @@ class User(AbstractUser):
     bio = models.CharField(max_length=520, blank=True)
     experience = models.CharField(max_length = 520,blank = False)
     personal_statement = models.CharField(max_length=600,blank=False)
+
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def gravatar(self, size=120):
+        """Return a URL to the user's gravatar."""
+        gravatar_object = Gravatar(self.email)
+        gravatar_url = gravatar_object.get_image(size=size, default='mp')
+        return gravatar_url
+
+    def mini_gravatar(self):
+        """Return a URL to a miniature version of the user's gravatar."""
+        return self.gravatar(size=60)
+
 
 class ApplicantCase(models.Manager):
     def get_queryset(self, *args, **kwargs):

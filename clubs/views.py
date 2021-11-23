@@ -5,6 +5,8 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from .helpers import get_is_user_member
 
 def log_in(request):
     if request.method == 'POST':
@@ -18,14 +20,15 @@ def log_in(request):
                 return redirect('profile', user_id=request.user.id)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     form = LogInForm()
-    return render(request, 'log_in.html', {'form': form})
+    user_is_member = get_is_user_member(request.user)
+    return render(request, 'log_in.html', {'form': form, 'user_is_member':user_is_member})
 
 def log_out(request):
     logout(request)
     return redirect('home')
 
 def home(request):
-    return render(request, 'home.html', {'user': request.user})
+    return render(request, 'home.html')
 
 def sign_up(request):
     if request.method == 'POST':
@@ -36,7 +39,8 @@ def sign_up(request):
             return redirect('profile', user_id=request.user.id)
     else:
         form = SignUpForm()
-    return render(request, 'sign_up.html', {'form': form})
+    user_is_member = get_is_user_member(request.user)
+    return render(request, 'sign_up.html', {'form': form, 'user_is_member':user_is_member})
 
 
 def only_current_user(func):
@@ -60,7 +64,8 @@ def edit_profile(request, user_id):
             return redirect('profile', user_id=request.user.id)
     else:
         form = EditProfileForm(instance=user)
-    return render(request, 'edit_profile.html', {'form': form})
+    user_is_member = get_is_user_member(request.user)
+    return render(request, 'edit_profile.html', {'form': form, 'user_is_member':user_is_member})
 
 @login_required
 @only_current_user
@@ -73,9 +78,13 @@ def change_password(request, user_id):
             return redirect('profile', user_id=request.user.id)
     else:
         form = ChangePasswordForm(instance=user)
-    return render(request, 'change_password.html', {'form': form})
+    user_is_member = get_is_user_member(request.user)
+    return render(request, 'change_password.html', {'form': form, 'user_is_member':user_is_member})
 
 @login_required
 def profile(request, user_id):
+    if request.user.type == "APPLICANT" and user_id != request.user.id:
+        return redirect('profile', user_id=request.user.id)
     user = User.objects.get(id=user_id)
-    return render(request, 'profile.html', {'user': user})
+    user_is_member = get_is_user_member(request.user)
+    return render(request, 'profile.html', {'user': user, 'user_is_member':user_is_member})
