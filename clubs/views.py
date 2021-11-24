@@ -93,4 +93,5 @@ def profile(request, user_id):
         return redirect('profile', user_id=request.user.id)
     user = User.objects.get(id=user_id)
     user_is_member = get_is_user_member(request.user)
-    return render(request, 'profile.html', {'user': user, 'user_is_member':user_is_member})
+    is_current_user = request.user.id == user_id
+    return render(request, 'profile.html', {'user': user, 'user_is_member': user_is_member, 'is_current_user': is_current_user})

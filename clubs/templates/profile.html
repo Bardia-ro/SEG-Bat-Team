@@ -10,6 +10,7 @@
             <li class="list-group-item">Personal statement:  {{user.personal_statement}}</li>
         </ul>
     </div>
+    {% if is_current_user %}
     <!-- <div class="row"> -->
         <div class="col-sm-12 col-md-6 offset-md-3">
             <a href={% url 'edit_profile' user_id=user.id %}>
@@ -17,4 +18,5 @@
             </a>
         </div>
     <!-- </div> -->
+    {% endif %}
 {% endblock %}
