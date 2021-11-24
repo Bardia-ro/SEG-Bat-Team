@@ -1,22 +1,36 @@
 {% extends  'base_content.html' %}
 {% block content %}
-    <div class="col-sm-12 col-md-6 offset-md-3">
-        <ul class="list-group">
-            <li class="list-group-item"><h3>{{user.first_name}} {{user.last_name}} ({{user.type}})</h3></li>
-            <li class="list-group-item">Username: {{user.username}}</li>
-            <li class="list-group-item">Email:  {{user.email}}</li>
-            <li class="list-group-item">Bio:  {{user.bio}}</li>
-            <li class="list-group-item">Experience level:  {{user.experience}}</li>
-            <li class="list-group-item">Personal statement:  {{user.personal_statement}}</li>
-        </ul>
-    </div>
-    {% if is_current_user %}
-    <!-- <div class="row"> -->
-        <div class="col-sm-12 col-md-6 offset-md-3">
-            <a href={% url 'edit_profile' user_id=user.id %}>
-                <button type="button" class="btn btn-primary">Edit profile</button>
-            </a>
+    <div class="container">
+        <div class="d-grid gap-3">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 offset-md-2">
+                    <ul class="list-group">
+                        <li class="list-group-item"><h2>{{user.first_name}} {{user.last_name}} ({{user.type}})</h2></li>
+                        <li class="list-group-item fs-4">Username: {{user.username}}</li>
+                        <li class="list-group-item fs-4">Email: {{user.email}}</li>
+                        <li class="list-group-item fs-4">Bio: 
+                            <div class="card">
+                                <div class="card-body">{{user.bio}}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item fs-4">Experience level:  {{user.experience}}</li>
+                        <li class="list-group-item fs-4">Personal statement:  
+                            <div class="card">
+                                <div class="card-body">{{user.personal_statement}}</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% if is_current_user %}
+                <div class="row">
+                    <div class="col-sm-12 col-md-8 offset-md-2">
+                        <a href={% url 'edit_profile' user_id=user.id %}>
+                            <button type="button" class="btn btn-primary">Edit profile</button>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
-    <!-- </div> -->
-    {% endif %}
+    </div>
 {% endblock %}
