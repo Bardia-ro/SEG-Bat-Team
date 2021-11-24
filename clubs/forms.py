@@ -1,8 +1,8 @@
 from django import forms
+from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
 from .models import User
-
 
 #options for the 'experience' drop down box
 EXPERIENCE_CHOICES = [
@@ -85,5 +85,7 @@ class ChangePasswordForm(forms.ModelForm, Password):
             self.add_error('password_confirmation', 'Confirmation does not match password.')
 
     def save(self):
-        super().save(commit=False)
-        self.instance.password=make_password(self.cleaned_data.get('new_password'))
+        self.instance.set_password(self.cleaned_data.get('new_password'))
+        self.instance.save()
+        user = authenticate(username=self.instance.username, password=self.cleaned_data.get('new_password'))
+        return user

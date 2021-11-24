@@ -79,8 +79,9 @@ def change_password(request, user_id):
     if request.method == 'POST':
         form = ChangePasswordForm(request.POST, instance=user)
         if form.is_valid():
-            form.save()
-            return redirect('profile', user_id=request.user.id)
+            user = form.save()
+            login(request, user)
+            return redirect('profile', user_id=user.id)
     else:
         form = ChangePasswordForm(instance=user)
     user_is_member = get_is_user_member(request.user)
