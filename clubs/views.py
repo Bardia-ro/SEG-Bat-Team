@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member
+from .helpers import get_is_user_member, only_current_user
 
 def get_is_user_member(user):
     if user.is_authenticated:
@@ -46,17 +46,6 @@ def sign_up(request):
         form = SignUpForm()
     user_is_member = get_is_user_member(request.user)
     return render(request, 'sign_up.html', {'form': form, 'user_is_member':user_is_member})
-
-
-def only_current_user(func):
-    def wrapper(request, user_id):
-        current_user_id = request.user.id
-        if current_user_id == user_id:
-            return func(request, user_id)
-        else:
-            return redirect('profile', user_id=user_id)
-
-    return wrapper
 
 @login_required
 @only_current_user
