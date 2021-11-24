@@ -38,3 +38,8 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
+
+def member_list(request):
+    queryset = User.objects.all()
+    context = {"object_list": queryset}
+    return render(request, 'member_list.html', context)

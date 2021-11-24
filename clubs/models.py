@@ -4,6 +4,10 @@ from django import forms
 from django.contrib.auth.models import AbstractUser
 from django.db.models.fields import BLANK_CHOICE_DASH, proxy
 from django.utils.translation import gettext_lazy as _
+import hashlib
+import urllib
+from django import template
+from django.utils.safestring import mark_safe
 
 
 class User(AbstractUser):
@@ -32,9 +36,9 @@ class User(AbstractUser):
 
     def gravatar(self, size=120):
         """Return a URL to the user's gravatar."""
-        gravatar_object = Gravatar(self.email)
-        gravatar_url = gravatar_object.get_image(size=size, default='mp')
-        return gravatar_url
+        md5 = hashlib.md5(self.email.encode())
+        digest = md5.hexdigest()
+        return 'http://www.gravatar.com/avatar/{}'.format(digest)
 
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
