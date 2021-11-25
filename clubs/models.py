@@ -46,20 +46,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
 
-    def full_name(self):
-        return f'{self.first_name} {self.last_name}'
-
-    def gravatar(self, size=120):
-        """Return a URL to the user's gravatar."""
-        gravatar_object = Gravatar(self.email)
-        gravatar_url = gravatar_object.get_image(size=size, default='mp')
-        return gravatar_url
-
-    def mini_gravatar(self):
-        """Return a URL to a miniature version of the user's gravatar."""
-        return self.gravatar(size=60)
-
-
 class ApplicantCase(models.Manager):
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args,**kwargs).filter(type = User.UserTypes.APPLICANT)
