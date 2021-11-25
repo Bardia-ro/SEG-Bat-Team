@@ -23,6 +23,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     bio = models.CharField(max_length=520, blank=True)
     experience = models.CharField(max_length = 520,blank = False)
     personal_statement = models.CharField(max_length=600,blank=False)
+    is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
