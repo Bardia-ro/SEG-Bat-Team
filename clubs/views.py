@@ -8,11 +8,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user
 
-def get_is_user_member(user):
-    if user.is_authenticated:
-        return user.type != 'APPLICANT'
-    return False
-
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
