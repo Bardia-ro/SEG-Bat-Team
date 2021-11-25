@@ -1,12 +1,14 @@
 from django.core.validators import RegexValidator
 from django.db import models
 from django import forms
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.fields import BLANK_CHOICE_DASH, proxy
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import PermissionsMixin
+from .managers import CustomUserManager
 
 
-class User(AbstractUser):
+class User(AbstractBaseUser, PermissionsMixin):
 
     class UserTypes(models.TextChoices):
         CLUBOWNER = 'CLUBOWNER', _('ClubOwner')
@@ -15,17 +17,34 @@ class User(AbstractUser):
         APPLICANT = 'APPLICANT', _('Applicant')
 
     type = models.CharField(_("Type"), max_length=50, choices=UserTypes.choices , default=UserTypes.APPLICANT)
-
-    #will replace this with email instead of username
-    username = models.CharField(max_length=50, unique = True)
-
+    email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-    #email = models.EmailField(unique=True, blank=False)
-    email = models.EmailField(_('email'), unique = True)
     bio = models.CharField(max_length=520, blank=True)
     experience = models.CharField(max_length = 520,blank = False)
     personal_statement = models.CharField(max_length=600,blank=False)
+    is_staff = models.BooleanField(default=False)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
+
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def gravatar(self, size=120):
+        """Return a URL to the user's gravatar."""
+        gravatar_object = Gravatar(self.email)
+        gravatar_url = gravatar_object.get_image(size=size, default='mp')
+        return gravatar_url
+
+    def mini_gravatar(self):
+        """Return a URL to a miniature version of the user's gravatar."""
+        return self.gravatar(size=60)
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'

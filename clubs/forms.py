@@ -26,7 +26,7 @@ class Password():
     )
     password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
 
-class SignUpForm(forms.ModelForm):
+class SignUpForm(forms.ModelForm, Password):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'bio','experience','personal_statement']
@@ -46,10 +46,9 @@ class SignUpForm(forms.ModelForm):
         """Create a new user."""
         super().save(commit=False)
         user = User.objects.create_user(
-            username= self.cleaned_data.get('email'),
+            email= self.cleaned_data.get('email'),
             first_name=self.cleaned_data.get('first_name'),
             last_name=self.cleaned_data.get('last_name'),
-            email=self.cleaned_data.get('email'),
             bio=self.cleaned_data.get('bio'),
             password=self.cleaned_data.get('new_password'),
             experience = self.cleaned_data.get('experience'),
@@ -60,7 +59,7 @@ class SignUpForm(forms.ModelForm):
 class LogInForm(forms.Form):
     """Form enabling registered users to log in."""
 
-    username = forms.CharField(label="Email")
+    email = forms.CharField(label="Email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
 
 class EditProfileForm(forms.ModelForm):
