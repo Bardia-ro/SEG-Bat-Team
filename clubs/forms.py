@@ -65,7 +65,7 @@ class LogInForm(forms.Form):
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'bio','experience','personal_statement']
+        fields = ['first_name', 'last_name', 'bio','experience','personal_statement']
         widgets = { 'bio': forms.Textarea(), 'personal_statement': forms.Textarea(),'experience': forms.Select(choices = EXPERIENCE_CHOICES)}
 
 class ChangePasswordForm(forms.ModelForm, Password):
@@ -86,5 +86,5 @@ class ChangePasswordForm(forms.ModelForm, Password):
     def save(self):
         self.instance.set_password(self.cleaned_data.get('new_password'))
         self.instance.save()
-        user = authenticate(username=self.instance.username, password=self.cleaned_data.get('new_password'))
+        user = authenticate(email=self.instance.email, password=self.cleaned_data.get('new_password'))
         return user
