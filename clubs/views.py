@@ -79,3 +79,10 @@ def profile(request, user_id):
     user_is_member = get_is_user_member(request.user)
     is_current_user = request.user.id == user_id
     return render(request, 'profile.html', {'user': user, 'user_is_member': user_is_member, 'is_current_user': is_current_user})
+
+    return render(request, 'sign_up.html', {'form': form})
+
+def member_list(request):
+    queryset = User.objects.all()
+    context = {"object_list": queryset}
+    return render(request, 'member_list.html', context)

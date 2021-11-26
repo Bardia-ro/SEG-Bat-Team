@@ -1,0 +1,19 @@
+{% extends 'base_content.html' %}
+{% block content %}
+
+    <div class="container">
+       <div class = "row">
+          <div class = "col-sm-12 col-md-6 offset-md-3">
+            <h1>List of Users</h1>
+            {% for instance in object_list %}
+              <p><b>{{ instance.full_name }}</b> <b>{{ instance.bio }}</b> <a href=""><img src="{{ instance.gravatar|safe }}"/></a></p></p>
+
+            {% empty %}
+              <p>No objects yet</p>
+            {% endfor %}
+            
+        </div>
+       </div>
+    </div>
+ 
+{% endblock %}
