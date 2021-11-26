@@ -16,7 +16,6 @@ class ProfileViewTestCase(TestCase):
 
     def test_non_logged_in_user_gets_user_profile_page(self):
         response = self.client.get(self.url, follow=True)
-        print(response.redirect_chain)
         expected_url = '/log_in/?next=/profile/0'
         self.assertRedirects(response, expected_url)
         self.assertTemplateUsed(response, 'log_in.html')
