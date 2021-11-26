@@ -1,0 +1,24 @@
+{% extends 'base_content.html' %}
+{% block content %}
+
+    <div class="container">
+       <div class = "row">
+          <div class = "col-sm-12 col-md-6 offset-md-3">
+        <h1>Roles</h1>
+            <form action="{% url 'promote-demote' %}" method = "POST">
+                {% csrf_token %}
+                <label for="users">Users: </label>
+                <select name="users">
+                    {% for instance in user_list %}
+                    <option value="{{ instance.username }}">{{ instance.username }}</option>
+                    {% empty %}
+                    <p>No objects</p>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Promote to Officer">
+            </form>
+        </div>
+       </div>
+    </div>
+ 
+{% endblock %}

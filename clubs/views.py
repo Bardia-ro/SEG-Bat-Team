@@ -43,3 +43,17 @@ def member_list(request):
     queryset = User.objects.all()
     context = {"object_list": queryset}
     return render(request, 'member_list.html', context)
+
+def roles(request):
+    # gets list of users to promote
+    queryset = User.objects.exclude(type = 'APPLICANT')
+    context = {"user_list": queryset}
+    # promotes the selected user to officer
+    #if request.method == 'POST':
+        #username_to_get = SUBMITTED DATA
+        #user_to_change = User.objects.get(username=username_to_get)
+        #user_to_change.type = 'OFFICER'
+        #return redirect('promote-demote')
+
+    return render(request, 'promote-demote.html', context)
+
