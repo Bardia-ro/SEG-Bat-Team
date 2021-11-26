@@ -73,7 +73,7 @@ def change_password(request, user_id):
 
 @login_required
 def profile(request, user_id):
-    if request.user.type == "APPLICANT" and user_id != request.user.id:
+    if (request.user.type == "APPLICANT" or request.user.type == "MEMBER") and user_id != request.user.id:
         return redirect('profile', user_id=request.user.id)
     user = User.objects.get(id=user_id)
     user_is_member = get_is_user_member(request.user)

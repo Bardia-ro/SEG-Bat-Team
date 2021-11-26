@@ -15,7 +15,11 @@ class ProfileViewTestCase(TestCase):
         self.assertEqual(self.url, '/profile/0')
 
     def test_non_logged_in_user_gets_user_profile_page(self):
-        pass
+        response = self.client.get(self.url, follow=True)
+        print(response.redirect_chain)
+        expected_url = '/log_in/?next=/profile/0'
+        self.assertRedirects(response, expected_url)
+        self.assertTemplateUsed(response, 'log_in.html')
 
     def test_applicant_user_gets_own_profile_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
@@ -55,10 +59,61 @@ class ProfileViewTestCase(TestCase):
         self.assertContains(response, 'Edit profile')
 
     def test_applicant_user_gets_other_user_profile_page(self):
-        pass
+        self.client.login(email='johndoe@example.org', password='Password123')
+        url = reverse('profile', kwargs={"user_id": 1})
+        response = self.client.get(url, follow=True)
+        expected_url = reverse('profile', kwargs={"user_id": 0})
+        self.assertRedirects(response, expected_url)
+        self.assertTemplateUsed(response, 'profile.html')
+        user = User.objects.get(email='johndoe@example.org')
+        self.assertEqual(response.context['user'], user)   
+        self.assertFalse(response.context['user_is_member']) 
+        self.assertTrue(response.context['is_current_user'])  
+        self.assertContains(response, user.first_name)
+        self.assertContains(response, user.last_name)
+        self.assertContains(response, user.type)
+        self.assertContains(response, user.email)
+        self.assertContains(response, user.bio)
+        self.assertContains(response, user.experience)
+        self.assertContains(response, user.personal_statement)
+        self.assertContains(response, 'Edit profile')
 
     def test_member_user_gets_applicant_user_profile_page(self):
-        pass
+        self.client.login(email='janedoe@example.org', password='Password123')
+        url = reverse('profile', kwargs={"user_id": 0})
+        response = self.client.get(url, follow=True)
+        expected_url = reverse('profile', kwargs={"user_id": 1})
+        self.assertRedirects(response, expected_url)
+        self.assertTemplateUsed(response, 'profile.html')
+        user = User.objects.get(email='janedoe@example.org')
+        self.assertEqual(response.context['user'], user)   
+        self.assertTrue(response.context['user_is_member']) 
+        self.assertTrue(response.context['is_current_user'])  
+        self.assertContains(response, user.first_name)
+        self.assertContains(response, user.last_name)
+        self.assertContains(response, user.type)
+        self.assertContains(response, user.email)
+        self.assertContains(response, user.bio)
+        self.assertContains(response, user.experience)
+        self.assertContains(response, user.personal_statement)
+        self.assertContains(response, 'Edit profile')
 
     def test_member_user_gets_other_member_profile_page(self):
-        pass
+        self.client.login(email='janedoe@example.org', password='Password123')
+        url = reverse('profile', kwargs={"user_id": 2})
+        response = self.client.get(url, follow=True)
+        expected_url = reverse('profile', kwargs={"user_id": 1})
+        self.assertRedirects(response, expected_url)
+        self.assertTemplateUsed(response, 'profile.html')
+        user = User.objects.get(email='janedoe@example.org')
+        self.assertEqual(response.context['user'], user)   
+        self.assertTrue(response.context['user_is_member']) 
+        self.assertTrue(response.context['is_current_user'])  
+        self.assertContains(response, user.first_name)
+        self.assertContains(response, user.last_name)
+        self.assertContains(response, user.type)
+        self.assertContains(response, user.email)
+        self.assertContains(response, user.bio)
+        self.assertContains(response, user.experience)
+        self.assertContains(response, user.personal_statement)
+        self.assertContains(response, 'Edit profile')
