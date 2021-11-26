@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 from django.contrib.messages import constants as message_constants
+from django.urls.base import reverse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -138,3 +139,6 @@ MESSAGE_TAGS = {
     message_constants.DEBUG: 'dark',
     message_constants.ERROR: 'danger',
 }
+
+# Url for the @login_required decorator to redirect to.
+LOGIN_URL = '/log_in/'

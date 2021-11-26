@@ -1,0 +1,30 @@
+[
+    {
+        "model": "clubs.User",
+        "pk": 1,
+        "fields": {
+            "type": "MEMBER",
+            "email": "janedoe@example.org",
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "bio": "Hey guys!",
+            "experience": "class B",
+            "personal_statement": "Hi everyone. I love chess!",
+            "password": "pbkdf2_sha256$260000$YfWA9vJZy1NSDBx92f9Fl6$d7EwKLswx6y3bj7y/t8asD/VZgzgVUn8zI7fA6ndt/8="
+        }
+    },
+    {
+        "model": "clubs.User",
+        "pk": 2,
+        "fields": {
+            "type": "MEMBER",
+            "email": "samdoe@example.org",
+            "first_name": "Sam",
+            "last_name": "Doe",
+            "bio": "Hey guys!",
+            "experience": "class A",
+            "personal_statement": "Hi everyone. I love chess!",
+            "password": "pbkdf2_sha256$260000$YfWA9vJZy1NSDBx92f9Fl6$d7EwKLswx6y3bj7y/t8asD/VZgzgVUn8zI7fA6ndt/8="
+        }
+    }
+]
