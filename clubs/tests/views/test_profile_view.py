@@ -18,7 +18,7 @@ class ProfileViewTestCase(TestCase):
         pass
 
     def test_applicant_user_gets_own_profile_page(self):
-        self.client.login(username='@johndoe', password='Password123')
+        self.client.login(email='johndoe@example.org', password='Password123')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'profile.html')
@@ -38,7 +38,7 @@ class ProfileViewTestCase(TestCase):
     def test_member_user_gets_own_profile_page(self):
         user = User.objects.get(id=1)
         url = reverse('profile', kwargs={"user_id": 1})
-        self.client.login(username='@janedoe', password='Password123')
+        self.client.login(email='janedoe@example.org', password='Password123')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'profile.html')

@@ -4,10 +4,9 @@
         "pk": 0,
         "fields": {
             "type": "APPLICANT",
-            "username": "@johndoe",
+            "email": "johndoe@example.org",
             "first_name": "John",
             "last_name": "Doe",
-            "email": "johndoe@example.org",
             "bio": "Hey guys!",
             "experience": "class B",
             "personal_statement": "Hi everyone. I love chess!",
