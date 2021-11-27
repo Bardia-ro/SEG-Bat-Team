@@ -9,7 +9,7 @@
         {% if user_is_member %}
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">Members</a>
+              <a class="nav-link" href="{% url 'member_list' %}">Members</a>
             </li>
           </ul>
         {% endif %}
