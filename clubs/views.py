@@ -2,7 +2,7 @@ from .models import User
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -73,7 +73,7 @@ def change_password(request, user_id):
 
 @login_required
 def profile(request, user_id):
-    if (request.user.type == "APPLICANT" or request.user.type == "MEMBER") and user_id != request.user.id:
+    if (request.user.role == 1 or request.user.role == 2) and user_id != request.user.id:
         return redirect('profile', user_id=request.user.id)
     user = User.objects.get(id=user_id)
     user_is_member = get_is_user_member(request.user)
@@ -83,6 +83,25 @@ def profile(request, user_id):
     return render(request, 'sign_up.html', {'form': form})
 
 def member_list(request):
-    queryset = User.objects.all()
-    context = {"object_list": queryset}
-    return render(request, 'member_list.html', context)
+   users = User.objects.all()
+   return render(request, 'member_list.html', {'users': users})
+
+def approve_member(request, user_id):
+    user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
+    user.approve_membership()
+    return render(request, 'profile.html', {'user' : user})
+
+def promote(request, user_id):
+    user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
+    user.promotion_member_demotion_owner()
+    return render(request, 'profile.html', {'user' : user})
+
+def demote(request, user_id):
+    user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
+    user.demotion()
+    return render(request, 'profile.html', {'user' : user})
+
+def transferownership(request, user_id, request_user_id):
+    user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
+    user.change_owner(request_user_id)
+    return render(request, 'profile.html', {'user' : user})

@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 
 def get_is_user_member(user):
     if user.is_authenticated:
-        return user.type != 'APPLICANT'
+        return user.role != 1
     return False
 
 def only_current_user(func):
