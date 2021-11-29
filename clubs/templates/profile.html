@@ -33,19 +33,19 @@
                 </div>
             {% endif %}
                         
-            {% if user.role == 1 and request.user.role == 3 %}
-                <a target="" class="btn btn-success"  href={% url 'approve_member' user_id=user.id %}> Approve membership </a>
+            {% if user.role == 1 and request.user.role >= 3 %}
+                <a target="" class="btn btn-success"  href={% url 'approve_member' user_id=user.id %}>Approve membership</a>
             {% endif %} 
 
             {% if user.is_member  %}
                 {% if request.user.role == 4 %}
-                    <a target="" class="btn btn-primary"  href={% url 'promote' user_id=user.id %}> promote </a>
+                    <a target="" class="btn btn-primary"  href={% url 'promote' user_id=user.id %}>Promote</a>
                 {% endif %} 
             {% endif %} 
 
             {% if user.role == 3 %} 
                 {% if request.user.role == 4 %}
-                    <a target="" class="btn btn-primary"  href={% url 'transferownership' user_id=user.id request_user_id=request.user.id %}> transferownership </a>
+                    <a target="" class="btn btn-primary"  href={% url 'transferownership' user_id=user.id request_user_id=request.user.id %}>Transfer Ownership</a>
                 {% endif %} 
             {% endif %} 
         </div>
