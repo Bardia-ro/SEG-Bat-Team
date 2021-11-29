@@ -6,10 +6,16 @@
                 <div class="col-sm-12 col-md-8 offset-md-2">
                     <ul class="list-group">
                         <li class="list-group-item"><h2>{{user.first_name}} {{user.last_name}} </h2></li>
-                        <li class="list-group-item fs-4">Experience level:  {{user.experience}}</li>
+                        <li class="list-group-item fs-4"> {{user.email}}</li>
                         <li class="list-group-item fs-4">Bio: 
                             <div class="card">
                                 <div class="card-body fs-5">{{user.bio}}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item fs-4">Experience level:  {{user.experience}}</li>
+                        <li class="list-group-item fs-4">Personal statement:  
+                            <div class="card">
+                                <div class="card-body fs-5">{{user.personal_statement}}</div>
                             </div>
                         </li>
                     </ul>
@@ -24,48 +30,22 @@
                     </div>
                 </div>
             {% endif %}
-            {% if is_current_user or request.user.role > 2  %}
-            <div class="container">
-                <div class="d-grid gap-3">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-8 offset-md-2">
-                            <ul class="list-group">
-            <li class="list-group-item fs-4"> {{user.email}}</li>
                         
-                        <li class="list-group-item fs-5">Personal statement:  
-                            <div class="card">
-                                <div class="card-body fs-5">{{user.personal_statement}}</div>
-                            </div>
-                        </li>
-                        {% endif %}
-                        <li class="list-group-item"><h2> logged in user {{request.user.role}} </h2></li>
-                        <li class="list-group-item"><h2> applicant {{user.role}} </h2></li>
-                        
-                        {% if user.role == 1 and request.user.role == 3 %}
-                        <a target="" class="btn btn-success"  href={% url 'approve_member' user_id=user.id %}> Approve membership </a>
-                        {% endif %} 
+            {% if user.role == 1 and request.user.role == 3 %}
+                <a target="" class="btn btn-success"  href={% url 'approve_member' user_id=user.id %}> Approve membership </a>
+            {% endif %} 
 
-                        
-                        {% if user.is_member  %}
-                        {% if request.user.role == 4 %}
-                        
-                        <a target="" class="btn btn-primary"  href={% url 'promote' user_id=user.id %}> promote </a>
-                        {% endif %} 
-                        {% endif %} 
+            {% if user.is_member  %}
+                {% if request.user.role == 4 %}
+                    <a target="" class="btn btn-primary"  href={% url 'promote' user_id=user.id %}> promote </a>
+                {% endif %} 
+            {% endif %} 
 
-                        {% if user.role == 3 %} 
-                        {% if request.user.role == 4 %}
-                        
-                        <a target="" class="btn btn-primary"  href={% url 'transferownership' user_id=user.id request_user_id=request.user.id %}> transferownership </a>
-                        {% endif %} 
-                        {% endif %} 
-
-                   
-                        
-
-                        
-
-
+            {% if user.role == 3 %} 
+                {% if request.user.role == 4 %}
+                    <a target="" class="btn btn-primary"  href={% url 'transferownership' user_id=user.id request_user_id=request.user.id %}> transferownership </a>
+                {% endif %} 
+            {% endif %} 
         </div>
     </div>
 {% endblock %}
