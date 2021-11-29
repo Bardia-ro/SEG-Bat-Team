@@ -5,7 +5,9 @@
             <div class="row">
                 <div class="col-sm-12 col-md-8 offset-md-2">
                     <ul class="list-group">
-                        <li class="list-group-item"><h2>{{user.first_name}} {{user.last_name}} </h2></li>
+                        <li class="list-group-item">
+                            <h2>{{user.first_name}} {{user.last_name}} <img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle" ></h2>
+                        </li>
                         <li class="list-group-item fs-4"> {{user.email}}</li>
                         <li class="list-group-item fs-4">Bio: 
                             <div class="card">
