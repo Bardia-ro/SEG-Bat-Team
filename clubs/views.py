@@ -1,4 +1,4 @@
-from .models import User, Role
+from .models import User
 from django.db.models import Model
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
 from django.core.exceptions import ObjectDoesNotExist
@@ -84,7 +84,7 @@ def profile(request, club_id, user_id):
         return redirect('profile', club_id=club_id, user_id=request.user.id)
 
     try:
-        request_user_role_at_club = Role.objects.get(club__id=club_id, user__id=request.user.id).role
+        request_user_role_at_club = request.user.get_role_at_club(club_id)
     except: # add in exception type
         #Change!!!
         return redirect('home')

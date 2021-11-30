@@ -52,7 +52,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         if id == None:
             return -1
         else:
-            return id 
+            return id
+
+    def get_role_at_club(self, club_id):
+        return Role.objects.get(club__id=club_id, user__id=self.id).role
 
 class Club(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)
