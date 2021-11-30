@@ -1,16 +1,20 @@
 from django.shortcuts import redirect
+from clubs.models import Role
 
-def get_is_user_member(user):
+def get_is_user_member(club_id, user):
     if user.is_authenticated:
-        return user.role != 1
+        try:
+            return Role.objects.get(club__id=club_id, user__id=user.id).role >= 2
+        except: #add error
+            return False
     return False
 
 def only_current_user(func):
-    def wrapper(request, user_id):
+    def wrapper(request, club_id, user_id):
         current_user_id = request.user.id
         if current_user_id == user_id:
-            return func(request, user_id)
+            return func(request, club_id, user_id)
         else:
-            return redirect('profile', user_id=user_id)
+            return redirect('profile', club_id=club_id, user_id=user_id)
 
     return wrapper

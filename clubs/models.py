@@ -14,23 +14,6 @@ from django.utils.safestring import mark_safe
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-
-    BANNED = 0
-    APPlICANT = 1
-    MEMBER = 2
-    OFFICER = 3
-    OWNER = 4
-
-    ROLE_CHOICES = (
-        (BANNED, 'Banned'),
-        (APPlICANT, 'Applicant'),
-        (MEMBER, 'Member'),
-        (OFFICER, 'Officer'),
-        (OWNER, 'Owner'),
-    )
-
-    role = models.SmallIntegerField(
-        blank=False, default=APPlICANT, choices=ROLE_CHOICES)
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
@@ -63,6 +46,34 @@ class User(AbstractBaseUser, PermissionsMixin):
     def approve_membership(self):
         self.role = User.MEMBER
         self.save()
+
+class Club(models.Model):
+    name = models.CharField(max_length=50, blank=False, unique=True)
+    location = models.CharField(max_length=100, blank=False, unique=True)
+    description = models.CharField(max_length=600, blank=False)
+
+    users = models.ManyToManyField(User, through='Role')
+
+class Role(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+
+    BANNED = 0
+    APPlICANT = 1
+    MEMBER = 2
+    OFFICER = 3
+    OWNER = 4
+
+    ROLE_CHOICES = (
+        (BANNED, 'Banned'),
+        (APPlICANT, 'Applicant'),
+        (MEMBER, 'Member'),
+        (OFFICER, 'Officer'),
+        (OWNER, 'Owner'),
+    )
+
+    role = models.SmallIntegerField(
+        blank=False, default=APPlICANT, choices=ROLE_CHOICES)
 
     def promotion_member_demotion_owner(self):
         self.role = User.OFFICER

@@ -26,7 +26,7 @@
             {% if is_current_user %}
                 <div class="row">
                     <div class="col-sm-12 col-md-8 offset-md-2">
-                        <a href={% url 'edit_profile' user_id=user.id %}>
+                        <a href={% url 'edit_profile' club_id=club_id user_id=user.id %}>
                             <button type="button" class="btn btn-primary">Edit profile</button>
                         </a> 
                     </div>
@@ -36,7 +36,7 @@
             {% if user.role == 1 and request.user.role >= 3 %}
                 <div class="row">
                     <div class="col-sm-12 col-md-8 offset-md-2">
-                        <a href={% url 'approve_member' user_id=user.id %}>
+                        <a href={% url 'approve_member' club_id=club_id user_id=user.id %}>
                             <button type="button" class="btn btn-success">Approve membership</button>
                         </a>
                     </div>
@@ -47,7 +47,7 @@
                 {% if request.user.role == 4 %}
                     <div class="row">
                         <div class="col-sm-12 col-md-8 offset-md-2">
-                            <a href={% url 'promote' user_id=user.id %}>
+                            <a href={% url 'promote' club_id=club_id user_id=user.id %}>
                                 <button type="button" class="btn btn-primary">Promote</button>
                             </a>
                         </div>
@@ -59,7 +59,7 @@
                 {% if request.user.role == 4 %}
                     <div class="row">
                         <div class="col-sm-12 col-md-8 offset-md-2">
-                            <a href={% url 'transferownership' user_id=user.id request_user_id=request.user.id %}>
+                            <a href={% url 'transferownership' club_id=club_id user_id=user.id request_user_id=request.user.id %}>
                                 <button type="button" class="btn btn-primary">Transfer Ownership</button>
                             </a>
                         </div>
