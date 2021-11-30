@@ -46,6 +46,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     def approve_membership(self):
         self.role = User.MEMBER
         self.save()
+    
+    def get_first_club_id_user_is_associated_with(self):
+        id = Club.objects.filter(users__id = self.id).first().id
+        if id == None:
+            return -1
+        else:
+            return id 
 
 class Club(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)

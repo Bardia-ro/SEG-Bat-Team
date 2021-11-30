@@ -20,7 +20,8 @@ def log_in(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('profile', club_id=1, user_id=request.user.id) #change club_id value!!
+                club_id = user.get_first_club_id_user_is_associated_with()
+                return redirect('profile', club_id=club_id, user_id=request.user.id)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
@@ -41,7 +42,8 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('profile', user_id=request.user.id)
+            club_id = user.get_first_club_id_user_is_associated_with()
+            return redirect('profile', club_id=club_id, user_id=request.user.id)
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
@@ -77,6 +79,10 @@ def change_password(request, club_id, user_id):
 
 @login_required
 def profile(request, club_id, user_id):
+    if club_id == -1 and request.user.id != user_id:
+        club_id = request.user.get_first_club_id_user_is_associated_with()
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
     try:
         request_user_role_at_club = Role.objects.get(club__id=club_id, user__id=request.user.id).role
     except: # add in exception type
