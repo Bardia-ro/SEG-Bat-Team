@@ -10,47 +10,25 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, login_prohibited
 
-
-class LogInView(View):
-    """View that handles log in"""
-    http_method_names = ['get', 'post']
-
-    @method_decorator(login_prohibited)
-    def dispatch(self, request):
-        return super().dispatch(request)
-
-    def get(self, request):
-        """Display log in template"""
-        next = request.GET.get('next') or ''
-    #    form = LogInForm()
-    #    user_is_member = get_is_user_member(request.user)
-    #    return render(request, 'log_in.html', {'form': form, 'next': next,'user_is_member':user_is_member})
-        return self.render(request,next)
-
-    def post(self, request):
-        """Handle login attempt"""
+@login_prohibited
+def log_in(request):
+    if request.method == 'POST':
         form = LogInForm(request.POST)
-        next = request.GET.get('next') or ''
+        next = request.POST.get('next') or ''
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect(next or 'profile', user_id=request.user.id)
+                redirect_url = next or "'profile', user_id=request.user.id"
+                return redirect(redirect_url)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
-        return self.render(request,next)
-        #form = LogInForm()
-    #    user_is_member = get_is_user_member(request.user)
-    #    return render(request, 'log_in.html', {'form': form, 'next': next,'user_is_member':user_is_member})
-
-
-    def render(self, request, next):
-            #""" Render log in template with blank log in form"""
-        form = LogInForm()
-        user_is_member = get_is_user_member(request.user)
-        return render(request, 'log_in.html', {'form': form, 'next': next,'user_is_member':user_is_member})
-
+    else:
+        next = request.GET.get('next') or ''
+    form = LogInForm()
+    user_is_member = get_is_user_member(request.user)
+    return render(request, 'log_in.html', {'form': form, 'next':next,'user_is_member':user_is_member})
 
 
 def log_out(request):
