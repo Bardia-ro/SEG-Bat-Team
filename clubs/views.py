@@ -7,11 +7,10 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user
+from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user
 
 def log_in(request):
-    if request.user.is_authenticated:
-        return redirect('profile', user_id=request.user.id)
+    redirect_authenticated_user(request)
 
     if request.method == 'POST':
         form = LogInForm(request.POST)
@@ -31,11 +30,11 @@ def log_out(request):
     return redirect('home')
 
 def home(request):
+    redirect_authenticated_user(request)
     return render(request, 'home.html')
 
 def sign_up(request):
-    if request.user.is_authenticated:
-        return redirect('profile', user_id=request.user.id)
+    redirect_authenticated_user(request)
 
     if request.method == 'POST':
         form = SignUpForm(request.POST)

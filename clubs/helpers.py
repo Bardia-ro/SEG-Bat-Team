@@ -1,6 +1,11 @@
 from django.shortcuts import redirect
 from clubs.models import Role
 
+def redirect_authenticated_user(request):
+    if request.user.is_authenticated:
+        club_id = 1
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
 def get_is_user_member(club_id, user):
     if user.is_authenticated:
         try:
