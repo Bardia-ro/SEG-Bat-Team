@@ -2,7 +2,7 @@ from .models import User
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -11,11 +11,8 @@ from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, login_prohibited
 
 
-
-
 class LogInView(View):
     """View that handles log in"""
-
     http_method_names = ['get', 'post']
 
     @method_decorator(login_prohibited)

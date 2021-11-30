@@ -3,6 +3,7 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.fields import BLANK_CHOICE_DASH, proxy
+from django.http import request
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import PermissionsMixin
 from .managers import CustomUserManager
@@ -14,19 +15,28 @@ from django.utils.safestring import mark_safe
 
 class User(AbstractBaseUser, PermissionsMixin):
 
-    class UserTypes(models.TextChoices):
-        CLUBOWNER = 'CLUBOWNER', _('ClubOwner')
-        OFFICER = 'OFFICER', _('Officer')
-        MEMBER = 'MEMBER', _('Member')
-        APPLICANT = 'APPLICANT', _('Applicant')
+    BANNED = 0
+    APPlICANT = 1
+    MEMBER = 2
+    OFFICER = 3
+    OWNER = 4
 
-    type = models.CharField(_("Type"), max_length=50, choices=UserTypes.choices , default=UserTypes.APPLICANT)
+    ROLE_CHOICES = (
+        (BANNED, 'Banned'),
+        (APPlICANT, 'Applicant'),
+        (MEMBER, 'Member'),
+        (OFFICER, 'Officer'),
+        (OWNER, 'Owner'),
+    )
+
+    role = models.SmallIntegerField(
+        blank=False, default=APPlICANT, choices=ROLE_CHOICES)
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     bio = models.CharField(max_length=520, blank=True)
-    experience = models.CharField(max_length = 520,blank = False)
-    personal_statement = models.CharField(max_length=600,blank=False)
+    experience = models.CharField(max_length=520, blank=False)
+    personal_statement = models.CharField(max_length=600, blank=False)
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -50,38 +60,27 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
 
-class ApplicantCase(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args,**kwargs).filter(type = User.UserTypes.APPLICANT)
+    def approve_membership(self):
+        self.role = User.MEMBER
+        self.save()
 
-class MemberCase(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args,**kwargs).filter(type = User.UserTypes.MEMBER)
+    def promotion_member_demotion_owner(self):
+        self.role = User.OFFICER
+        self.save()
 
-class OfficerCase(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args,**kwargs).filter(type = User.UserTypes.OFFICER)
+    def demotion(self):
+        self.role = User.MEMBER
+        self.save()
 
-class OwnerCase(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args,**kwargs).filter(type =  User.UserTypes.CLUBOWNER)
+    def change_owner(self, current_owner_id):
+        owner = User.objects.get(pk=current_owner_id)
+        owner.role = User.OFFICER
+        owner.save()
+        self.role = User.OWNER
+        self.save()
 
-class Officer(User):
-    objects = OfficerCase()
-    class Meta:
-            proxy = True
+    def is_owner(self):
+        return self.role == 4
 
-class ClubOwner(User):
-    objects = OwnerCase()
-    class Meta:
-        proxy =True
-
-class Member(User):
-    objects = MemberCase()
-    class Meta:
-        proxy =True
-
-class Applicant(User):
-    objects = ApplicantCase()
-    class Meta:
-        proxy =True
+    def is_member(self):
+        return self.role == 2

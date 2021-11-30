@@ -5,8 +5,10 @@
             <div class="row">
                 <div class="col-sm-12 col-md-8 offset-md-2">
                     <ul class="list-group">
-                        <li class="list-group-item"><h2>{{user.first_name}} {{user.last_name}} ({{user.type}})</h2></li>
-                        <li class="list-group-item fs-4">Email: {{user.email}}</li>
+                        <li class="list-group-item">
+                            <h2>{{user.first_name}} {{user.last_name}} <img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle" ></h2>
+                        </li>
+                        <li class="list-group-item fs-4"> {{user.email}}</li>
                         <li class="list-group-item fs-4">Bio: 
                             <div class="card">
                                 <div class="card-body fs-5">{{user.bio}}</div>
@@ -26,10 +28,44 @@
                     <div class="col-sm-12 col-md-8 offset-md-2">
                         <a href={% url 'edit_profile' user_id=user.id %}>
                             <button type="button" class="btn btn-primary">Edit profile</button>
-                        </a>
+                        </a> 
                     </div>
                 </div>
             {% endif %}
+
+            {% if user.role == 1 and request.user.role >= 3 %}
+                <div class="row">
+                    <div class="col-sm-12 col-md-8 offset-md-2">
+                        <a href={% url 'approve_member' user_id=user.id %}>
+                            <button type="button" class="btn btn-success">Approve membership</button>
+                        </a>
+                    </div>
+                </div>
+            {% endif %} 
+
+            {% if user.is_member  %}
+                {% if request.user.role == 4 %}
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 offset-md-2">
+                            <a href={% url 'promote' user_id=user.id %}>
+                                <button type="button" class="btn btn-primary">Promote</button>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %} 
+            {% endif %} 
+
+            {% if user.role == 3 %} 
+                {% if request.user.role == 4 %}
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 offset-md-2">
+                            <a href={% url 'transferownership' user_id=user.id request_user_id=request.user.id %}>
+                                <button type="button" class="btn btn-primary">Transfer Ownership</button>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %} 
+            {% endif %} 
         </div>
     </div>
 {% endblock %}
