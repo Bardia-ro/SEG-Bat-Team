@@ -22,9 +22,10 @@ class LogInView(View):
     def get(self, request):
         """Display log in template"""
         next = request.GET.get('next') or ''
-        form = LogInForm()
-        user_is_member = get_is_user_member(request.user)
-        return render(request, 'log_in.html', {'form': form, 'next': next,'user_is_member':user_is_member})
+    #    form = LogInForm()
+    #    user_is_member = get_is_user_member(request.user)
+    #    return render(request, 'log_in.html', {'form': form, 'next': next,'user_is_member':user_is_member})
+        return self.render(request,next)
 
     def post(self, request):
         """Handle login attempt"""
@@ -38,9 +39,18 @@ class LogInView(View):
                 login(request, user)
                 return redirect(next or 'profile', user_id=request.user.id)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
+        return self.render(request,next)
+        #form = LogInForm()
+    #    user_is_member = get_is_user_member(request.user)
+    #    return render(request, 'log_in.html', {'form': form, 'next': next,'user_is_member':user_is_member})
+
+
+    def render(self, request, next):
+            #""" Render log in template with blank log in form"""
         form = LogInForm()
         user_is_member = get_is_user_member(request.user)
         return render(request, 'log_in.html', {'form': form, 'next': next,'user_is_member':user_is_member})
+
 
 
 def log_out(request):
