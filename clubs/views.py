@@ -105,6 +105,7 @@ def profile(request, user_id):
 
     return render(request, 'sign_up.html', {'form': form})
 
+@login_required
 def member_list(request):
     queryset = User.objects.all()
     context = {"object_list": queryset}
