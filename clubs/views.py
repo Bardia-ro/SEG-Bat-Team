@@ -3,13 +3,33 @@ from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
+from django.views import View
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user
+from .helpers import get_is_user_member, only_current_user, login_prohibited
 
-def log_in(request):
-    if request.method == 'POST':
+
+
+
+class LogInView(View):
+    """View that handles log in"""
+
+    http_method_names = ['get', 'post']
+
+    @method_decorator(login_prohibited)
+    def dispatch(self, request):
+        return super().dispatch(request)
+
+    def get(self, request):
+        """Display log in template"""
+        form = LogInForm()
+        user_is_member = get_is_user_member(request.user)
+        return render(request, 'log_in.html', {'form': form, 'user_is_member':user_is_member})
+
+    def post(self, request):
+        """Handle login attempt"""
         form = LogInForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data.get('email')
@@ -19,17 +39,20 @@ def log_in(request):
                 login(request, user)
                 return redirect('profile', user_id=request.user.id)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
-    form = LogInForm()
-    user_is_member = get_is_user_member(request.user)
-    return render(request, 'log_in.html', {'form': form, 'user_is_member':user_is_member})
+        form = LogInForm()
+        user_is_member = get_is_user_member(request.user)
+        return render(request, 'log_in.html', {'form': form, 'user_is_member':user_is_member})
+
 
 def log_out(request):
     logout(request)
     return redirect('home')
 
+@login_prohibited
 def home(request):
     return render(request, 'home.html')
 
+@login_prohibited
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
