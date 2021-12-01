@@ -7,9 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user
 
+@redirect_authenticated_user
 def log_in(request):
-    redirect_authenticated_user(request)
-
     if request.method == 'POST':
         form = LogInForm(request.POST)
         if form.is_valid():
@@ -28,13 +27,12 @@ def log_out(request):
     logout(request)
     return redirect('home')
 
+@redirect_authenticated_user
 def home(request):
-    redirect_authenticated_user(request)
     return render(request, 'home.html')
 
+@redirect_authenticated_user
 def sign_up(request):
-    redirect_authenticated_user(request)
-
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
