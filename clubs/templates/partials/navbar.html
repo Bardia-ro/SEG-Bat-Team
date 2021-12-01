@@ -12,7 +12,6 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'member_list' club_id=club_id %}">Members</a>
             </li>
-
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="user-account-dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span>My Clubs</span>
@@ -21,6 +20,8 @@
                 {% for item in club_list %}
                 <li><a class="dropdown-item" href={% url "club_page" club_id=item.club.id %}>{{ item.club.name }}</a></li>
                 {% endfor %}
+                <li class="nav-item">
+              <a class="nav-link" href="{% url 'club_ist' %}">Club list</a>
               </ul>
             </li>
           </ul>

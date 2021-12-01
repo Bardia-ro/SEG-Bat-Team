@@ -46,6 +46,23 @@ class User(AbstractBaseUser, PermissionsMixin):
     def approve_membership(self):
         self.role = User.MEMBER
         self.save()
+    
+    def get_first_club_id_user_is_associated_with(self):
+        club = Club.objects.filter(users__id = self.id).first()
+        if club == None:
+            return 0
+        else:
+            return club.id
+
+    def get_role_at_club(self, club_id):
+        return Role.objects.get(club__id=club_id, user__id=self.id).role
+    
+    def get_is_user_associated_with_club(self, club_id):
+        try:
+            Role.objects.get(club__id=club_id, user__id=self.id)
+            return True
+        except Role.DoesNotExist:
+            return False
 
 class Club(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)
@@ -53,6 +70,9 @@ class Club(models.Model):
     description = models.CharField(max_length=600, blank=False)
 
     users = models.ManyToManyField(User, through='Role')
+
+    def __str__(self):
+        return self.name
 
 class Role(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

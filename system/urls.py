@@ -31,5 +31,6 @@ urlpatterns = [
     path('demote/<int:club_id>/<int:user_id>', views.demote, name ='demote'),
     path('transferownership/<int:club_id>/<int:user_id>/<int:request_user_id>', views.transferownership, name ='transferownership'),
     path('member_list/<int:club_id>/', views.member_list, name ='member_list'),
-    path('club_page/<int:club_id>/', views.club_page, name='club_page')
+    path('club_page/<int:club_id>/', views.club_page, name='club_page'),
+    path('club_list/', views.club_list, name ='club_ist')
 ]
