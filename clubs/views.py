@@ -103,8 +103,17 @@ def profile(request, club_id, user_id):
     return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user})
 
 def member_list(request, club_id):
-   users = User.objects.all()
-   return render(request, 'member_list.html', {'users': users})
+    if not request.user.get_is_user_associated_with_club(club_id):
+        club_id = request.user.get_first_club_id_user_is_associated_with()
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+    
+    request_user_role_at_club = request.user.get_role_at_club(club_id)
+    request_user_is_member = request_user_role_at_club >= 2
+    if not request_user_is_member:
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
+    users = User.objects.filter(club__id = club_id)
+    return render(request, 'member_list.html', {'users': users, 'user_is_member': True, 'club_id': club_id})
 
 def approve_member(request, club_id, user_id):
     user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
