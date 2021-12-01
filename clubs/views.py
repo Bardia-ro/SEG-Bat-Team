@@ -47,6 +47,19 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
+def club_creator(request):
+    if (request.user.is_authenticated != True):
+        return redirect('home', user_id=request.user.id)
+
+    if request.method == 'POST':
+        form = ClubCreatorForm(request.POST)
+        if form.is_valid():
+            club = form.save()
+            return redirect('home', user_id=request.user.id)
+    else:
+        form = ClubCreatorForm()
+    return render(request, 'club_creator', {'form': form})
+
 @login_required
 @only_current_user
 def edit_profile(request, club_id, user_id):

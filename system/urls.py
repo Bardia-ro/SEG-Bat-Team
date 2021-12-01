@@ -30,5 +30,6 @@ urlpatterns = [
     path('promote/<int:club_id>/<int:user_id>', views.promote, name ='promote'),
     path('demote/<int:club_id>/<int:user_id>', views.demote, name ='demote'),
     path('transferownership/<int:club_id>/<int:user_id>/<int:request_user_id>', views.transferownership, name ='transferownership'),
-    path('member_list/<int:club_id>/', views.member_list, name ='member_list')
+    path('member_list/<int:club_id>/', views.member_list, name ='member_list'),
+    path('club_creator/', views.club_creator, name ='club_creator'),
 ]
