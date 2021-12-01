@@ -42,10 +42,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
-
-    def approve_membership(self):
-        self.role = User.MEMBER
-        self.save()
     
     def get_first_club_id_user_is_associated_with(self):
         club = Club.objects.filter(users__id = self.id).first()
@@ -92,20 +88,24 @@ class Role(models.Model):
     role = models.SmallIntegerField(
         blank=False, default=APPlICANT, choices=ROLE_CHOICES)
 
-    def promotion_member_demotion_owner(self):
-        self.role = User.OFFICER
+    def approve_membership(self):
+        self.role = Role.MEMBER
         self.save()
 
-    def demotion(self):
-        self.role = User.MEMBER
+    def promote_member_to_officer(self):
+        self.role = Role.OFFICER
         self.save()
 
-    def change_owner(self, current_owner_id):
-        owner = User.objects.get(pk=current_owner_id)
-        owner.role = User.OFFICER
-        owner.save()
-        self.role = User.OWNER
+    def demote_officer_to_member(self):
+        self.role = Role.MEMBER
         self.save()
+
+    def change_owner(self, club_id, new_owner_id):
+        self.role = Role.OFFICER
+        self.save()
+        new_owner_role_instance = Role.objects.get(club_id=club_id, user_id=new_owner_id)
+        new_owner_role_instance.role = Role.OWNER
+        new_owner_role_instance.save()
 
     def is_owner(self):
         return self.role == 4

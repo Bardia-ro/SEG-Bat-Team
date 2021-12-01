@@ -1,4 +1,4 @@
-from .models import User
+from .models import User, Role
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -100,7 +100,8 @@ def profile(request, club_id, user_id):
         return redirect('profile', club_id=club_id, user_id=request.user.id)
 
     request_user_is_member = request_user_role_at_club >= 2
-    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user})
+    user_role_at_club = user.get_role_at_club(club_id)
+    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club})
 
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
@@ -115,22 +116,22 @@ def member_list(request, club_id):
     users = User.objects.filter(club__id = club_id)
     return render(request, 'member_list.html', {'users': users, 'user_is_member': True, 'club_id': club_id})
 
-def approve_member(request, club_id, user_id):
-    user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
-    user.approve_membership()
-    return render(request, 'profile.html', {'user' : user})
+def approve_member(request, club_id, applicant_id):
+    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = applicant_id)
+    role.approve_membership()
+    return redirect('profile', club_id=club_id, user_id=applicant_id)
 
-def promote(request, club_id, user_id):
-    user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
-    user.promotion_member_demotion_owner()
-    return render(request, 'profile.html', {'user' : user})
+def promote_member_to_officer(request, club_id, member_id):
+    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = member_id)
+    role.promote_member_to_officer()
+    return redirect('profile', club_id=club_id, user_id=member_id)
 
-def demote(request, club_id, user_id):
-    user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
-    user.demotion()
-    return render(request, 'profile.html', {'user' : user})
+def demote_officer_to_member(request, club_id, officer_id):
+    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = officer_id)
+    role.demote_officer_to_member()
+    return redirect('profile', club_id=club_id, user_id=officer_id)
 
-def transferownership(request, club_id, user_id, request_user_id):
-    user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
-    user.change_owner(request_user_id)
-    return render(request, 'profile.html', {'user' : user})
+def transfer_ownership(request, club_id, new_owner_id):
+    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
+    role.change_owner(club_id, new_owner_id)
+    return redirect('profile', club_id=club_id, user_id=new_owner_id)
