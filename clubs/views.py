@@ -1,4 +1,4 @@
-from .models import User, Role
+from .models import User, Role, Club
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -58,7 +58,8 @@ def edit_profile(request, club_id, user_id):
     else:
         form = EditProfileForm(instance=user)
     user_is_member = get_is_user_member(club_id, request.user)
-    return render(request, 'edit_profile.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member})
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'edit_profile.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member, 'club_list': club_list})
 
 @login_required
 @only_current_user
@@ -73,7 +74,8 @@ def change_password(request, club_id, user_id):
     else:
         form = ChangePasswordForm(instance=user)
     user_is_member = get_is_user_member(club_id, request.user)
-    return render(request, 'change_password.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member})
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'change_password.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member, 'club_list': club_list})
 
 @login_required
 def profile(request, club_id, user_id):
@@ -101,7 +103,15 @@ def profile(request, club_id, user_id):
 
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
-    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club})
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club, 'club_list': club_list})   
+
+def club_page(request, club_id):
+    club_list = Role.objects.filter(user=request.user)
+    club = Club.objects.get(id=club_id)
+    user_is_member = get_is_user_member(club_id, request.user)
+    return render (request, 'club_page.html', {'club_id': club_id, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list})
+
 
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
@@ -135,3 +145,7 @@ def transfer_ownership(request, club_id, new_owner_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
     role.change_owner(club_id, new_owner_id)
     return redirect('profile', club_id=club_id, user_id=new_owner_id)
+
+def club_list(request):
+    clubs = Club.objects.all()
+    return render(request, 'club_list.html', {'clubs': clubs})

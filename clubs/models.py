@@ -67,6 +67,9 @@ class Club(models.Model):
 
     users = models.ManyToManyField(User, through='Role')
 
+    def __str__(self):
+        return self.name
+
 class Role(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
