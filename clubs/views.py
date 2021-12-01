@@ -1,4 +1,4 @@
-from .models import User, Role
+from .models import User, Role, Club 
 from django.db.models import Model
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
 from django.core.exceptions import ObjectDoesNotExist
@@ -115,3 +115,7 @@ def transferownership(request, club_id, user_id, request_user_id):
     user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
     user.change_owner(request_user_id)
     return render(request, 'profile.html', {'user' : user})
+
+def club_list(request):
+    clubs = Club.objects.all()
+    return render(request, 'club_list.html', {'clubs': clubs})
