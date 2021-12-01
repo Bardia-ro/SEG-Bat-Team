@@ -1,4 +1,4 @@
-from .models import User, Role
+from .models import User, Role, Club
 from django.db.models import Model
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
 from django.core.exceptions import ObjectDoesNotExist
@@ -59,7 +59,8 @@ def edit_profile(request, club_id, user_id):
     else:
         form = EditProfileForm(instance=user)
     user_is_member = get_is_user_member(club_id, request.user)
-    return render(request, 'edit_profile.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member})
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'edit_profile.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member, 'club_list': club_list})
 
 @login_required
 @only_current_user
@@ -74,7 +75,8 @@ def change_password(request, club_id, user_id):
     else:
         form = ChangePasswordForm(instance=user)
     user_is_member = get_is_user_member(club_id, request.user)
-    return render(request, 'change_password.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member})
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'change_password.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member, 'club_list': club_list})
 
 @login_required
 def profile(request, club_id, user_id):
@@ -88,9 +90,17 @@ def profile(request, club_id, user_id):
     user = User.objects.get(id=user_id)
     user_is_member = request_user_role_at_club >= 2
     is_current_user = request.user.id == user_id
-    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': user_is_member, 'is_current_user': is_current_user})
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': user_is_member, 'is_current_user': is_current_user, 'club_list': club_list})
 
     return render(request, 'sign_up.html', {'form': form})
+
+def club_page(request, club_id):
+    club_list = Role.objects.filter(user=request.user)
+    club = Club.objects.get(id=club_id)
+    user_is_member = get_is_user_member(club_id, request.user)
+    return render (request, 'club_page.html', {'club_id': club_id, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list})
+
 
 def member_list(request, club_id):
    users = User.objects.all()
