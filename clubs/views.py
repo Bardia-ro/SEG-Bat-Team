@@ -1,17 +1,14 @@
-from .models import User, Role, Club 
-from django.db.models import Model
+from .models import User
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user
+from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user
 
 def log_in(request):
-    if request.user.is_authenticated:
-        return redirect('profile', user_id=request.user.id)
+    redirect_authenticated_user(request)
 
     if request.method == 'POST':
         form = LogInForm(request.POST)
@@ -21,7 +18,8 @@ def log_in(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('profile', club_id=1, user_id=request.user.id) #change club_id value!!
+                club_id = user.get_first_club_id_user_is_associated_with()
+                return redirect('profile', club_id=club_id, user_id=request.user.id)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
@@ -31,18 +29,19 @@ def log_out(request):
     return redirect('home')
 
 def home(request):
+    redirect_authenticated_user(request)
     return render(request, 'home.html')
 
 def sign_up(request):
-    if request.user.is_authenticated:
-        return redirect('profile', user_id=request.user.id)
+    redirect_authenticated_user(request)
 
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('profile', user_id=request.user.id)
+            club_id = user.get_first_club_id_user_is_associated_with()
+            return redirect('profile', club_id=club_id, user_id=request.user.id)
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
@@ -78,23 +77,43 @@ def change_password(request, club_id, user_id):
 
 @login_required
 def profile(request, club_id, user_id):
-    try:
-        request_user_role_at_club = Role.objects.get(club__id=club_id, user__id=request.user.id).role
-    except: # add in exception type
-        #Change!!!
-        return redirect('home')
-    if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and user_id != request.user.id:
-        return redirect('profile', user_id=request.user.id)
-    user = User.objects.get(id=user_id)
-    user_is_member = request_user_role_at_club >= 2
-    is_current_user = request.user.id == user_id
-    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': user_is_member, 'is_current_user': is_current_user})
+    if club_id == 0:
+        club_id = request.user.get_first_club_id_user_is_associated_with()
+        if request.user.id == user_id:
+            if club_id == 0:
+                return render(request, 'profile.html', {'user': request.user, 'club_id': 0, 'user_is_member': False, 'is_current_user': True})
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
 
-    return render(request, 'sign_up.html', {'form': form})
+
+    if not request.user.get_is_user_associated_with_club(club_id):
+        club_id = request.user.get_first_club_id_user_is_associated_with()
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
+    user = User.objects.get(id=user_id)
+    if not user.get_is_user_associated_with_club(club_id):
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
+    is_current_user = request.user.id == user_id
+    request_user_role_at_club = request.user.get_role_at_club(club_id)
+
+    if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
+    request_user_is_member = request_user_role_at_club >= 2
+    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user})
 
 def member_list(request, club_id):
-   users = User.objects.all()
-   return render(request, 'member_list.html', {'users': users})
+    if not request.user.get_is_user_associated_with_club(club_id):
+        club_id = request.user.get_first_club_id_user_is_associated_with()
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+    
+    request_user_role_at_club = request.user.get_role_at_club(club_id)
+    request_user_is_member = request_user_role_at_club >= 2
+    if not request_user_is_member:
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
+    users = User.objects.filter(club__id = club_id)
+    return render(request, 'member_list.html', {'users': users, 'user_is_member': True, 'club_id': club_id})
 
 def approve_member(request, club_id, user_id):
     user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
