@@ -1,7 +1,5 @@
 from .models import User
-from django.db.models import Model
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -79,23 +77,30 @@ def change_password(request, club_id, user_id):
 
 @login_required
 def profile(request, club_id, user_id):
-    if club_id == -1 and request.user.id != user_id:
+    if club_id == 0:
+        club_id = request.user.get_first_club_id_user_is_associated_with()
+        if request.user.id == user_id:
+            if club_id == 0:
+                return render(request, 'profile.html', {'user': request.user, 'club_id': 0, 'user_is_member': False, 'is_current_user': True})
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
+
+    if not request.user.get_is_user_associated_with_club(club_id):
         club_id = request.user.get_first_club_id_user_is_associated_with()
         return redirect('profile', club_id=club_id, user_id=request.user.id)
 
-    try:
-        request_user_role_at_club = request.user.get_role_at_club(club_id)
-    except: # add in exception type
-        #Change!!!
-        return redirect('home')
-    if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and user_id != request.user.id:
-        return redirect('profile', user_id=request.user.id)
     user = User.objects.get(id=user_id)
-    user_is_member = request_user_role_at_club >= 2
-    is_current_user = request.user.id == user_id
-    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': user_is_member, 'is_current_user': is_current_user})
+    if not user.get_is_user_associated_with_club(club_id):
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
 
-    return render(request, 'sign_up.html', {'form': form})
+    is_current_user = request.user.id == user_id
+    request_user_role_at_club = request.user.get_role_at_club(club_id)
+
+    if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
+    request_user_is_member = request_user_role_at_club >= 2
+    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user})
 
 def member_list(request, club_id):
    users = User.objects.all()
