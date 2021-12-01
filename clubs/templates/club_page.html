@@ -1,26 +1,125 @@
-{% extends  'base_content.html' %}
+{% extends 'base_content.html' %}
 {% block content %}
-    <div class="container">
-        <div class="d-grid gap-3">
-            <div class="row">
-                <div class="col-sm-12 col-md-8 offset-md-2">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <h2>{{club.name}}</h2>
-                        </li>
-                        <li class="list-group-item fs-4"> Coming soon</li>
-                        <li class="list-group-item fs-4">Bio: 
-                            <div class="card">
-                                <div class="card-body fs-5">More text here</div>
+<style>
+    body {
+
+        color: #1a202c;
+        text-align: left;
+        background-color: #e2e8f0;
+    }
+
+    .main-body {
+        padding: 15px;
+    }
+
+    .card {
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+    }
+
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+    }
+
+    .card-body {
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1rem;
+    }
+
+    .gutters-sm {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+
+    .gutters-sm>.col,
+    .gutters-sm>[class*=col-] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+    .mb-3,
+    .my-3 {
+        margin-bottom: 1rem !important;
+    }
+
+    .bg-gray-300 {
+        background-color: #e2e8f0;
+    }
+
+    .h-100 {
+        height: 100% !important;
+    }
+
+    .shadow-none {
+        box-shadow: none !important;
+    }
+</style>
+
+<div class="container">
+    <div class="main-body">
+
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img src="https://cdn3.vectorstock.com/i/1000x1000/95/37/chess-knight-line-icon-on-black-background-black-vector-25959537.jpg" alt="Admin"
+                                class="rounded-circle" width="150">
+                            <div class="mt-3">
+                                <h4>{{club.name}}</h4>
+                                <p class="text-secondary mb-1">{{club.name}}</p>
+                                <p class="text-muted font-size-sm">{{club.location}}</p>
+                                <button class="btn btn-primary">Join</button>
+                                <button class="btn btn-outline-primary">Leave</button>
                             </div>
-                        </li>
-                        <li class="list-group-item fs-4">More text here</li>
-                        <li class="list-group-item fs-4">Personal statement:  
-                            <div class="card">
-                                <div class="card-body fs-5">More text here</div>
-                            </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
+                
             </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">About us</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{club.description}}
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum non egestas mi. Nunc sit amet fermentum ipsum. 
+                                Vestibulum euismod, lectus ac hendrerit convallis, libero lectus sodales risus, eu efficitur lectus massa vel eros. 
+                                Suspendisse eu ultricies tortor, a tincidunt purus. Ut sit amet nulla sed ex sodales scelerisque.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            {% for person in club_members %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Member:</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{person.user.first_name}} {{person.user.last_name}}
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

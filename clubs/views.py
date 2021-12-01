@@ -107,8 +107,9 @@ def profile(request, club_id, user_id):
 def club_page(request, club_id):
     club_list = Role.objects.filter(user=request.user)
     club = Club.objects.get(id=club_id)
+    club_members = Role.objects.filter(club=club)
     user_is_member = get_is_user_member(club_id, request.user)
-    return render (request, 'club_page.html', {'club_id': club_id, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list})
+    return render (request, 'club_page.html', {'club_id': club_id, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members})
 
 
 def member_list(request, club_id):
@@ -122,7 +123,8 @@ def member_list(request, club_id):
         return redirect('profile', club_id=club_id, user_id=request.user.id)
 
     users = User.objects.filter(club__id = club_id)
-    return render(request, 'member_list.html', {'users': users, 'user_is_member': True, 'club_id': club_id})
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'member_list.html', {'users': users, 'user_is_member': True, 'club_id': club_id, 'club_list': club_list})
 
 @login_required
 def approve_member(request, club_id, applicant_id):
