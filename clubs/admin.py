@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Role, Club
 
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
@@ -17,6 +18,7 @@ class RoleAdmin(admin.ModelAdmin):
 
     list_display = [
         'user', 'club', 
+
     ]
 
 

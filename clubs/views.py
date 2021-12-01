@@ -1,4 +1,4 @@
-from .models import User
+from .models import User, Role, Club
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -58,7 +58,8 @@ def edit_profile(request, club_id, user_id):
     else:
         form = EditProfileForm(instance=user)
     user_is_member = get_is_user_member(club_id, request.user)
-    return render(request, 'edit_profile.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member})
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'edit_profile.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member, 'club_list': club_list})
 
 @login_required
 @only_current_user
@@ -73,7 +74,8 @@ def change_password(request, club_id, user_id):
     else:
         form = ChangePasswordForm(instance=user)
     user_is_member = get_is_user_member(club_id, request.user)
-    return render(request, 'change_password.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member})
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'change_password.html', {'form': form, 'club_id': club_id, 'user_is_member':user_is_member, 'club_list': club_list})
 
 @login_required
 def profile(request, club_id, user_id):
@@ -94,6 +96,8 @@ def profile(request, club_id, user_id):
         return redirect('profile', club_id=club_id, user_id=request.user.id)
 
     is_current_user = request.user.id == user_id
+    club_list = Role.objects.filter(user=request.user)
+    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': user_is_member, 'is_current_user': is_current_user, 'club_list': club_list})
     request_user_role_at_club = request.user.get_role_at_club(club_id)
 
     if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
@@ -101,6 +105,13 @@ def profile(request, club_id, user_id):
 
     request_user_is_member = request_user_role_at_club >= 2
     return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user})
+
+def club_page(request, club_id):
+    club_list = Role.objects.filter(user=request.user)
+    club = Club.objects.get(id=club_id)
+    user_is_member = get_is_user_member(club_id, request.user)
+    return render (request, 'club_page.html', {'club_id': club_id, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list})
+
 
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
