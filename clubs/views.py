@@ -126,6 +126,7 @@ def member_list(request, club_id):
     club_list = Role.objects.filter(user=request.user)
     return render(request, 'member_list.html', {'users': users, 'user_is_member': True, 'club_id': club_id, 'club_list': club_list})
 
+
 @login_required
 def approve_member(request, club_id, applicant_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = applicant_id)
