@@ -32,5 +32,6 @@ urlpatterns = [
     path('transfer_ownership/<int:club_id>/<int:new_owner_id>', views.transfer_ownership, name ='transfer_ownership'),
     path('member_list/<int:club_id>/', views.member_list, name ='member_list'),
     path('club_page/<int:club_id>/', views.club_page, name='club_page'),
-    path('club_list/', views.club_list, name ='club_ist')
-]
+    path('club_list/', views.club_list, name ='club_ist'),
+    path('request_toggle/<int:user_id>/<int:club_id>', views.request_toggle, name = 'request_toggle'),
+    ]

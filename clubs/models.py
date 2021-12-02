@@ -42,7 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
-    
+
     def get_first_club_id_user_is_associated_with(self):
         club = Club.objects.filter(users__id = self.id).first()
         if club == None:
@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_role_at_club(self, club_id):
         return Role.objects.get(club__id=club_id, user__id=self.id).role
-    
+
     def get_is_user_associated_with_club(self, club_id):
         try:
             Role.objects.get(club__id=club_id, user__id=self.id)
@@ -64,8 +64,8 @@ class Club(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)
     location = models.CharField(max_length=100, blank=False, unique=True)
     description = models.CharField(max_length=600, blank=False)
-
     users = models.ManyToManyField(User, through='Role')
+
 
     def __str__(self):
         return self.name
@@ -103,6 +103,10 @@ class Role(models.Model):
         self.role = Role.MEMBER
         self.save()
 
+    def demote_member_to_applicant(self):
+        self.role = Role.APPlICANT
+        self.save()
+
     def change_owner(self, club_id, new_owner_id):
         self.role = Role.OFFICER
         self.save()
@@ -115,3 +119,6 @@ class Role(models.Model):
 
     def is_member(self):
         return self.role == 2
+
+    def is_applicant(self):
+        return self.role == 1
