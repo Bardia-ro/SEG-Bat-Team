@@ -81,12 +81,13 @@ class Role(models.Model):
     OWNER = 4
 
     ROLE_CHOICES = (
-        (BANNED, 'Banned'),
+        (BANNED, 'Banned',),
         (APPlICANT, 'Applicant'),
         (MEMBER, 'Member'),
         (OFFICER, 'Officer'),
         (OWNER, 'Owner'),
     )
+    
 
     role = models.SmallIntegerField(
         blank=False, default=APPlICANT, choices=ROLE_CHOICES)
