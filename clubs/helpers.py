@@ -22,7 +22,7 @@ def get_is_user_member(club_id, user):
 def get_is_user_applicant(club_id, user):
     if user.is_authenticated:
         try:
-            return Role.objects.get(club_id=club_id, user_id=user.id).role == 1
+            return Role.objects.get(club__id=club_id, user__id=user.id).role == 1
         except: #add error
             return False
     return False

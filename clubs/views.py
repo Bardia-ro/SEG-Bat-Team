@@ -8,13 +8,14 @@ from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant
 
 
-#@redirect_authenticated_user
+
 def request_toggle(request, user_id, club_id):
 
     currentUser = User.objects.get(id=user_id)
+    club = Club.objects.get(id=club_id)
     try:
-        club = Club.objects.get(id=club_id)
         role = Role.objects.get(user = currentUser, club = club)
+
         role.delete()
 
     except:
@@ -22,21 +23,12 @@ def request_toggle(request, user_id, club_id):
 
     user_is_applicant = get_is_user_applicant(club_id, request.user)
     club_list = Role.objects.filter(user=request.user)
-    club = Club.objects.get(id=club_id)
     club_members = Role.objects.filter(club=club)
-        #return render (request, 'club_page.html', {'club_id': club_id, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members})##
     return render(request, 'club_page.html' ,
-    {'club_id': club_id,'user_is_applicant':user_is_applicant, 'club': club,'club_list': club_list,    'club_members': club_members})
-
-#    club_list = Role.objects.filter(user=request.user)
-    #club = Club.objects.get(id=club_id)
-#  #  club_members = Role.objects.filter(club=club)
-#    user_is_member = get_is_user_member(club_id, request.user)
-    #return render (request, 'club_page.html', {'club_id': club_id, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members})
+    {'club_id': club_id,'user_is_applicant':user_is_applicant, 'club': club,'club_list': club_list, 'club_members': club_members})
 
 
 
-        #user_is_ = get_is_user_member(club_id, request.user)
 @redirect_authenticated_user
 def log_in(request):
     if request.method == 'POST':
