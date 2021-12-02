@@ -180,7 +180,7 @@ def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 
-def pending_requests(request, club_id):
+def pending_requests(request, club_id, user_id):
 #    applicants = Role.objects.all().filter(role = 1)
 #    applicants = get_object_or_404(Role.objects.all(), club_id=club_id)
     return render(request, 'pending_requests.html', { 'applicants' : applicants})

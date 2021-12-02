@@ -34,5 +34,5 @@ urlpatterns = [
     path('club_page/<int:club_id>/', views.club_page, name='club_page'),
     path('club_list/', views.club_list, name ='club_ist'),
     path('request_toggle/<int:user_id>/<int:club_id>', views.request_toggle, name = 'request_toggle'),
-    path('pending_requests/', views.pending_requests, name = 'pending_requests'),
+    path('pending_requests/<int:officer_id>', views.pending_requests, name = 'pending_requests'),
     ]
