@@ -22,26 +22,14 @@
 </style>
     <div class="container">
 
-    <h1 class="title-club">Club List</h1>
+    <h1 class="title-club">Applicant List </h1>
 
-    {% for club in clubs %}
-    <div class="top-buffer">
-      <div class="card">
-        <h5 class="card-header">{{ club }}</h5>
-        <div class="card-body">
-          <p class="card-text">
-            <ul>
-                <strong>  Description: </strong> <l>{{ club.description }}</l>
-                <br><strong> Location: </strong> <l>{{ club.location }}</l>
-                </ul>
-          </p>
-          <a href="#" class="btn btn-success">Details</a>
-          <button class = ""
+      {% for applicant in applicants %}
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2">
+              <td>{{ user.full_name }}</td>
+            </div>
         </div>
-      </div>
-    </div>
+        {% endfor %}
 
-
-
-    {% endfor %}
 {% endblock %}

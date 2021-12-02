@@ -122,3 +122,6 @@ class Role(models.Model):
 
     def is_applicant(self):
         return self.role == 1
+
+    def is_officer(self):
+        return self.role == 3

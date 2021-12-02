@@ -5,8 +5,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant
-
+from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_officer
 
 
 def request_toggle(request, user_id, club_id):
@@ -21,10 +20,12 @@ def request_toggle(request, user_id, club_id):
         Role.objects.create(user = currentUser, club = club, role = 1)
 
     user_is_applicant = get_is_user_applicant(club_id, request.user)
+
+    user_is_officer = get_is_user_officer(club_id, request.user)
     club_list = Role.objects.filter(user=request.user)
     club_members = Role.objects.filter(club=club)
     return render(request, 'club_page.html' ,
-    {'club_id': club_id,'user_is_applicant':user_is_applicant, 'club': club,'club_list': club_list, 'club_members': club_members})
+    {'club_id': club_id,'user_is_applicant':user_is_applicant, 'club': club,'club_list': club_list, 'club_members': club_members, 'user_is_officer':user_is_officer})
 
 
 
@@ -134,7 +135,9 @@ def club_page(request, club_id):
     #club_members = club_users.filter(role=2)
     user_is_member = get_is_user_member(club_id, request.user)
     user_is_applicant = get_is_user_applicant(club_id, request.user)
-    return render (request, 'club_page.html', {'club_id': club_id, 'user_is_applicant': user_is_applicant,'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members})
+    user_is_officer = get_is_user_officer(club_id, request.user)
+
+    return render (request, 'club_page.html', {'club_id': club_id, 'user_is_applicant': user_is_applicant,'user_is_officer': user_is_officer,'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members})
 
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
@@ -162,6 +165,7 @@ def promote_member_to_officer(request, club_id, member_id):
     role.promote_member_to_officer()
     return redirect('profile', club_id=club_id, user_id=member_id)
 
+
 def demote_officer_to_member(request, club_id, officer_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = officer_id)
     role.demote_officer_to_member()
@@ -176,6 +180,7 @@ def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 
-def pending_requests(request):
-    clubs = Club.objects.all()
-    return render(request, 'pending_requests.html', {'clubs': clubs})
+def pending_requests(request, club_id):
+#    applicants = Role.objects.all().filter(role = 1)
+#    applicants = get_object_or_404(Role.objects.all(), club_id=club_id)
+    return render(request, 'pending_requests.html', { 'applicants' : applicants})
