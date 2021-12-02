@@ -164,7 +164,6 @@ def promote_member_to_officer(request, club_id, member_id):
     role.promote_member_to_officer()
     return redirect('profile', club_id=club_id, user_id=member_id)
 
-
 def demote_officer_to_member(request, club_id, officer_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = officer_id)
     role.demote_officer_to_member()
@@ -180,6 +179,6 @@ def club_list(request):
     return render(request, 'club_list.html', {'clubs': clubs})
 
 def pending_requests(request,club_id):
-    applicants = Role.objects.all().filter(role = 1)
+    applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
     # need applicants for a particular club
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
