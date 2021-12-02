@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user
+from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant
 
 
 #@redirect_authenticated_user
@@ -19,7 +19,14 @@ def request_toggle(request, user_id, club_id):
 
     except:
         Role.objects.create(user = currentUser, club = club, role = 1)
-    return redirect('club_page', club_id=club_id)
+
+    user_is_applicant = get_is_user_applicant(club_id, request.user)
+    club_list = Role.objects.filter(user=request.user)
+    club = Club.objects.get(id=club_id)
+    club_members = Role.objects.filter(club=club)
+        #return render (request, 'club_page.html', {'club_id': club_id, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members})##
+    return render(request, 'club_page.html' ,
+    {'club_id': club_id,'user_is_applicant':user_is_applicant, 'club': club,'club_list': club_list,    'club_members': club_members})
 
 #    club_list = Role.objects.filter(user=request.user)
     #club = Club.objects.get(id=club_id)
@@ -133,7 +140,8 @@ def club_page(request, club_id):
     club_members = Role.objects.filter(club=club) #all the users in the club
     #club_members = club_users.filter(role=2)
     user_is_member = get_is_user_member(club_id, request.user)
-    return render (request, 'club_page.html', {'club_id': club_id, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members})
+    user_is_applicant = get_is_user_applicant(club_id, request.user)
+    return render (request, 'club_page.html', {'club_id': club_id, 'user_is_applicant': user_is_applicant,'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members})
 
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):

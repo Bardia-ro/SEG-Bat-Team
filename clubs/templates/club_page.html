@@ -80,7 +80,7 @@
                                 <form action = "{% url 'request_toggle' user_id=user.id club_id=club.id%}" method = "get">
                                 <span class = "float-end">
                                   {% if user_is_applicant %}
-                                  <button class="btn btn-secondary">Cancel</button>
+                                  <button class="btn btn-secondary">Cancel request</button>
                                   {% else %}
                                   <button class="btn btn-primary">Join</button>
                                 {% endif %}
