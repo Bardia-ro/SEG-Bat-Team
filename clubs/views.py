@@ -64,6 +64,8 @@ def sign_up(request):
     else:
         form = SignUpForm()
 
+    return render(request, 'sign_up.html', {'form':form})
+
 @login_required
 @only_current_user
 def edit_profile(request, club_id, user_id):
