@@ -8,7 +8,6 @@ def redirect_authenticated_user(func):
             return redirect('profile', club_id=club_id, user_id=request.user.id)
         else:
             return func(request)
-
     return wrapper
 
 def get_is_user_member(club_id, user):

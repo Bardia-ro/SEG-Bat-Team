@@ -15,7 +15,6 @@ def request_toggle(request, user_id, club_id):
     club = Club.objects.get(id=club_id)
     try:
         role = Role.objects.get(user = currentUser, club = club)
-
         role.delete()
 
     except:
@@ -151,7 +150,9 @@ def member_list(request, club_id):
 
 def approve_member(request, club_id, applicant_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = applicant_id)
-    role.approve_membership()
+    officer_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
+    if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
+        role.approve_membership()
     return redirect('profile', club_id=club_id, user_id=applicant_id)
 
 def promote_member_to_officer(request, club_id, member_id):
@@ -172,3 +173,7 @@ def transfer_ownership(request, club_id, new_owner_id):
 def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
+
+def pending_requests(request):
+    clubs = Club.objects.all()
+    return render(request, 'pending_requests.html', {'clubs': clubs})
