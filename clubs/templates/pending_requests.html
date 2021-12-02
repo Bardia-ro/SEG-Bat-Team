@@ -1,35 +1,23 @@
-{% extends 'base.html' %}
 
-{% block body %}
-
-<style>
-
-.top-buffer {
-     margin-top: 40px;
-     margin-left: 25px;
-    }
-
-.title-club {
-    margin-top: 30px;
-    margin-left: 0px;
-}
-
-.btn-success{
-    margin-left: 62vmax;
-}
-
-
-</style>
-    <div class="container">
-
-    <h1 class="title-club">Applicant List </h1>
-
-      {% for applicant in applicants %}
-        <div class="row">
-            <div class="col-sm-12 col-md-8 offset-md-2">
-              <td>{{ user.full_name }}</td>
-            </div>
-        </div>
+{% extends 'base_content.html' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>Applicant List</h1>
+      <table class="table">
+        {% for applicant in applicants %}
+          <tr>
+            <td>{{ applicant.full_name }}</td>
+            <td>
+            <a href={% url 'approve_member'  applicant_id=applicant.id club_id=club_id %}>
+                <button type="button" class="btn btn-success">Approve membership</button>
+            </a>
+          </td>
+          </tr>
         {% endfor %}
-
+      </table>
+    </div>
+  </div>
+</div>
 {% endblock %}

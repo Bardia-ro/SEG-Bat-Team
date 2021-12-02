@@ -136,7 +136,6 @@ def club_page(request, club_id):
     user_is_member = get_is_user_member(club_id, request.user)
     user_is_applicant = get_is_user_applicant(club_id, request.user)
     user_is_officer = get_is_user_officer(club_id, request.user)
-
     return render (request, 'club_page.html', {'club_id': club_id, 'user_is_applicant': user_is_applicant,'user_is_officer': user_is_officer,'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members})
 
 def member_list(request, club_id):
@@ -158,7 +157,7 @@ def approve_member(request, club_id, applicant_id):
     officer_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
         role.approve_membership()
-    return redirect('profile', club_id=club_id, user_id=applicant_id)
+    return redirect('pending_requests', club_id=club_id, user_id=applicant_id)
 
 def promote_member_to_officer(request, club_id, member_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = member_id)
@@ -180,7 +179,7 @@ def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 
-def pending_requests(request, club_id, user_id):
-#    applicants = Role.objects.all().filter(role = 1)
-#    applicants = get_object_or_404(Role.objects.all(), club_id=club_id)
-    return render(request, 'pending_requests.html', { 'applicants' : applicants})
+def pending_requests(request,club_id):
+    applicants = Role.objects.all().filter(role = 1)
+    # need applicants for a particular club
+    return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
