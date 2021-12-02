@@ -152,29 +152,46 @@ def member_list(request, club_id):
     club_list = Role.objects.filter(user=request.user)
     return render(request, 'member_list.html', {'users': users, 'user_is_member': True, 'club_id': club_id, 'club_list': club_list})
 
+
+@login_required
 def approve_member(request, club_id, applicant_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = applicant_id)
     officer_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
         role.approve_membership()
+<<<<<<< HEAD
     return redirect('pending_requests', club_id=club_id, user_id=applicant_id)
+=======
+    return redirect('profile', club_id=club_id, user_id=applicant_id)
+>>>>>>> 8e8960cb0643f34f9393ef426609c2be3d31a8de
 
+@login_required
 def promote_member_to_officer(request, club_id, member_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = member_id)
-    role.promote_member_to_officer()
+    owner_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
+    if (role.role_name() == "Member" and owner_role.role_name() == "Owner"):
+        role.promote_member_to_officer()
     return redirect('profile', club_id=club_id, user_id=member_id)
 
+@login_required
 def demote_officer_to_member(request, club_id, officer_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = officer_id)
-    role.demote_officer_to_member()
+    owner_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
+    if (role.role_name() == "Officer" and owner_role.role_name() == "Owner"):
+        role.demote_officer_to_member()
     return redirect('profile', club_id=club_id, user_id=officer_id)
 
+@login_required
 def transfer_ownership(request, club_id, new_owner_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
-    role.change_owner(club_id, new_owner_id)
+    new_owner_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = new_owner_id)
+    if (role.role_name() == "Owner" and new_owner_role.role_name() == "Officer"):
+        role.change_owner(club_id, new_owner_id)
     return redirect('profile', club_id=club_id, user_id=new_owner_id)
 
+@login_required
 def club_list(request):
+    user = User.objects.get(id=request.user.id)
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 

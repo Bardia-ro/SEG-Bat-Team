@@ -14,17 +14,17 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Role)
 class RoleAdmin(admin.ModelAdmin):
-    """Configuration of the admin interface for users."""
+    """Configuration of the admin interface for roles."""
 
     list_display = [
-        'user', 'club', 
+        'user', 
 
     ]
 
 
 @admin.register(Club)
 class ClubAdmin(admin.ModelAdmin):
-    """Configuration of the admin interface for users."""
+    """Configuration of the admin interface for clubs."""
 
     list_display = [
         'name', 'location', 'description', 
