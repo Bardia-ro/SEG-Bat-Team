@@ -87,7 +87,6 @@ class Role(models.Model):
         (OFFICER, 'Officer'),
         (OWNER, 'Owner'),
     )
-    
 
     role = models.SmallIntegerField(
         blank=False, default=APPlICANT, choices=ROLE_CHOICES)
@@ -124,8 +123,6 @@ class Role(models.Model):
         new_owner_role_instance = Role.objects.get(club_id=club_id, user_id=new_owner_id)
         new_owner_role_instance.role = Role.OWNER
         new_owner_role_instance.save()
-
-   
 
     def is_owner(self):
         return self.role == 4
