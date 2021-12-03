@@ -11,7 +11,7 @@ import hashlib
 import urllib
 from django import template
 from django.utils.safestring import mark_safe
-
+from location_field.models.plain import PlainLocationField
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
@@ -62,7 +62,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Club(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)
-    location = models.CharField(max_length=100, blank=False, unique=True)
+    city = models.CharField(max_length =255)
+    location = PlainLocationField(based_fields = ['city'], zoom = 7)
     description = models.CharField(max_length=600, blank=False)
     users = models.ManyToManyField(User, through='Role')
 
