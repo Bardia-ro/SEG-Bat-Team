@@ -139,3 +139,6 @@ class Role(models.Model):
 
     def is_officer(self):
         return self.role == 3
+
+    def is_user_member_or_above(self):
+        return self.role > 1

@@ -160,7 +160,6 @@ def approve_member(request, club_id, applicant_id):
     if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
         role.approve_membership()
     return redirect('pending_requests', club_id=club_id)
-    #return redirect('profile', club_id=club_id, user_id=applicant_id)
 
 @login_required
 def promote_member_to_officer(request, club_id, member_id):
@@ -190,9 +189,11 @@ def transfer_ownership(request, club_id, new_owner_id):
 def club_list(request):
     user = User.objects.get(id=request.user.id)
     clubs = Club.objects.all()
-    return render(request, 'club_list.html', {'clubs': clubs})
+    club_id = request.user.get_first_club_id_user_is_associated_with()
+    return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id})
 
 def pending_requests(request,club_id):
     applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
     # need applicants for a particular club
+    
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })

@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
-
-{% block body %}
+{% extends 'base_content.html' %}
+{% block content %}
 
 <style>
 
@@ -15,12 +14,13 @@
 }
 
 .btn-success{
-    margin-left: 62vmax;
+    margin-left: 60vmax;
 }
 
 
 </style>
     <div class="container">
+      
     <h1 class="title-club">Club List</h1>
     {% for club in clubs %}
     <div class="top-buffer">
@@ -32,13 +32,10 @@
                 <strong>  Description: </strong> <l>{{ club.description }}</l>
                 <br><strong> Location: </strong> <l>{{ club.city }}</l>
                 </ul>
-          </p>
-          <a href="#" class="btn btn-success">Details</a>
+          <a class="btn btn-success" href={% url "club_page" club_id=club.id %}>Details</a>
         </div>
       </div>
     </div>
-
-
 
     {% endfor %}
 {% endblock %}
