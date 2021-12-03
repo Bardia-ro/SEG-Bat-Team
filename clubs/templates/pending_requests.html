@@ -8,9 +8,10 @@
       <table class="table">
         {% for applicant in applicants %}
           <tr>
+            
             <td>{{ applicant.full_name }}</td>
             <td>
-            <a href={% url 'approve_member'  applicant_id=applicant.id club_id=club_id %}>
+            <a href={% url 'approve_member'  club_id=club_id applicant_id=applicant.id %}>
                 <button type="button" class="btn btn-success">Approve membership</button>
             </a>
           </td>
