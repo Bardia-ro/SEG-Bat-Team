@@ -159,8 +159,8 @@ def approve_member(request, club_id, applicant_id):
     officer_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
         role.approve_membership()
-    #return redirect('pending_requests', club_id=club_id, user_id=applicant_id)
-    return redirect('profile', club_id=club_id, user_id=applicant_id)
+    return redirect('pending_requests', club_id=club_id)
+    #return redirect('profile', club_id=club_id, user_id=applicant_id)
 
 @login_required
 def promote_member_to_officer(request, club_id, member_id):

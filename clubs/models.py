@@ -101,6 +101,9 @@ class Role(models.Model):
         elif self.role == Role.OWNER:
             return "Owner"
 
+    def user_email(self):
+        return self.user.email
+
     def approve_membership(self):
         self.role = Role.MEMBER
         self.save()
