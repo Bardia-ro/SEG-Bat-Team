@@ -17,7 +17,7 @@ class RoleAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for roles."""
 
     list_display = [
-        'user', 
+        'user', 'club', 'role'
 
     ]
 
