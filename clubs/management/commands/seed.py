@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import models
 from faker import Faker
-from clubs.models import User
+from clubs.models import User, Club, Role
+import random
 
 
 class Command(BaseCommand):
@@ -13,17 +14,109 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         fake = Faker()
+        self.create_fake_users(fake)
+        self.create_fake_clubs(fake)
+        self.create_fake_club_members(fake)
+
+
+    def create_fake_users(self, fake):
         for i in range (100):
             fake_first_name = fake.first_name()
             fake_last_name = fake.last_name()
-            fake_email=fake_first_name.lower() + fake_last_name.lower() + "@example.com"
-            fake_bio = self.faker.text(max_nb_chars=520)
-            fake_personal_satement= self.faker.text(max_nb_chars=520)
+            fake_email=fake_first_name.lower() + fake_last_name.lower() + "@example.org"
+            fake_bio = fake.paragraph(nb_sentences=5)
+            fake_personal_satement= fake.paragraph(nb_sentences=5)
             User.objects.create(
                 email=fake_email,
                 first_name=fake_first_name, 
                 last_name=fake_last_name, 
                 bio=fake_bio,
-                experience= 'Class D',
+                experience= 'class D',
                 personal_statement = fake_personal_satement,
-                password = 'Password123')
+                password = 'pbkdf2_sha256$260000$fHqt6M2oenTaZmOlXyYcwg$e7pf0+y/4iCCWKxF/Dlh4CKGsJXNpYy/FtBEfz0fiuQ=')
+        User.objects.create(
+                email="jeb@example.org",
+                first_name="Jebediah", 
+                last_name="Kerman", 
+                bio=fake.paragraph(nb_sentences=5),
+                experience= 'class D',
+                personal_statement = fake.paragraph(nb_sentences=5),
+                password = 'pbkdf2_sha256$260000$fHqt6M2oenTaZmOlXyYcwg$e7pf0+y/4iCCWKxF/Dlh4CKGsJXNpYy/FtBEfz0fiuQ=')
+        User.objects.create(
+                email="val@example.org",
+                first_name="Valentina", 
+                last_name="Kerman", 
+                bio=fake.paragraph(nb_sentences=5),
+                experience= 'class D',
+                personal_statement = fake.paragraph(nb_sentences=5),
+                password = 'pbkdf2_sha256$260000$fHqt6M2oenTaZmOlXyYcwg$e7pf0+y/4iCCWKxF/Dlh4CKGsJXNpYy/FtBEfz0fiuQ=')
+        User.objects.create(
+                email="billie@example.org",
+                first_name="Billie", 
+                last_name="Kerman", 
+                bio=fake.paragraph(nb_sentences=5),
+                experience= 'class D',
+                personal_statement = fake.paragraph(nb_sentences=5),
+                password = 'pbkdf2_sha256$260000$fHqt6M2oenTaZmOlXyYcwg$e7pf0+y/4iCCWKxF/Dlh4CKGsJXNpYy/FtBEfz0fiuQ=')
+        
+
+    def create_fake_clubs(self,fake):
+        Club.objects.create(
+                name = "Kerbal Chess Club",
+                city = "Kerbal",
+                description = fake.paragraph(nb_sentences=5)
+            )
+        for i in range(15):
+            fake_name = fake.company()
+            fake_city = fake.city()
+            fake_description = fake.paragraph(nb_sentences=5)
+            Club.objects.create(
+                name = fake_name,
+                city = fake_city,
+                description = fake_description
+            )
+
+
+    def create_fake_club_members(self, fake):
+        users = User.objects.all()
+        clubs = Club.objects.all()
+        counter = 0
+        for a_club in clubs:
+            if a_club.name =="Kerbal Chess Club":
+                Role.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=4)
+                Role.objects.create(club=a_club, user=User.objects.get(email="val@example.org"), role=3)
+                Role.objects.create(club=a_club, user=User.objects.get(email="jeb@example.org"), role=2)
+            else:
+                if counter==1:
+                    Role.objects.create(club=a_club, user=User.objects.get(email="jeb@example.org"), role=3)
+                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=4)
+                elif counter ==2:
+                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
+                    Role.objects.create(club=a_club, user=User.objects.get(email="val@example.org"), role=4)
+                else:
+                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=4)
+                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
+
+            Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
+
+            if counter ==3:
+                Role.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=2)
+
+            for i in range(12):
+                Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=2)
+            for i in range(3):
+                Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
+            counter=counter+1
+
+    def get_random_user(self,users, club):
+        found=False
+        a_user = ""
+        while(found==False):
+            a_user=random.choice(users)
+            try:
+                Role.objects.get(club=club, user=a_user)
+            except:
+                if(a_user.email[:5]!="admin"):
+                    found=True
+                    return a_user
+
