@@ -4,6 +4,7 @@
     body {
         color: #1a202c;
         text-align: left;
+        background-color: #e2e8f0;
     }
 
     .main-body {
@@ -69,61 +70,94 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                            <img src="https://cdn3.vectorstock.com/i/1000x1000/95/37/chess-knight-line-icon-on-black-background-black-vector-25959537.jpg" alt="Admin"
-                                class="rounded-circle" width="150">
+                            <img src="https://cdn3.vectorstock.com/i/1000x1000/95/37/chess-knight-line-icon-on-black-background-black-vector-25959537.jpg"
+                                alt="Logo" class="rounded-circle" width="150">
                             <div class="mt-3">
                                 <h4>{{club.name}}</h4>
-                                <p class="text-secondary mb-1">{{club.name}}</p>
                                 <p class="text-muted font-size-sm">{{club.city}}</p>
-                                <form action = "{% url 'request_toggle' user_id=user.id club_id=club.id%}" method = "get">
-                                <span class = "float-end">
-                                  {% if user_is_applicant %}
-                                  <button class="btn btn-secondary">Cancel request</button>
-                                  {% elif user_is_member%}
-                                  <button class="btn btn-primary">Leave</button>
-                                  {% else %}
-                                  <button class="btn btn-primary">Join</button>
-                                {% endif %}
-                              </span>
-                            </form>
+                                <form action="{% url 'request_toggle' user_id=user.id club_id=club.id%}" method="get">
+                                    <span>
+                                        {% if user_is_applicant %}
+                                        <button class="btn btn-secondary">Cancel request</button>
+                                        {% elif user_is_member%}
+                                        <button class="btn btn-primary">Leave</button>
+                                        {% else %}
+                                        <button class="btn btn-primary">Join</button>
+                                        {% endif %}
+                                    </span>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
+                <p> </p>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row align-items-center text-left ">
+                            <img src="{{ club.get_owner.mini_gravatar }}" alt="Gravatar" class="rounded-circle"
+                                style="padding-right: 15px;">
+                            <div class="mt-3 flex-colomn">
+                                <h4>{{ club.get_owner.first_name }} {{ club.get_owner.last_name }}</h4>
+                                <p class="font-size-sm">Role: Owner</p>
+                            </div>
+                        </div>
+                        <p class="text-muted font-size-sm">Bio: {{club.get_owner.bio}}</p>
+                    </div>
+                </div>
 
             </div>
+
+
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">About us</h6>
+                                <h6 class="mb-0">About us:</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <p class = "club-description">{{club.description}} </p>
+                                <p class="club-description">{{club.description}} </p>
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0 text-secondary">Status: {{ role_at_club }}</h6>
+                        </li>
+                </div>
 
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            {% for person in club_members %}
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Member:</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    {{person.user.first_name}} {{person.user.last_name}}
-                                </div>
-                            </div>
-                            <hr>
-                            {% endfor %}
-
-                        </div>
-                    </div>
+                <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">Total Members: {{club.get_total}}</h6>
+                        </li>
+                        {% if user_is_member %}
+                        {% for person in club.get_officers %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><img src="{{ person.user.mini_gravatar }}" alt="Gravatar"
+                                    class="rounded-circle" style="padding-right: 15px;">Officer:
+                                {{person.user.first_name}} {{person.user.last_name}}</h6>
+                            <span class="text-secondary">Bio: {{person.user.bio}}</span>
+                        </li>
+                        {% endfor %}
+                        {% for person in club.get_members %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><img src="{{ person.user.mini_gravatar }}" alt="Gravatar"
+                                    class="rounded-circle" style="padding-right: 15px;">Member:
+                                {{person.user.first_name}} {{person.user.last_name}}</h6>
+                            <span class="text-secondary">Bio: {{person.user.bio}}</span>
+                        </li>
+                        {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}

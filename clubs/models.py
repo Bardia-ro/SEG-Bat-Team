@@ -12,6 +12,7 @@ import urllib
 from django import template
 from django.utils.safestring import mark_safe
 from location_field.models.plain import PlainLocationField
+from libgravatar import Gravatar
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
@@ -35,9 +36,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def gravatar(self, size=120):
         """Return a URL to the user's gravatar."""
-        md5 = hashlib.md5(self.email.encode())
-        digest = md5.hexdigest()
-        return 'http://www.gravatar.com/avatar/{}'.format(digest)
+        gravatar_object = Gravatar(self.email)
+        gravatar_url = gravatar_object.get_image(size=size, default='identicon')
+        return gravatar_url
+
 
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
@@ -53,12 +55,33 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_role_at_club(self, club_id):
         return Role.objects.get(club__id=club_id, user__id=self.id).role
 
+    def get_role_as_text_at_club(self, club_id):
+        try:
+            role = Role.objects.get(club_id=club_id, user=self).role
+        except:
+            return "Not a member"
+        if role == 2:
+            return "Member"
+        elif role == 3:
+            return "Officer"
+        elif role == 4:
+            return "Owner"
+        elif role== 1:
+            return "Application Pending"
+
+
     def get_is_user_associated_with_club(self, club_id):
         try:
             Role.objects.get(club__id=club_id, user__id=self.id)
             return True
         except Role.DoesNotExist:
             return False
+    
+    def get_clubs_user_is_a_member(self):
+        as_member = Role.objects.filter(role=2, user=self)
+        as_officer = Role.objects.filter(role=3, user=self)
+        as_owner = Role.objects.filter(role=4, user=self)
+        return as_member.union(as_officer,as_owner)
 
 class Club(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)
@@ -70,6 +93,22 @@ class Club(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_total(self):
+        the_members = Role.objects.filter(club=self, role=2)
+        the_officers = Role.objects.filter (club=self, role=3)
+        the_owner = Role.objects.filter(club=self, role=4)
+        return the_officers.union(the_members,the_owner).count()
+    
+    def get_owner(self):
+        return Role.objects.get(club=self, role=4).user
+    
+    def get_officers(self):
+        return Role.objects.filter(club=self, role=3)
+
+    def get_members(self):
+        return Role.objects.filter(club=self, role=2)
+
 
 class Role(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
