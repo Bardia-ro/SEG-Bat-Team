@@ -11,6 +11,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'member_list' club_id=club_id %}">Members</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'club_creator' club_id=club_id %}">Club creation</a>
+            </li>
           </ul>
         {% endif %}
       {% endif %}
