@@ -1,9 +1,10 @@
 from django.core.management.base import BaseCommand, CommandError
-from clubs.models import User
+from clubs.models import User, Club
 
 class Command(BaseCommand):
     def __init__(self):
         super().__init__()
 
     def handle(self, *args, **options):
-        User.objects.exclude(email="admin@clucker.com").delete()
+        User.objects.exclude(email="admin@example.com").delete()
+        Club.objects.all().delete()

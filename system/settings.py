@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'clubs',
     'widget_tweaks',
-
+    'location_field.apps.DefaultConfig',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +142,8 @@ MESSAGE_TAGS = {
 
 # Url for the @login_required decorator to redirect to.
 LOGIN_URL = '/log_in/'
+
+LOCATION_FIELD = {
+    'map.provider' : 'openstreetmap',
+    'search.provider' : 'nominatim',
+}
