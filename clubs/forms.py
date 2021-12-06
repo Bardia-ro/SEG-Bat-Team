@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
-from .models import Tournaments, User
+from .models import User, Club
 
 #options for the 'experience' drop down box
 EXPERIENCE_CHOICES = [
@@ -89,4 +89,18 @@ class ChangePasswordForm(forms.ModelForm, Password):
         user = authenticate(email=self.instance.email, password=self.cleaned_data.get('new_password'))
         return user
 
+class ClubCreatorForm(forms.ModelForm):
+    class Meta:
+        model = Club
+        fields = ['name','city','description','location']
 
+    def save(self):
+        """Create a new club."""
+        super().save(commit=False)
+        club = Club(
+            name= self.cleaned_data.get('name'),
+            location=self.cleaned_data.get('location'),
+            city=self.cleaned_data.get('city'),
+            description=self.cleaned_data.get('description'),
+        )
+        return club

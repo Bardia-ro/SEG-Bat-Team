@@ -221,21 +221,14 @@ class Tournaments(models.Model):
 
 class Match(models.Model):
 
+    name = models.CharField(max_length=50, blank=False, unique=True) 
     tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
-    participant_one = models.ForeignKey(User, on_delete=models.CASCADE, related_name='participant_one')
-    participant_two = models.ForeignKey(User, on_delete=models.CASCADE, related_name='participant_two')
-
-    def __str__(self):
-        return self.tournament.name
-
-class MatchResult(models.Model):
-    match = models.OneToOneField(
-        Match,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
-
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
     loser = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'loser')
+
+    def __str__(self):
+        return self.name
+
+
 
 

@@ -43,13 +43,5 @@ class MatchAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for Matches."""
 
     list_display = [
-        'tournament', 'participant_one', 'participant_two',
-    ]
-
-@admin.register(MatchResult)
-class ResultMatchAdmin(admin.ModelAdmin):
-    """Configuration of the admin interface for Match result."""
-
-    list_display = [
-        'match' ,'winner', 'loser',
+        'name','tournament', 'winner', 'loser',
     ]

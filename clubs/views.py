@@ -1,31 +1,41 @@
 from .models import User, Role, Club
-from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
+from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_officer
+from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 
 
 def request_toggle(request, user_id, club_id):
 
     currentUser = User.objects.get(id=user_id)
     club = Club.objects.get(id=club_id)
+    user_is_owner = get_is_user_owner(club_id, request.user)
+
     try:
         role = Role.objects.get(user = currentUser, club = club)
-        role.delete()
-
+        if user_is_owner:
+            messages.add_message(request, messages.ERROR, "You must transfer ownership first.")
+        else:
+            role.delete()
     except:
         Role.objects.create(user = currentUser, club = club, role = 1)
 
-    user_is_applicant = get_is_user_applicant(club_id, request.user)
     user_is_officer = get_is_user_officer(club_id, request.user)
+    user_is_applicant = get_is_user_applicant(club_id, request.user)
     club_list = Role.objects.filter(user = request.user)
     club_members = Role.objects.filter(club=club)
-    return render(request, 'club_page.html' ,
-    {'club_id': club_id,'user_is_applicant':user_is_applicant, 'club': club,'club_list': club_list, 'club_members': club_members, 'user_is_officer':user_is_officer})
 
+    return render(request, 'club_page.html' ,
+    {'club_id': club_id,
+    'user_is_applicant':user_is_applicant,
+    'club': club,
+    'club_list': club_list,
+    'club_members': club_members,
+    'user_is_officer':user_is_officer,
+    'user_is_owner': user_is_owner})
 
 
 @redirect_authenticated_user
@@ -66,6 +76,22 @@ def sign_up(request):
 
     return render(request, 'sign_up.html', {'form':form})
 
+def club_creator(request):
+    if (request.user.is_authenticated != True):
+        club_id = request.user.get_first_club_id_user_is_associated_with()
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
+
+    if request.method == 'POST':
+        form = ClubCreatorForm(request.POST)
+        if form.is_valid():
+            club = form.save()
+            club_id = request.user.get_first_club_id_user_is_associated_with()
+            return redirect('profile', club_id=club_id, user_id=request.user.id)
+    else:
+        form = ClubCreatorForm()
+
+    return render(request, 'club_creator.html', {'form': form})
+
 @login_required
 @only_current_user
 def edit_profile(request, club_id, user_id):
@@ -105,7 +131,6 @@ def profile(request, club_id, user_id):
             if club_id == 0:
                 return render(request, 'profile.html', {'user': request.user, 'club_id': 0, 'user_is_member': False, 'is_current_user': True})
         return redirect('profile', club_id=club_id, user_id=request.user.id)
-
 
     if not request.user.get_is_user_associated_with_club(club_id):
         club_id = request.user.get_first_club_id_user_is_associated_with()
