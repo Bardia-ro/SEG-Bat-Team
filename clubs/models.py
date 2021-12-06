@@ -1,3 +1,4 @@
+from typing import ClassVar
 from django.core.validators import RegexValidator
 from django.db import models
 from django import forms
@@ -193,12 +194,12 @@ class Tournaments(models.Model):
     description = models.CharField(max_length=600, blank=False) 
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
-    TWO = 0
-    FOUR = 1
-    EIGHT = 2
-    SIXTEEN = 3
-    THIRTY_TWO = 4
-    SIXTY_FOUR = 5
+    TWO = 2
+    FOUR = 4
+    EIGHT = 8
+    SIXTEEN = 16
+    THIRTY_TWO = 32
+    SIXTY_FOUR = 64
 
     CAPACITY_CHOICES = (
         (TWO, 'Two',),
@@ -211,18 +212,30 @@ class Tournaments(models.Model):
 
     capacity = models.SmallIntegerField(
         blank=False, choices=CAPACITY_CHOICES)
-
-    officer_role = Role.objects.all().filter(role = 1)
-
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
-    # ,
-    #             limit_choices_to={'role' : officer_role}
-    #             )
     deadline = models.DateTimeField(blank=False)
 
+    def __str__(self):
+        return self.name
 
-# class Match(models.Model):
 
-#     participant_one = models.ForeignKey(User, on_delete=models.CASCADE)
-#     participant_two = models.ForeignKey(User, on_delete=models.CASCADE)
+class Match(models.Model):
+
+    tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
+    participant_one = models.ForeignKey(User, on_delete=models.CASCADE, related_name='participant_one')
+    participant_two = models.ForeignKey(User, on_delete=models.CASCADE, related_name='participant_two')
+
+    def __str__(self):
+        return self.tournament.name
+
+class MatchResult(models.Model):
+    match = models.OneToOneField(
+        Match,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
+    loser = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'loser')
+
 
