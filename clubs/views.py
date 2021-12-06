@@ -1,5 +1,5 @@
 from .models import User, Role, Club
-from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm
+from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -69,16 +69,19 @@ def sign_up(request):
 
 def club_creator(request):
     if (request.user.is_authenticated != True):
-        return redirect('home', user_id=request.user.id)
+        club_id = request.user.get_first_club_id_user_is_associated_with()
+        return redirect('profile', club_id=club_id, user_id=request.user.id)
 
     if request.method == 'POST':
         form = ClubCreatorForm(request.POST)
         if form.is_valid():
             club = form.save()
-            return redirect('home', user_id=request.user.id)
+            club_id = request.user.get_first_club_id_user_is_associated_with()
+            return redirect('profile', club_id=club_id, user_id=request.user.id)
     else:
         form = ClubCreatorForm()
-    return render(request, 'club_creator', {'form': form})
+
+    return render(request, 'club_creator.html', {'form': form})
 
 @login_required
 @only_current_user
@@ -119,7 +122,6 @@ def profile(request, club_id, user_id):
             if club_id == 0:
                 return render(request, 'profile.html', {'user': request.user, 'club_id': 0, 'user_is_member': False, 'is_current_user': True})
         return redirect('profile', club_id=club_id, user_id=request.user.id)
-
 
     if not request.user.get_is_user_associated_with_club(club_id):
         club_id = request.user.get_first_club_id_user_is_associated_with()

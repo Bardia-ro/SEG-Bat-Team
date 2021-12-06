@@ -89,18 +89,10 @@ class ChangePasswordForm(forms.ModelForm, Password):
         user = authenticate(email=self.instance.email, password=self.cleaned_data.get('new_password'))
         return user
 
-
-
-    #name = models.CharField(max_length=50, blank=False, unique=True)
-    #location = models.CharField(max_length=100, blank=False, unique=True)
-    #description = models.CharField(max_length=600, blank=False)
-
-    #users = models.ManyToManyField(User, through='Role')
-
 class ClubCreatorForm(forms.ModelForm):
     class Meta:
         model = Club
-        fields = ['name', 'location', 'description']
+        fields = ['name','city','description','location']
 
     def save(self):
         """Create a new club."""
@@ -108,6 +100,7 @@ class ClubCreatorForm(forms.ModelForm):
         club = Club(
             name= self.cleaned_data.get('name'),
             location=self.cleaned_data.get('location'),
+            city=self.cleaned_data.get('city'),
             description=self.cleaned_data.get('description'),
         )
-        return user
+        return club
