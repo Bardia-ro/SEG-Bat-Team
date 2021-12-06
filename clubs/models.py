@@ -114,14 +114,14 @@ class Role(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
-    BANNED = 0
+    NO_CLUB = 0
     APPlICANT = 1
     MEMBER = 2
     OFFICER = 3
     OWNER = 4
 
     ROLE_CHOICES = (
-        (BANNED, 'Banned',),
+        (NO_CLUB, 'No_club',),
         (APPlICANT, 'Applicant'),
         (MEMBER, 'Member'),
         (OFFICER, 'Officer'),
@@ -181,3 +181,48 @@ class Role(models.Model):
 
     def is_user_member_or_above(self):
         return self.role > 1
+
+    def get_Officers(self):
+        officers = Role.objects.all().filter(role = 3)
+        return officers
+
+
+class Tournaments(models.Model):
+
+    name = models.CharField(max_length=50, blank=False, unique=True)
+    description = models.CharField(max_length=600, blank=False) 
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+
+    TWO = 0
+    FOUR = 1
+    EIGHT = 2
+    SIXTEEN = 3
+    THIRTY_TWO = 4
+    SIXTY_FOUR = 5
+
+    CAPACITY_CHOICES = (
+        (TWO, 'Two',),
+        (FOUR, 'Four'),
+        (EIGHT, 'Eight'),
+        (SIXTEEN, 'Sixteen'),
+        (THIRTY_TWO, 'Thirty_Two'),
+        (SIXTY_FOUR, 'Sixty_Four'),
+    )
+
+    capacity = models.SmallIntegerField(
+        blank=False, choices=CAPACITY_CHOICES)
+
+    officer_role = Role.objects.all().filter(role = 1)
+
+    organiser = models.ForeignKey(User, on_delete=models.CASCADE)
+    # ,
+    #             limit_choices_to={'role' : officer_role}
+    #             )
+    deadline = models.DateTimeField(blank=False)
+
+
+# class Match(models.Model):
+
+#     participant_one = models.ForeignKey(User, on_delete=models.CASCADE)
+#     participant_two = models.ForeignKey(User, on_delete=models.CASCADE)
+
