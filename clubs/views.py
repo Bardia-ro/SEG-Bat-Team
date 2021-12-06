@@ -5,27 +5,37 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_officer
+from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 
 
 def request_toggle(request, user_id, club_id):
 
     currentUser = User.objects.get(id=user_id)
     club = Club.objects.get(id=club_id)
+    user_is_owner = get_is_user_owner(club_id, request.user)
+
     try:
         role = Role.objects.get(user = currentUser, club = club)
-        role.delete()
-
+        if user_is_owner:
+            messages.add_message(request, messages.ERROR, "You must transfer ownership first.")
+        else:
+            role.delete()
     except:
         Role.objects.create(user = currentUser, club = club, role = 1)
 
-    user_is_applicant = get_is_user_applicant(club_id, request.user)
     user_is_officer = get_is_user_officer(club_id, request.user)
+    user_is_applicant = get_is_user_applicant(club_id, request.user)
     club_list = Role.objects.filter(user = request.user)
     club_members = Role.objects.filter(club=club)
-    return render(request, 'club_page.html' ,
-    {'club_id': club_id,'user_is_applicant':user_is_applicant, 'club': club,'club_list': club_list, 'club_members': club_members, 'user_is_officer':user_is_officer})
 
+    return render(request, 'club_page.html' ,
+    {'club_id': club_id,
+    'user_is_applicant':user_is_applicant,
+    'club': club,
+    'club_list': club_list,
+    'club_members': club_members,
+    'user_is_officer':user_is_officer,
+    'user_is_owner': user_is_owner})
 
 
 @redirect_authenticated_user
