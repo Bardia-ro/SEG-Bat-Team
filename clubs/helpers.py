@@ -18,6 +18,14 @@ def get_is_user_member(club_id, user):
             return False
     return False
 
+def get_is_user_owner(club_id, user):
+    if user.is_authenticated:
+        try:
+            return Role.objects.get(club__id=club_id, user__id=user.id).role == 4
+        except: #add error
+            return False
+    return False
+
 def get_is_user_officer(club_id, user):
     if user.is_authenticated:
         try:
