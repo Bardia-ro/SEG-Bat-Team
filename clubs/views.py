@@ -163,6 +163,14 @@ def club_page(request, club_id):
     user_is_officer = get_is_user_officer(club_id, request. user)
     return render (request, 'club_page.html', {'club_id': club_id,'user_is_applicant': user_is_applicant, 'user_is_officer': user_is_officer, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members, 'role_at_club': role_at_club})
 
+
+#def tournament_list(request, club_id):
+
+
+
+
+
+
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
         club_id = request.user.get_first_club_id_user_is_associated_with()

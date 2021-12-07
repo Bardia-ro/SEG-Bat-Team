@@ -77,7 +77,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             return True
         except Role.DoesNotExist:
             return False
-    
+
     def get_clubs_user_is_a_member(self):
         as_member = Role.objects.filter(role=2, user=self)
         as_officer = Role.objects.filter(role=3, user=self)
@@ -100,15 +100,19 @@ class Club(models.Model):
         the_officers = Role.objects.filter (club=self, role=3)
         the_owner = Role.objects.filter(club=self, role=4)
         return the_officers.union(the_members,the_owner).count()
-    
+
     def get_owner(self):
         return Role.objects.get(club=self, role=4).user
-    
+
     def get_officers(self):
         return Role.objects.filter(club=self, role=3)
 
     def get_members(self):
         return Role.objects.filter(club=self, role=2)
+
+    def get_tournaments(self):
+        return Tournaments.objects.filter(club=self)
+
 
 
 class Role(models.Model):
@@ -191,7 +195,7 @@ class Role(models.Model):
 class Tournaments(models.Model):
 
     name = models.CharField(max_length=50, blank=False, unique=True)
-    description = models.CharField(max_length=600, blank=False) 
+    description = models.CharField(max_length=600, blank=False)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
     TWO = 2
@@ -219,16 +223,14 @@ class Tournaments(models.Model):
         return self.name
 
 
+
+
 class Match(models.Model):
 
-    name = models.CharField(max_length=50, blank=False, unique=True) 
+    name = models.CharField(max_length=50, blank=False, unique=True)
     tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
     loser = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'loser')
 
     def __str__(self):
         return self.name
-
-
-
-
