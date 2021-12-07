@@ -1,0 +1,24 @@
+
+{% extends 'base_content.html' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>Applicant List</h1>
+      <table class="table">
+        {% for applicant in applicants %}
+          <tr>
+            
+            <td><a href="{% url 'profile' club_id=club_id user_id=applicant.id %}">{{ applicant.user_email }}</a></td>
+            <td>
+            <a  href={% url 'approve_member'  club_id=club_id applicant_id=applicant.id %}>
+                <button type="button" class="btn btn-success">Approve membership</button>
+            </a>
+          </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
