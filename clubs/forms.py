@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
 from .models import User, Club
+from location_field.forms.plain import PlainLocationField
 
 #options for the 'experience' drop down box
 EXPERIENCE_CHOICES = [
@@ -92,15 +93,7 @@ class ChangePasswordForm(forms.ModelForm, Password):
 class ClubCreatorForm(forms.ModelForm):
     class Meta:
         model = Club
-        fields = ['name','city','description','location']
+        exclude = ('users', 'location')
 
-    def save(self):
-        """Create a new club."""
-        super().save(commit=False)
-        club = Club(
-            name= self.cleaned_data.get('name'),
-            location=self.cleaned_data.get('location'),
-            city=self.cleaned_data.get('city'),
-            description=self.cleaned_data.get('description'),
-        )
-        return club
+
+    
