@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'clubs',
     'widget_tweaks',
-
+    'location_field.apps.DefaultConfig',
 ]
 
 MIDDLEWARE = [
@@ -144,4 +144,13 @@ MESSAGE_TAGS = {
 REDIRECT_URL_WHEN_LOGGED_IN = 'member_list'
 
 # Url for the @login_required decorator to redirect to.
+<<<<<<< HEAD
 LOGIN_URL = 'log_in'
+=======
+LOGIN_URL = '/log_in/'
+
+LOCATION_FIELD = {
+    'map.provider' : 'openstreetmap',
+    'search.provider' : 'nominatim',
+}
+>>>>>>> origin/11-tournament-user-model

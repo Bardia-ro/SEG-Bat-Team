@@ -10,3 +10,4 @@ sqlparse==0.4.2
 text-unidecode==1.3
 libgravatar==1.0.0
 humanize==3.12.0
+django-location-field==2.1.0
