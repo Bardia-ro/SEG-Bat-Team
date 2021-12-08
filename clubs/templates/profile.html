@@ -1,78 +1,172 @@
-{% extends  'base_content.html' %}
+{% extends 'base_content.html' %}
 {% block content %}
-    <div class="container">
-        <div class="d-grid gap-3">
-            <div class="row">
-                <div class="col-sm-12 col-md-8 offset-md-2">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <h2>{{user.first_name}} {{user.last_name}} <img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle" ></h2>
-                        </li>
-                        <li class="list-group-item fs-4"> {{user.email}}</li>
-                        <li class="list-group-item fs-4">Bio: 
-                            <div class="card">
-                                <div class="card-body fs-5">{{user.bio}}</div>
+<style>
+    .user-card-full {
+        overflow: hidden
+    }
+
+    .card {
+        border-radius: 5px;
+        -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+        box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+        border: none;
+        margin-bottom: 30px
+    }
+
+    .m-r-0 {
+        margin-right: 0px
+    }
+
+    .m-l-0 {
+        margin-left: 0px
+    }
+
+    .user-card-full .user-profile {
+        border-radius: 5px 0 0 5px
+    }
+
+    .bg-c-lite-green {
+        background: -webkit-gradient(linear, left top, right top, from(#f29263), to(#ee5a6f));
+        background: linear-gradient(to right, #ee5a6f, #f29263)
+    }
+
+    .user-profile {
+        padding: 20px 0
+    }
+
+    .card-block {
+        padding: 1.25rem
+    }
+
+    .m-b-25 {
+        margin-bottom: 25px
+    }
+
+    .img-radius {
+        border-radius: 5px
+    }
+
+    .card .card-block p {
+        line-height: 25px
+    }
+
+    .b-b-default {
+        border-bottom: 1px solid #e0e0e0
+    }
+
+    .m-b-20 {
+        margin-bottom: 20px
+    }
+
+    .p-b-5 {
+        padding-bottom: 5px !important
+    }
+
+
+    .m-b-10 {
+        margin-bottom: 10px
+    }
+
+    .text-muted {
+        color: #919aa3 !important
+    }
+
+</style>
+
+<div class="container">
+    <div class="main-body">
+        <div class="page-content page-container" id="page-content">
+            <div class="row container d-flex justify-content-center">
+                <div>
+                    <div class="card user-card-full">
+                        <div class="row m-l-0 m-r-0">
+                            <div class="col-sm-4 bg-c-lite-green user-profile">
+                                <div class="card-block text-center text-white">
+                                    <div class="m-b-25"> <img src="{{ user.gravatar }}"
+                                            alt="Gravatar of {{ user.username }}" class="rounded-circle"> </div>
+                                    <h3 class="f-w-600">{{user.first_name}} {{user.last_name}}</h3>
+                                    <h6>{{user.experience}}</h6>
+                                    {% if is_current_user %}
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-8 offset-md-2">
+                                            <a href={% url 'edit_profile' club_id=club_id user_id=user.id %}>
+                                                <button type="button" class="btn btn-primary">Edit profile</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </li>
-                        <li class="list-group-item fs-4">Experience level:  {{user.experience}}</li>
-                        <li class="list-group-item fs-4">Personal statement:  
-                            <div class="card">
-                                <div class="card-body fs-5">{{user.personal_statement}}</div>
+                            <div class="col-sm-8">
+                                <div class="card-block">
+                                    <h4 class="m-b-20 p-b-5 b-b-default f-w-600">Profile</h4>
+                                    <div>
+                                        <h5 class="m-b-10 f-w-600">Email:</h5>
+                                        <p class="text-muted">{{user.email}}</p>
+                                    </div>
+                                    <div>
+                                        <h5 class="m-b-10 f-w-600">Bio:</h5>
+                                        <p class="text-muted">{{user.bio}}</p>
+                                    </div>
+                                    <div>
+                                        <h5 class="m-b-10 f-w-600">Personal Statement:</h5>
+                                        <p class="text-muted">{{user.personal_statement}}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-            {% if is_current_user %}
-                <div class="row">
-                    <div class="col-sm-12 col-md-8 offset-md-2">
-                        <a href={% url 'edit_profile' club_id=club_id user_id=user.id %}>
-                            <button type="button" class="btn btn-primary">Edit profile</button>
-                        </a> 
-                    </div>
-                </div>
-            {% endif %}
-
-            {% if user_role == 1 and request_user_role == 3 %}
-                <div class="row">
-                    <div class="col-sm-12 col-md-8 offset-md-2">
-                        <a href={% url 'approve_member' club_id=club_id applicant_id=user.id %}>
-                            <button type="button" class="btn btn-success">Approve membership</button>
-                        </a>
-                    </div>
-                </div>
-            {% endif %} 
-
-            {% if user_role == 2  %}
-                {% if request_user_role == 4 %}
-                    <div class="row">
-                        <div class="col-sm-12 col-md-8 offset-md-2">
-                            <a href={% url 'promote_member_to_officer' club_id=club_id member_id=user.id %}>
-                                <button type="button" class="btn btn-primary">Promote to officer</button>
-                            </a>
-                        </div>
-                    </div>
-                {% endif %} 
-            {% endif %} 
-
-            {% if user_role == 3 %} 
-                {% if request_user_role == 4 %}
-                    <div class="row">
-                        <div class="col-sm-12 col-md-8 offset-md-2">
-                            <a href={% url 'demote_officer_to_member' club_id=club_id officer_id=user.id %}>
-                                <button type="button" class="btn btn-primary">Demote to member</button>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-8 offset-md-2">
-                            <a href={% url 'transfer_ownership' club_id=club_id new_owner_id=user.id %}>
-                                <button type="button" class="btn btn-primary">Transfer ownership</button>
-                            </a>
-                        </div>
-                    </div>
-                {% endif %} 
-            {% endif %} 
         </div>
     </div>
+</div>
+
+
+
+
+{% if user_role == 1 and request_user_role == 3 %}
+<div class="container row p-b-5">
+    <div>
+        <a href={% url 'approve_member' club_id=club_id applicant_id=user.id %}>
+            <button type="button" class="btn btn-success">Approve membership</button>
+        </a>
+    </div>
+</div>
+{% endif %}
+
+
+{% if user_role == 2 %}
+{% if request_user_role == 4 %}
+<div class="container row p-b-5">
+    <div>
+        <a href={% url 'promote_member_to_officer' club_id=club_id member_id=user.id %}>
+            <button type="button" class="btn btn-primary">Promote to officer</button>
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+
+
+{% if user_role == 3 %}
+{% if request_user_role == 4 %}
+<div class="container row p-b-5">
+    <div class="col-sm-12 col-md-8 offset-md-2">
+        <a href={% url 'demote_officer_to_member' club_id=club_id officer_id=user.id %}>
+            <button type="button" class="btn btn-primary">Demote to member</button>
+        </a>
+    </div>
+</div>
+
+
+<div class="container row p-b-5">
+    <div class="col-sm-12 col-md-8 offset-md-2">
+        <a href={% url 'transfer_ownership' club_id=club_id new_owner_id=user.id %}>
+            <button type="button" class="btn btn-primary">Transfer ownership</button>
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endif %}
 {% endblock %}

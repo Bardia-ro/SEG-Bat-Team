@@ -1,41 +1,44 @@
 {% extends 'base_content.html' %}
 {% block content %}
-
 <style>
+  .top-buffer {
+    margin-top: 40px;
+    margin-left: 25px;
+  }
 
-.top-buffer {
-     margin-top: 40px;
-     margin-left: 25px;
-    }
-
-.title-club {
+  .title-club {
     margin-top: 30px;
     margin-left: 0px;
-}
+  }
 
-.btn-success{
+  .btn-success {
     margin-left: 60vmax;
-}
-
-
+  }
 </style>
-    <div class="container">
-      
-    <h1 class="title-club">Club List</h1>
+
+
+<div class="container">
+    <h1 class="title-club">All Clubs</h1>
     {% for club in clubs %}
     <div class="top-buffer">
       <div class="card">
         <h5 class="card-header">{{ club }}</h5>
         <div class="card-body">
-          <p class="card-text">
+            <p class="card-text">
             <ul>
-                <strong>  Description: </strong> <l>{{ club.description }}</l>
-                <br><strong> Location: </strong> <l>{{ club.city }}</l>
-                </ul>
+                <strong> Description: </strong>
+                <l>{{ club.description }}</l>
+
+                  <br><strong> Location: </strong>
+                  <l>{{ club.city }}</l>
+                
+            </ul>
           <a class="btn btn-success" href={% url "club_page" club_id=club.id %}>Details</a>
         </div>
       </div>
     </div>
-
     {% endfor %}
+</div>
+
+
 {% endblock %}

@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
+from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer, get_is_user_owner
 
 
 def request_toggle(request, user_id, club_id):
@@ -96,8 +96,9 @@ def club_creator(request):
             return redirect('profile', club_id=club_id, user_id=request.user.id)
     else:
         form = ClubCreatorForm()
-
-    return render(request, 'club_creator.html', {'form': form})
+    club_id = request.user.get_first_club_id_user_is_associated_with()
+    club_list = request.user.get_clubs_user_is_a_member()
+    return render(request, 'club_creator.html', {'form': form, 'club_list': club_list, 'club_id': club_id})
 
 @login_required
 @only_current_user
@@ -155,7 +156,7 @@ def profile(request, club_id, user_id):
 
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
-    club_list = user.get_clubs_user_is_a_member()
+    club_list = request.user.get_clubs_user_is_a_member()
     return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club, 'club_list': club_list})
 
 def club_page(request, club_id):
@@ -166,7 +167,8 @@ def club_page(request, club_id):
     role_at_club = request.user.get_role_as_text_at_club(club_id)
     user_is_applicant = get_is_user_applicant(club_id, request.user)
     user_is_officer = get_is_user_officer(club_id, request. user)
-    return render (request, 'club_page.html', {'club_id': club_id,'user_is_applicant': user_is_applicant, 'user_is_officer': user_is_officer, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members, 'role_at_club': role_at_club})
+    user_is_owner = get_is_user_owner(club_id, request.user)
+    return render (request, 'club_page.html', {'club_id': club_id,'user_is_applicant': user_is_applicant, 'user_is_officer': user_is_officer, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members, 'role_at_club': role_at_club, 'user_is_owner': user_is_owner})
 
 
 #def tournament_list(request, club_id):
