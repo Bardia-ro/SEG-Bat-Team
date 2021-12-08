@@ -2,6 +2,8 @@ from .models import User, Role, Club
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
+from django.views import View
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -42,6 +44,7 @@ def request_toggle(request, user_id, club_id):
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
+        next = request.POST.get('next') or ''
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
@@ -51,6 +54,8 @@ def log_in(request):
                 club_id = user.get_first_club_id_user_is_associated_with()
                 return redirect('profile', club_id=club_id, user_id=request.user.id)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
+    else:
+        next = request.GET.get('next') or ''
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
 
@@ -164,6 +169,14 @@ def club_page(request, club_id):
     user_is_officer = get_is_user_officer(club_id, request. user)
     user_is_owner = get_is_user_owner(club_id, request.user)
     return render (request, 'club_page.html', {'club_id': club_id,'user_is_applicant': user_is_applicant, 'user_is_officer': user_is_officer, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members, 'role_at_club': role_at_club, 'user_is_owner': user_is_owner})
+
+
+#def tournament_list(request, club_id):
+
+
+
+
+
 
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
