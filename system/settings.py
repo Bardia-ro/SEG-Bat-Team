@@ -140,6 +140,9 @@ MESSAGE_TAGS = {
     message_constants.ERROR: 'danger',
 }
 
+#url where @login_rohibited redirects to
+REDIRECT_URL_WHEN_LOGGED_IN = 'member_list'
+
 # Url for the @login_required decorator to redirect to.
 LOGIN_URL = '/log_in/'
 
