@@ -1,7 +1,7 @@
 [
     {
         "model": "clubs.User",
-        "pk": 1,
+        "pk": 2,
         "fields": {
             "email": "janedoe@example.org",
             "first_name": "Jane",
@@ -14,7 +14,7 @@
     },
     {
         "model": "clubs.Club",
-        "pk": 1,
+        "pk": 2,
         "fields": {
             "name": "Club 1",
             "city": "London",
@@ -24,7 +24,7 @@
     },
     {
         "model": "clubs.User",
-        "pk": 2,
+        "pk": 3,
         "fields": {
             "email": "samdoe@example.org",
             "first_name": "Sam",
