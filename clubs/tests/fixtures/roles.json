@@ -1,0 +1,2612 @@
+[
+    {
+        "model": "clubs.role",
+        "pk": 1,
+        "fields": {
+            "user": 103,
+            "club": 1,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 2,
+        "fields": {
+            "user": 102,
+            "club": 1,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 3,
+        "fields": {
+            "user": 101,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 4,
+        "fields": {
+            "user": 20,
+            "club": 1,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 5,
+        "fields": {
+            "user": 76,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 6,
+        "fields": {
+            "user": 93,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 7,
+        "fields": {
+            "user": 5,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 8,
+        "fields": {
+            "user": 62,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 9,
+        "fields": {
+            "user": 61,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 10,
+        "fields": {
+            "user": 70,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 11,
+        "fields": {
+            "user": 91,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 12,
+        "fields": {
+            "user": 44,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 13,
+        "fields": {
+            "user": 92,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 14,
+        "fields": {
+            "user": 77,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 15,
+        "fields": {
+            "user": 95,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 16,
+        "fields": {
+            "user": 40,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 17,
+        "fields": {
+            "user": 98,
+            "club": 1,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 18,
+        "fields": {
+            "user": 16,
+            "club": 1,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 19,
+        "fields": {
+            "user": 35,
+            "club": 1,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 20,
+        "fields": {
+            "user": 101,
+            "club": 2,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 21,
+        "fields": {
+            "user": 81,
+            "club": 2,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 22,
+        "fields": {
+            "user": 52,
+            "club": 2,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 23,
+        "fields": {
+            "user": 50,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 24,
+        "fields": {
+            "user": 12,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 25,
+        "fields": {
+            "user": 70,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 26,
+        "fields": {
+            "user": 29,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 27,
+        "fields": {
+            "user": 22,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 28,
+        "fields": {
+            "user": 90,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 29,
+        "fields": {
+            "user": 24,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 30,
+        "fields": {
+            "user": 68,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 31,
+        "fields": {
+            "user": 103,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 32,
+        "fields": {
+            "user": 86,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 33,
+        "fields": {
+            "user": 25,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 34,
+        "fields": {
+            "user": 49,
+            "club": 2,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 35,
+        "fields": {
+            "user": 72,
+            "club": 2,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 36,
+        "fields": {
+            "user": 13,
+            "club": 2,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 37,
+        "fields": {
+            "user": 9,
+            "club": 2,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 38,
+        "fields": {
+            "user": 52,
+            "club": 3,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 39,
+        "fields": {
+            "user": 102,
+            "club": 3,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 40,
+        "fields": {
+            "user": 26,
+            "club": 3,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 41,
+        "fields": {
+            "user": 45,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 42,
+        "fields": {
+            "user": 81,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 43,
+        "fields": {
+            "user": 57,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 44,
+        "fields": {
+            "user": 59,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 45,
+        "fields": {
+            "user": 23,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 46,
+        "fields": {
+            "user": 62,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 47,
+        "fields": {
+            "user": 21,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 48,
+        "fields": {
+            "user": 11,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 49,
+        "fields": {
+            "user": 20,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 50,
+        "fields": {
+            "user": 36,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 51,
+        "fields": {
+            "user": 12,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 52,
+        "fields": {
+            "user": 99,
+            "club": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 53,
+        "fields": {
+            "user": 13,
+            "club": 3,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 54,
+        "fields": {
+            "user": 16,
+            "club": 3,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 55,
+        "fields": {
+            "user": 27,
+            "club": 3,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 56,
+        "fields": {
+            "user": 85,
+            "club": 4,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 57,
+        "fields": {
+            "user": 36,
+            "club": 4,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 58,
+        "fields": {
+            "user": 88,
+            "club": 4,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 59,
+        "fields": {
+            "user": 103,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 60,
+        "fields": {
+            "user": 6,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 61,
+        "fields": {
+            "user": 92,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 62,
+        "fields": {
+            "user": 28,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 63,
+        "fields": {
+            "user": 30,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 64,
+        "fields": {
+            "user": 61,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 65,
+        "fields": {
+            "user": 102,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 66,
+        "fields": {
+            "user": 20,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 67,
+        "fields": {
+            "user": 72,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 68,
+        "fields": {
+            "user": 40,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 69,
+        "fields": {
+            "user": 101,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 70,
+        "fields": {
+            "user": 89,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 71,
+        "fields": {
+            "user": 58,
+            "club": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 72,
+        "fields": {
+            "user": 73,
+            "club": 4,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 73,
+        "fields": {
+            "user": 46,
+            "club": 4,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 74,
+        "fields": {
+            "user": 90,
+            "club": 4,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 75,
+        "fields": {
+            "user": 56,
+            "club": 5,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 76,
+        "fields": {
+            "user": 48,
+            "club": 5,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 77,
+        "fields": {
+            "user": 95,
+            "club": 5,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 78,
+        "fields": {
+            "user": 75,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 79,
+        "fields": {
+            "user": 37,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 80,
+        "fields": {
+            "user": 101,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 81,
+        "fields": {
+            "user": 57,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 82,
+        "fields": {
+            "user": 86,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 83,
+        "fields": {
+            "user": 44,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 84,
+        "fields": {
+            "user": 84,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 85,
+        "fields": {
+            "user": 77,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 86,
+        "fields": {
+            "user": 32,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 87,
+        "fields": {
+            "user": 1,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 88,
+        "fields": {
+            "user": 83,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 89,
+        "fields": {
+            "user": 3,
+            "club": 5,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 90,
+        "fields": {
+            "user": 5,
+            "club": 5,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 91,
+        "fields": {
+            "user": 58,
+            "club": 5,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 92,
+        "fields": {
+            "user": 41,
+            "club": 5,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 93,
+        "fields": {
+            "user": 75,
+            "club": 6,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 94,
+        "fields": {
+            "user": 70,
+            "club": 6,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 95,
+        "fields": {
+            "user": 18,
+            "club": 6,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 96,
+        "fields": {
+            "user": 39,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 97,
+        "fields": {
+            "user": 35,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 98,
+        "fields": {
+            "user": 63,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 99,
+        "fields": {
+            "user": 89,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 100,
+        "fields": {
+            "user": 27,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 101,
+        "fields": {
+            "user": 95,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 102,
+        "fields": {
+            "user": 40,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 103,
+        "fields": {
+            "user": 59,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 104,
+        "fields": {
+            "user": 13,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 105,
+        "fields": {
+            "user": 71,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 106,
+        "fields": {
+            "user": 79,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 107,
+        "fields": {
+            "user": 4,
+            "club": 6,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 108,
+        "fields": {
+            "user": 5,
+            "club": 6,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 109,
+        "fields": {
+            "user": 86,
+            "club": 6,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 110,
+        "fields": {
+            "user": 90,
+            "club": 6,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 111,
+        "fields": {
+            "user": 1,
+            "club": 7,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 112,
+        "fields": {
+            "user": 76,
+            "club": 7,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 113,
+        "fields": {
+            "user": 102,
+            "club": 7,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 114,
+        "fields": {
+            "user": 69,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 115,
+        "fields": {
+            "user": 10,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 116,
+        "fields": {
+            "user": 74,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 117,
+        "fields": {
+            "user": 90,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 118,
+        "fields": {
+            "user": 56,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 119,
+        "fields": {
+            "user": 26,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 120,
+        "fields": {
+            "user": 29,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 121,
+        "fields": {
+            "user": 6,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 122,
+        "fields": {
+            "user": 31,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 123,
+        "fields": {
+            "user": 9,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 124,
+        "fields": {
+            "user": 80,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 125,
+        "fields": {
+            "user": 81,
+            "club": 7,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 126,
+        "fields": {
+            "user": 21,
+            "club": 7,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 127,
+        "fields": {
+            "user": 63,
+            "club": 7,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 128,
+        "fields": {
+            "user": 85,
+            "club": 7,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 129,
+        "fields": {
+            "user": 16,
+            "club": 8,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 130,
+        "fields": {
+            "user": 14,
+            "club": 8,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 131,
+        "fields": {
+            "user": 48,
+            "club": 8,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 132,
+        "fields": {
+            "user": 69,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 133,
+        "fields": {
+            "user": 103,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 134,
+        "fields": {
+            "user": 17,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 135,
+        "fields": {
+            "user": 72,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 136,
+        "fields": {
+            "user": 92,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 137,
+        "fields": {
+            "user": 3,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 138,
+        "fields": {
+            "user": 79,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 139,
+        "fields": {
+            "user": 2,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 140,
+        "fields": {
+            "user": 96,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 141,
+        "fields": {
+            "user": 74,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 142,
+        "fields": {
+            "user": 76,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 143,
+        "fields": {
+            "user": 28,
+            "club": 8,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 144,
+        "fields": {
+            "user": 9,
+            "club": 8,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 145,
+        "fields": {
+            "user": 31,
+            "club": 8,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 146,
+        "fields": {
+            "user": 95,
+            "club": 8,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 147,
+        "fields": {
+            "user": 50,
+            "club": 9,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 148,
+        "fields": {
+            "user": 45,
+            "club": 9,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 149,
+        "fields": {
+            "user": 72,
+            "club": 9,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 150,
+        "fields": {
+            "user": 73,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 151,
+        "fields": {
+            "user": 76,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 152,
+        "fields": {
+            "user": 19,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 153,
+        "fields": {
+            "user": 18,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 154,
+        "fields": {
+            "user": 101,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 155,
+        "fields": {
+            "user": 58,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 156,
+        "fields": {
+            "user": 79,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 157,
+        "fields": {
+            "user": 32,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 158,
+        "fields": {
+            "user": 57,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 159,
+        "fields": {
+            "user": 48,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 160,
+        "fields": {
+            "user": 17,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 161,
+        "fields": {
+            "user": 6,
+            "club": 9,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 162,
+        "fields": {
+            "user": 47,
+            "club": 9,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 163,
+        "fields": {
+            "user": 103,
+            "club": 9,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 164,
+        "fields": {
+            "user": 43,
+            "club": 9,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 165,
+        "fields": {
+            "user": 37,
+            "club": 10,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 166,
+        "fields": {
+            "user": 86,
+            "club": 10,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 167,
+        "fields": {
+            "user": 71,
+            "club": 10,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 168,
+        "fields": {
+            "user": 44,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 169,
+        "fields": {
+            "user": 41,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 170,
+        "fields": {
+            "user": 66,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 171,
+        "fields": {
+            "user": 30,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 172,
+        "fields": {
+            "user": 68,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 173,
+        "fields": {
+            "user": 39,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 174,
+        "fields": {
+            "user": 55,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 175,
+        "fields": {
+            "user": 62,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 176,
+        "fields": {
+            "user": 92,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 177,
+        "fields": {
+            "user": 3,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 178,
+        "fields": {
+            "user": 87,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 179,
+        "fields": {
+            "user": 53,
+            "club": 10,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 180,
+        "fields": {
+            "user": 88,
+            "club": 10,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 181,
+        "fields": {
+            "user": 76,
+            "club": 10,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 182,
+        "fields": {
+            "user": 58,
+            "club": 10,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 183,
+        "fields": {
+            "user": 84,
+            "club": 11,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 184,
+        "fields": {
+            "user": 48,
+            "club": 11,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 185,
+        "fields": {
+            "user": 24,
+            "club": 11,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 186,
+        "fields": {
+            "user": 17,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 187,
+        "fields": {
+            "user": 25,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 188,
+        "fields": {
+            "user": 47,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 189,
+        "fields": {
+            "user": 82,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 190,
+        "fields": {
+            "user": 66,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 191,
+        "fields": {
+            "user": 37,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 192,
+        "fields": {
+            "user": 67,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 193,
+        "fields": {
+            "user": 72,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 194,
+        "fields": {
+            "user": 49,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 195,
+        "fields": {
+            "user": 35,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 196,
+        "fields": {
+            "user": 102,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 197,
+        "fields": {
+            "user": 73,
+            "club": 11,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 198,
+        "fields": {
+            "user": 18,
+            "club": 11,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 199,
+        "fields": {
+            "user": 6,
+            "club": 11,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 200,
+        "fields": {
+            "user": 16,
+            "club": 11,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 201,
+        "fields": {
+            "user": 37,
+            "club": 12,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 202,
+        "fields": {
+            "user": 101,
+            "club": 12,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 203,
+        "fields": {
+            "user": 15,
+            "club": 12,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 204,
+        "fields": {
+            "user": 50,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 205,
+        "fields": {
+            "user": 73,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 206,
+        "fields": {
+            "user": 53,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 207,
+        "fields": {
+            "user": 55,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 208,
+        "fields": {
+            "user": 102,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 209,
+        "fields": {
+            "user": 3,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 210,
+        "fields": {
+            "user": 79,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 211,
+        "fields": {
+            "user": 47,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 212,
+        "fields": {
+            "user": 34,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 213,
+        "fields": {
+            "user": 82,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 214,
+        "fields": {
+            "user": 24,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 215,
+        "fields": {
+            "user": 26,
+            "club": 12,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 216,
+        "fields": {
+            "user": 61,
+            "club": 12,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 217,
+        "fields": {
+            "user": 57,
+            "club": 12,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 218,
+        "fields": {
+            "user": 22,
+            "club": 12,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 219,
+        "fields": {
+            "user": 79,
+            "club": 13,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 220,
+        "fields": {
+            "user": 54,
+            "club": 13,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 221,
+        "fields": {
+            "user": 9,
+            "club": 13,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 222,
+        "fields": {
+            "user": 41,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 223,
+        "fields": {
+            "user": 26,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 224,
+        "fields": {
+            "user": 3,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 225,
+        "fields": {
+            "user": 102,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 226,
+        "fields": {
+            "user": 58,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 227,
+        "fields": {
+            "user": 45,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 228,
+        "fields": {
+            "user": 16,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 229,
+        "fields": {
+            "user": 19,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 230,
+        "fields": {
+            "user": 11,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 231,
+        "fields": {
+            "user": 53,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 232,
+        "fields": {
+            "user": 12,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 233,
+        "fields": {
+            "user": 5,
+            "club": 13,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 234,
+        "fields": {
+            "user": 39,
+            "club": 13,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 235,
+        "fields": {
+            "user": 30,
+            "club": 13,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 236,
+        "fields": {
+            "user": 7,
+            "club": 13,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 237,
+        "fields": {
+            "user": 83,
+            "club": 14,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 238,
+        "fields": {
+            "user": 35,
+            "club": 14,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 239,
+        "fields": {
+            "user": 29,
+            "club": 14,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 240,
+        "fields": {
+            "user": 88,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 241,
+        "fields": {
+            "user": 51,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 242,
+        "fields": {
+            "user": 63,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 243,
+        "fields": {
+            "user": 17,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 244,
+        "fields": {
+            "user": 102,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 245,
+        "fields": {
+            "user": 38,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 246,
+        "fields": {
+            "user": 100,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 247,
+        "fields": {
+            "user": 61,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 248,
+        "fields": {
+            "user": 101,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 249,
+        "fields": {
+            "user": 76,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 250,
+        "fields": {
+            "user": 23,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 251,
+        "fields": {
+            "user": 98,
+            "club": 14,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 252,
+        "fields": {
+            "user": 103,
+            "club": 14,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 253,
+        "fields": {
+            "user": 72,
+            "club": 14,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 254,
+        "fields": {
+            "user": 34,
+            "club": 14,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 255,
+        "fields": {
+            "user": 88,
+            "club": 15,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 256,
+        "fields": {
+            "user": 22,
+            "club": 15,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 257,
+        "fields": {
+            "user": 90,
+            "club": 15,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 258,
+        "fields": {
+            "user": 46,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 259,
+        "fields": {
+            "user": 94,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 260,
+        "fields": {
+            "user": 7,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 261,
+        "fields": {
+            "user": 43,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 262,
+        "fields": {
+            "user": 3,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 263,
+        "fields": {
+            "user": 37,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 264,
+        "fields": {
+            "user": 82,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 265,
+        "fields": {
+            "user": 96,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 266,
+        "fields": {
+            "user": 69,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 267,
+        "fields": {
+            "user": 12,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 268,
+        "fields": {
+            "user": 102,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 269,
+        "fields": {
+            "user": 32,
+            "club": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 270,
+        "fields": {
+            "user": 39,
+            "club": 15,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 271,
+        "fields": {
+            "user": 34,
+            "club": 15,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 272,
+        "fields": {
+            "user": 87,
+            "club": 15,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 273,
+        "fields": {
+            "user": 72,
+            "club": 16,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 274,
+        "fields": {
+            "user": 53,
+            "club": 16,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 275,
+        "fields": {
+            "user": 54,
+            "club": 16,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 276,
+        "fields": {
+            "user": 61,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 277,
+        "fields": {
+            "user": 25,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 278,
+        "fields": {
+            "user": 95,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 279,
+        "fields": {
+            "user": 70,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 280,
+        "fields": {
+            "user": 11,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 281,
+        "fields": {
+            "user": 66,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 282,
+        "fields": {
+            "user": 7,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 283,
+        "fields": {
+            "user": 74,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 284,
+        "fields": {
+            "user": 79,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 285,
+        "fields": {
+            "user": 33,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 286,
+        "fields": {
+            "user": 15,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 287,
+        "fields": {
+            "user": 42,
+            "club": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 288,
+        "fields": {
+            "user": 18,
+            "club": 16,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 289,
+        "fields": {
+            "user": 16,
+            "club": 16,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 290,
+        "fields": {
+            "user": 52,
+            "club": 16,
+            "role": 1
+        }
+    }
+]
