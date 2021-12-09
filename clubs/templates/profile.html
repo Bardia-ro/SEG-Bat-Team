@@ -125,7 +125,7 @@
 
 
 
-    {% if user_role == 1 and request_user_role == 3 %}
+    {% if user_role == 1 and request_user_role >= 3 %}
     <div class="container row p-b-5">
         <div>
             <a href={% url 'approve_member' club_id=club_id applicant_id=user.id %}>
