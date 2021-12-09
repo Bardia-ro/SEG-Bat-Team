@@ -54,10 +54,6 @@ def request_toggle(request, user_id, club_id):
     except:
         Role.objects.create(user = currentUser, club = club, role = 1)
 
-    user_is_officer = get_is_user_officer(club_id, request.user)
-    user_is_applicant = get_is_user_applicant(club_id, request.user)
-    club_list = Role.objects.filter(user = request.user)
-    club_members = Role.objects.filter(club=club)
 
     return redirect('club_page', club_id=club_id)
 
