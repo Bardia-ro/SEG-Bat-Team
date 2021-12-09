@@ -54,7 +54,6 @@ def request_toggle(request, user_id, club_id):
     except:
         Role.objects.create(user = currentUser, club = club, role = 1)
 
-
     return redirect('club_page', club_id=club_id)
 
 def club_page(request, club_id):
@@ -66,7 +65,7 @@ def club_page(request, club_id):
     user_is_applicant = get_is_user_applicant(club_id, request.user)
     user_is_officer = get_is_user_officer(club_id, request. user)
     user_is_owner = get_is_user_owner(club_id, request.user)
-
+    
     return render (request, 'club_page.html', {'club_id': club_id,
     'user_is_applicant': user_is_applicant,
     'user_is_officer': user_is_officer,
@@ -76,14 +75,6 @@ def club_page(request, club_id):
     'club_members': club_members,
     'role_at_club': role_at_club,
     'user_is_owner': user_is_owner})
-
-
-
-
-
-
-
-
 
 @redirect_authenticated_user
 def log_in(request):
@@ -205,13 +196,6 @@ def profile(request, club_id, user_id):
     return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club, 'club_list': club_list})
 
 
-#def tournament_list(request, club_id):
-
-
-
-
-
-
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
         club_id = request.user.get_first_club_id_user_is_associated_with()
@@ -272,37 +256,8 @@ def pending_requests(request,club_id):
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
 
 
-#def apply_tournament_toggle(request, tournament_id):
-#    current_user = request.user
-#try:
-#        tournament = Tournaments.objects.get(id=tournament_id)
-    #    tournament.toggle_apply(current_user)
-#        is_contender = tournament.is_contender(current_user)
-
-    #except ObjectDoesNotExist:
-    #    pass
-    #else:
-        #return render(request, 'club_page.html', {})
-
-
-
-
-    #user_is_contender = get_is_user_contender(tournament_id, request.user)
-
-#    if current_user not in tournament.contender.all():
-    #    contender = False
-    #    tournament.contender.add(current_user)
-#    else:
-    #    contender = True
-
-    #return render(request, 'club_page.html' ,
-#    {'tournament_id':tournament, 'contender':contender})
-
-    #try:
-    #    contender = Tournament.objects.get(tour)
-    #    if user_is_owner:
-    #        messages.add_message(request, messages.ERROR, "You must transfer ownership first.")
-        #else:
-    #        role.delete()
-    #except:
-    #    Role.objects.create(user = currentUser, club = club, role = 1)
+def apply_tournament_toggle(request, user_id, club_id, tournament_id):
+    tournament = Tournaments.objects.get(id=tournament_id)
+    tournament.toggle_apply(user_id)
+    is_contender = tournament.is_contender(user_id)
+    return redirect('club_page', club_id=club_id)

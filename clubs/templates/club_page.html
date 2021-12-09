@@ -119,10 +119,11 @@
                                     <strong>  Description: </strong> <l>{{ tournament.description}}</l>
                                     <br><strong> Number of participants: </strong> <l> {{tournament.contender_count}} </l>
                                     </ul>
+                                    <form action="{% url 'apply_toggle' user_id=user.id club_id=club.id  tournament_id=tournament.id %}" method="get">
                                         <span>
-                                          <button class="btn btn-primary">Join</button>
-                                          <button class="btn btn-secondary">Withdraw</button>
+                                            <button class="btn btn-primary">Join</button>
                                         </span>
+                                    </form>
                                   </div>
                           </div>
                         </div>

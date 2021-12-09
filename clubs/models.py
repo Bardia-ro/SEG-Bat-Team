@@ -214,7 +214,7 @@ class Tournaments(models.Model):
     description = models.CharField(max_length=600, blank=False)
     capacity = models.SmallIntegerField(
         blank=False, choices=CAPACITY_CHOICES)
-    number_of_contenders = models.PositiveIntegerField(default = 0, validators = [MinValueValidator(2), MaxValueValidator(capacity)])
+    #number_of_contenders = models.PositiveIntegerField(default = 0, validators = [MinValueValidator(2), MaxValueValidator(capacity)])
     deadline = models.DateTimeField(blank=False)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -223,20 +223,30 @@ class Tournaments(models.Model):
     def __str__(self):
         return self.name
 
-    def is_contender(self, user):
+    def is_contender(self,user):
+        """Returns whether a user is a contender in a tournament"""
+        #user = User.objects.get(id=user_id)
         return user in self.contender.all()
-
-    def toggle_apply(self, user_id):
-        """ Toggles whether a user has applied to this tournament"""
-        user = User.objects.get(id=user_id)
-        if is_contender(user):
-            self.contender.remove(user)
-        else:
-            self.contender.add(user)
 
     def contender_count(self):
         """ Returns the number of contenders in this tournament"""
         return self.contender.count()
+
+    def is_space_in_tournament(self):
+        """Returns whether a tournament has space for more contenders"""
+        count = self.contender.count()
+        return  (count < self.capacity)
+
+    def toggle_apply(self, user_id):
+        """ Toggles whether a user has applied to this tournament"""
+        user = User.objects.get(id=user_id)
+        if self.is_contender(user):
+            self.contender.remove(user)
+        else:
+            if self.is_space_in_tournament():
+                self.contender.add(user)
+
+
 
 class Match(models.Model):
 
