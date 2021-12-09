@@ -1,9 +1,5 @@
 from django.shortcuts import redirect
-<<<<<<< HEAD
-from django.conf import settings
-=======
 from clubs.models import Role
->>>>>>> origin/11-tournament-user-model
 
 def redirect_authenticated_user(func):
     def wrapper(request):
@@ -55,14 +51,3 @@ def only_current_user(func):
             return redirect('profile', club_id=club_id, user_id=user_id)
 
     return wrapper
-<<<<<<< HEAD
-
-def login_prohibited(view_function):
-    def modified_view_function(request):
-        if request.user.is_authenticated:
-            return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
-        else:
-            return view_function(request)
-    return modified_view_function
-=======
->>>>>>> origin/11-tournament-user-model

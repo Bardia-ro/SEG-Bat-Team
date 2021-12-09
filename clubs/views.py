@@ -7,11 +7,6 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-<<<<<<< HEAD
-from .helpers import get_is_user_member, only_current_user, login_prohibited
-
-@login_prohibited
-=======
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 
 
@@ -46,7 +41,6 @@ def request_toggle(request, user_id, club_id):
 
 
 @redirect_authenticated_user
->>>>>>> origin/11-tournament-user-model
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
@@ -57,42 +51,23 @@ def log_in(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-<<<<<<< HEAD
-                redirect_url = next or "'profile', user_id=request.user.id"
-                return redirect(redirect_url)
-=======
                 club_id = user.get_first_club_id_user_is_associated_with()
                 return redirect('profile', club_id=club_id, user_id=request.user.id)
->>>>>>> origin/11-tournament-user-model
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     else:
         next = request.GET.get('next') or ''
     form = LogInForm()
-<<<<<<< HEAD
-    user_is_member = get_is_user_member(request.user)
-    return render(request, 'log_in.html', {'form': form, 'next':next,'user_is_member':user_is_member})
-
-=======
     return render(request, 'log_in.html', {'form': form})
->>>>>>> origin/11-tournament-user-model
 
 def log_out(request):
     logout(request)
     return redirect('home')
 
-<<<<<<< HEAD
-@login_prohibited
-def home(request):
-    return render(request, 'home.html')
-
-@login_prohibited
-=======
 @redirect_authenticated_user
 def home(request):
     return render(request, 'home.html')
 
 @redirect_authenticated_user
->>>>>>> origin/11-tournament-user-model
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -203,16 +178,9 @@ def member_list(request, club_id):
     if not request_user_is_member:
         return redirect('profile', club_id=club_id, user_id=request.user.id)
 
-<<<<<<< HEAD
-@login_required
-def member_list(request):
-   users = User.objects.all()
-   return render(request, 'member_list.html', {'users': users})
-=======
     users = User.objects.filter(club__id = club_id)
     club_list = request.user.get_clubs_user_is_a_member()
     return render(request, 'member_list.html', {'users': users, 'user_is_member': True, 'club_id': club_id, 'club_list': club_list})
->>>>>>> origin/11-tournament-user-model
 
 @login_required
 def approve_member(request, club_id, applicant_id):
@@ -254,14 +222,7 @@ def club_list(request):
     club_list = user.get_clubs_user_is_a_member()
     return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id, 'club_list': club_list})
 
-<<<<<<< HEAD
-def transferownership(request, user_id, request_user_id):
-    user = get_object_or_404(User.objects.filter(is_superuser=False), pk = user_id)
-    user.change_owner(request_user_id)
-    return render(request, 'profile.html', {'user' : user})
-=======
 def pending_requests(request,club_id):
     applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
     # need applicants for a particular club
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
->>>>>>> origin/11-tournament-user-model
