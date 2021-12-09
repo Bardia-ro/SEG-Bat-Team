@@ -39,7 +39,6 @@ def club_page(request, club_id):
     user_is_officer = get_is_user_officer(club_id, request. user)
     user_is_owner = get_is_user_owner(club_id, request.user)
 
-
     return render (request, 'club_page.html', {'club_id': club_id,
     'user_is_applicant': user_is_applicant,
     'user_is_officer': user_is_officer,
@@ -240,7 +239,6 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 
     if tournament.is_space_in_tournament() == False:
         messages.add_message(request, messages.ERROR, "This tournament is full.")
-
 
 #    is_contender = tournament.is_contender(user_id)
     return redirect('club_page', club_id=club_id)
