@@ -122,7 +122,7 @@
                                     <form action="{% url 'apply_toggle' user_id=user.id club_id=club.id  tournament_id=tournament.id %}" method="get">
                                         <span>
                                           {% if user == tournament.organiser%}
-                                          <button type="button" disabled>Join</button>
+                                          <button type="button" disabled>Your tournament</button>
                                           {% elif user not in tournament.contender.all %}
                                           <button class="btn btn-primary">Join</button>
                                           {% else %}

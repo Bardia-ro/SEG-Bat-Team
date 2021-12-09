@@ -232,7 +232,7 @@ class Tournaments(models.Model):
         """ Returns the number of contenders in this tournament"""
         return self.contender.count()
 
-    def is_space_in_tournament(self):
+    def is_space(self):
         """Returns whether this tournament has space for more contenders"""
         return  (self.contender.count() < self.capacity)
 
@@ -248,7 +248,7 @@ class Tournaments(models.Model):
             if self.is_contender(user_id):
                     self.contender.remove(user)
             else:
-                if self.is_space_in_tournament():
+                if self.is_space():
                         self.contender.add(user)
 
 class Match(models.Model):
