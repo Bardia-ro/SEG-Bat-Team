@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
-from .models import User, Club
+from .models import User, Club, Tournaments
 from location_field.forms.plain import PlainLocationField
 
 #options for the 'experience' drop down box
@@ -13,6 +13,23 @@ EXPERIENCE_CHOICES = [
 ('class A', 'Class A'),
 ('expert', 'Expert'),
 ('master', 'Master'),
+]
+
+# options for tournament capacity
+TWO = 2
+FOUR = 4
+EIGHT = 8
+SIXTEEN = 16
+THIRTY_TWO = 32
+SIXTY_FOUR = 64
+
+CAPACITY_CHOICES = [
+    (TWO, 'Two',),
+    (FOUR, 'Four'),
+    (EIGHT, 'Eight'),
+    (SIXTEEN, 'Sixteen'),
+    (THIRTY_TWO, 'Thirty_Two'),
+    (SIXTY_FOUR, 'Sixty_Four'),
 ]
 
 class Password():
@@ -95,5 +112,18 @@ class ClubCreatorForm(forms.ModelForm):
         model = Club
         exclude = ('users', 'location')
 
+class TournamentForm(forms.ModelForm):
+    class Meta:
+        model = Tournaments
+        exclude = ('club', 'organiser')
 
-    
+    def save(self, organiser, club):
+        instance = super(TournamentForm, self).save(commit=False)
+        instance.name = self.cleaned_data.get('name')
+        instance.description = self.cleaned_data.get('description')
+        instance.capacity = self.cleaned_data.get('capacity')
+        instance.deadline = self.cleaned_data.get('deadline')
+        instance.club = club
+        instance.organiser = organiser
+        instance.save()
+        return instance

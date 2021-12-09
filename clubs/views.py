@@ -1,5 +1,5 @@
 from .models import User, Role, Club
-from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm
+from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import View
@@ -98,6 +98,19 @@ def club_creator(request):
         form = ClubCreatorForm()
 
     return render(request, 'club_creator.html', {'form': form})
+
+def create_tournament(request, club_id):
+    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
+    if (role.role_name() == "Officer" and request.method == 'POST'):
+        organiser = User.objects.filter(id = request.user.id).first()
+        club = Club.objects.filter(id = club_id).first()
+        form = TournamentForm(request.POST)
+        if form.is_valid():
+            tournament = form.save(organiser, club)
+            return redirect('profile', club_id=club_id, user_id=request.user.id)
+    form = TournamentForm()
+    return render(request, 'create_tournament.html', {'form': form, 'club_id': club_id})
+
 
 @login_required
 @only_current_user

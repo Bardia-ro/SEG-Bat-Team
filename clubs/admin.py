@@ -1,7 +1,7 @@
 """Configuration of the admin interface for clubs."""
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Match, MatchResult, Tournaments, User, Role, Club
+from .models import Match, Tournaments, User, Role, Club
 
 
 @admin.register(User)
@@ -27,7 +27,7 @@ class ClubAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for clubs."""
 
     list_display = [
-        'name', 'location', 'description', 
+        'name', 'location', 'description',
     ]
 
 @admin.register(Tournaments)
