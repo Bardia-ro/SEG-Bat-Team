@@ -71,6 +71,8 @@ class ChangePasswordViewTestCase(TestCase):
 
     def test_user_makes_valid_post_request_to_own_change_password_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
+        user = User.objects.get(email='johndoe@example.org')
+        self.assertTrue(check_password("Password123", user.password))
         form_data = {
             'new_password': 'PassworDNew456', 
             'password_confirmation': 'PassworDNew456', 

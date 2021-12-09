@@ -70,11 +70,15 @@ class EditProfileViewTestCase(TestCase):
 
     def test_user_makes_valid_post_request_to_own_edit_profile_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
-        form_data = {'first_name': 'John', 
+        user = User.objects.get(email='johndoe@example.org')
+        self.assertEqual(user.experience, 'class B')
+        form_data = {
+            'first_name': 'John', 
             'last_name': 'Doe', 
-            'bio': 'Hi, I am John and I am eighteen years old', 
+            'bio': 'Hey guys!', 
             'experience': 'class A', 
-            'personal_statement': 'I love chess'}
+            'personal_statement': 'Hi everyone. I love chess!'
+        }
         response = self.client.post(self.url, form_data, follow=True)
         expected_url = reverse('profile', kwargs={"club_id": 0, "user_id": 200})
         self.assertRedirects(response, expected_url)
@@ -84,6 +88,7 @@ class EditProfileViewTestCase(TestCase):
         self.assertEqual(response.context['club_id'], 0)
         self.assertFalse(response.context['request_user_is_member'])
         self.assertTrue(response.context['is_current_user'])
+        self.assertEqual(user.experience, 'class A')
 
     def test_user_makes_post_request_with_invalid_data_to_own_edit_profile_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
