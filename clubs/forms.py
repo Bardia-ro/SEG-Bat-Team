@@ -115,7 +115,7 @@ class ClubCreatorForm(forms.ModelForm):
 class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournaments
-        exclude = ('club', 'organiser')
+        exclude = ('club', 'organiser','contender')
 
     def save(self, organiser, club):
         instance = super(TournamentForm, self).save(commit=False)
