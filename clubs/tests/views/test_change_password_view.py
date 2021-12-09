@@ -91,8 +91,8 @@ class ChangePasswordViewTestCase(TestCase):
     def test_user_makes_post_request_with_invalid_data_to_own_change_password_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
         form_data = {
-            'new_password': 'dfgdfgdfgd10', 
-            'password_confirmation': 'dfgdfgdfgd10'
+            'new_password': 'invalidpassword10', 
+            'password_confirmation': 'invalidpassword10'
         }
         response = self.client.post(self.url, form_data)
         self.assertTemplateUsed(response, 'change_password.html')
