@@ -244,12 +244,12 @@ class Tournaments(models.Model):
     def toggle_apply(self, user_id):
         """ Toggles whether a user has applied to this tournament"""
         user = User.objects.get(id=user_id)
-        if self.is_contender(user_id):
-            self.contender.remove(user)
-        else:
-            if self.is_space_in_tournament():
-                if self.is_time_left():
-                    self.contender.add(user)
+        if self.is_time_left():
+            if self.is_contender(user_id):
+                    self.contender.remove(user)
+            else:
+                if self.is_space_in_tournament():
+                        self.contender.add(user)
 
 class Match(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)

@@ -235,7 +235,7 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
     tournament.toggle_apply(user_id)
 
     if tournament.is_time_left() == False:
-        messages.add_message(request, messages.ERROR, "The deadline to join has passed.")
+        messages.add_message(request, messages.ERROR, "The deadline has passed.")
 
     if tournament.is_space_in_tournament() == False:
         messages.add_message(request, messages.ERROR, "This tournament is full.")
