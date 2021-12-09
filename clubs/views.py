@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 from .models import User, Role, Club, Tournaments
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm
+=======
+from .models import User, Role, Club
+from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
+>>>>>>> 758b37e734625ce3075f0c2136b822ed456d11bb
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import View
@@ -7,7 +12,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer, get_is_user_owner
+from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 
 def request_toggle(request, user_id, club_id):
 
@@ -106,9 +111,21 @@ def club_creator(request):
             return redirect('profile', club_id=club_id, user_id=request.user.id)
     else:
         form = ClubCreatorForm()
-    club_id = request.user.get_first_club_id_user_is_associated_with()
-    club_list = request.user.get_clubs_user_is_a_member()
-    return render(request, 'club_creator.html', {'form': form, 'club_list': club_list, 'club_id': club_id})
+
+    return render(request, 'club_creator.html', {'form': form})
+
+def create_tournament(request, club_id):
+    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
+    if (role.role_name() == "Officer" and request.method == 'POST'):
+        organiser = User.objects.filter(id = request.user.id).first()
+        club = Club.objects.filter(id = club_id).first()
+        form = TournamentForm(request.POST)
+        if form.is_valid():
+            tournament = form.save(organiser, club)
+            return redirect('profile', club_id=club_id, user_id=request.user.id)
+    form = TournamentForm()
+    return render(request, 'create_tournament.html', {'form': form, 'club_id': club_id})
+
 
 @login_required
 @only_current_user
@@ -166,9 +183,21 @@ def profile(request, club_id, user_id):
 
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
-    club_list = request.user.get_clubs_user_is_a_member()
+    club_list = user.get_clubs_user_is_a_member()
     return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club, 'club_list': club_list})
 
+<<<<<<< HEAD
+=======
+def club_page(request, club_id):
+    club_list = request.user.get_clubs_user_is_a_member()
+    club = Club.objects.get(id=club_id)
+    club_members = Role.objects.filter(club=club, role=2)
+    user_is_member = get_is_user_member(club_id, request.user)
+    role_at_club = request.user.get_role_as_text_at_club(club_id)
+    user_is_applicant = get_is_user_applicant(club_id, request.user)
+    user_is_officer = get_is_user_officer(club_id, request. user)
+    return render (request, 'club_page.html', {'club_id': club_id,'user_is_applicant': user_is_applicant, 'user_is_officer': user_is_officer, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members, 'role_at_club': role_at_club})
+>>>>>>> 758b37e734625ce3075f0c2136b822ed456d11bb
 
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
