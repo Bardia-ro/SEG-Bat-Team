@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from clubs.models import Role
+from clubs.models import Role, Tournaments
 
 def redirect_authenticated_user(func):
     def wrapper(request):
@@ -41,6 +41,16 @@ def get_is_user_applicant(club_id, user):
         except: #add error
             return False
     return False
+
+def get_is_user_contender(tournament_id, user):
+    if user.is_authenticated:
+        try:
+            return Tournaments.objects.get(user__id=user.id, tournament__id = tournament_id)
+        except: #add error
+            return False
+    return False
+
+
 
 def only_current_user(func):
     def wrapper(request, club_id, user_id):

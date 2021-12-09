@@ -1,4 +1,4 @@
-from .models import User, Role, Club
+from .models import User, Role, Club, Tournaments
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -7,8 +7,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer, get_is_user_owner
-
+from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer, get_is_user_owner, get_is_user_contender
 
 def request_toggle(request, user_id, club_id):
 
@@ -236,3 +235,39 @@ def pending_requests(request,club_id):
     applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
     # need applicants for a particular club
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
+
+
+#def apply_tournament_toggle(request, tournament_id):
+#    current_user = request.user
+#    try:
+    #    tournament = Tournaments.objects.get(id=tournament_id)
+    #    tournament.toggle_apply(current_user)
+    #    is_contender = tournament.is_contender(current_user)
+
+    #except ObjectDoesNotExist:
+    #    pass
+    #else:
+        #return render(request, 'club_page.html', {})
+
+
+
+
+    #user_is_contender = get_is_user_contender(tournament_id, request.user)
+
+#    if current_user not in tournament.contender.all():
+    #    contender = False
+    #    tournament.contender.add(current_user)
+#    else:
+    #    contender = True
+
+    #return render(request, 'club_page.html' ,
+#    {'tournament_id':tournament, 'contender':contender})
+
+    #try:
+    #    contender = Tournament.objects.get(tour)
+    #    if user_is_owner:
+    #        messages.add_message(request, messages.ERROR, "You must transfer ownership first.")
+        #else:
+    #        role.delete()
+    #except:
+    #    Role.objects.create(user = currentUser, club = club, role = 1)

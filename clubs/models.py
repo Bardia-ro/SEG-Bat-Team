@@ -212,18 +212,31 @@ class Tournaments(models.Model):
 
     name = models.CharField(max_length=50, blank=False, unique=True)
     description = models.CharField(max_length=600, blank=False)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    number_of_participants = models.PositiveIntegerField(default = 0, validators = [MinValueValidator(0), MaxValueValidator(64)])
     capacity = models.SmallIntegerField(
         blank=False, choices=CAPACITY_CHOICES)
-    organiser = models.ForeignKey(User, on_delete=models.CASCADE)
+    number_of_contenders = models.PositiveIntegerField(default = 0, validators = [MinValueValidator(2), MaxValueValidator(capacity)])
     deadline = models.DateTimeField(blank=False)
-    #contenders = models.ManyToManyField(User)
-
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    organiser = models.ForeignKey(User, on_delete=models.CASCADE)
+    contender = models.ManyToManyField(User, related_name = '+')
 
     def __str__(self):
         return self.name
 
+    def is_contender(self, user):
+        return user in self.contender.all()
+
+    def toggle_apply(self, user_id):
+        """ Toggles whether a user has applied to this tournament"""
+        user = User.objects.get(id=user_id)
+        if is_contender(user):
+            self.contender.remove(user)
+        else:
+            self.contender.add(user)
+
+    def contender_count(self):
+        """ Returns the number of contenders in this tournament"""
+        return self.contender.count()
 
 class Match(models.Model):
 

@@ -34,5 +34,6 @@ urlpatterns = [
     path('club_list/', views.club_list, name ='club_ist'),
     path('request_toggle/<int:user_id>/<int:club_id>', views.request_toggle, name = 'request_toggle'),
     path('pending_requests/<int:club_id>', views.pending_requests, name = 'pending_requests'),
-    path('club_creator/', views.club_creator, name = 'club_creator')
+    path('club_creator/', views.club_creator, name = 'club_creator'),
+    #path('apply_toggle/<int:tournament_id>', views.apply_tournament_toggle, name = 'apply_toggle'),
     ]
