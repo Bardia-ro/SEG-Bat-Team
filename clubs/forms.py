@@ -115,21 +115,15 @@ class ClubCreatorForm(forms.ModelForm):
 class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournaments
-        fields = ['name', 'description', 'capacity']
-        widgets = { 'capacity': forms.Select(choices = CAPACITY_CHOICES)}
-        #name, description, club, capacity, organiser, deadline
+        exclude = ('club', 'organiser')
 
-    deadline = forms.DateTimeField()
-
-    def save(self):
-        super().save(commit=False)
-        tournament = Tournaments(
-            name = self.cleaned_data.get('name'),
-            description = self.cleaned_data.get('description'),
-            capacity = self.cleaned_data.get('capacity'),
-            #deadline = self.cleaned_data.get('deadline'),
-            #capacity = capacity,
-            deadline = deadline,
-        )
-        return tournament
-    
+    def save(self, organiser, club):
+        instance = super(TournamentForm, self).save(commit=False)
+        instance.name = self.cleaned_data.get('name')
+        instance.description = self.cleaned_data.get('description')
+        instance.capacity = self.cleaned_data.get('capacity')
+        instance.deadline = self.cleaned_data.get('deadline')
+        instance.club = club
+        instance.organiser = organiser
+        instance.save()
+        return instance

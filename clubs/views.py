@@ -102,11 +102,11 @@ def club_creator(request):
 def create_tournament(request, club_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
     if (role.role_name() == "Officer" and request.method == 'POST'):
+        organiser = User.objects.filter(id = request.user.id).first()
+        club = Club.objects.filter(id = club_id).first()
         form = TournamentForm(request.POST)
         if form.is_valid():
-            tournament = form.save()
-            tournament.organiser = User.objects.filter(user_id = user_id)
-            tournament.club = Club.objects.filter(club_id = club_id)
+            tournament = form.save(organiser, club)
             return redirect('profile', club_id=club_id, user_id=request.user.id)
     form = TournamentForm()
     return render(request, 'create_tournament.html', {'form': form, 'club_id': club_id})
