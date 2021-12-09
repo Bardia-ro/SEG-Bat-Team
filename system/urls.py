@@ -32,15 +32,9 @@ urlpatterns = [
     path('member_list/<int:club_id>/', views.member_list, name ='member_list'),
     path('club_page/<int:club_id>/', views.club_page, name='club_page'),
     path('club_list/', views.club_list, name ='club_ist'),
-<<<<<<< HEAD
     path('request_toggle/<int:user_id>/<int:club_id>', views.request_toggle, name = 'request_toggle'),
     path('pending_requests/<int:club_id>', views.pending_requests, name = 'pending_requests'),
     path('club_creator/', views.club_creator, name = 'club_creator'),
     path('apply_toggle/<int:user_id>/<int:club_id>/<int:tournament_id>', views.apply_tournament_toggle, name = 'apply_toggle'),
-=======
-    path('request_toggle/<int:user_id>/<int:club_id>/', views.request_toggle, name = 'request_toggle'),
-    path('pending_requests/<int:club_id>/', views.pending_requests, name = 'pending_requests'),
-    path('club_creator/', views.club_creator, name = 'club_creator'),
     path('create_tournament/<int:club_id>/', views.create_tournament, name='create_tournament'),
->>>>>>> 758b37e734625ce3075f0c2136b822ed456d11bb
     ]
