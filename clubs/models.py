@@ -14,6 +14,8 @@ from django import template
 from django.utils.safestring import mark_safe
 from location_field.models.plain import PlainLocationField
 from libgravatar import Gravatar
+from django.utils import timezone
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
@@ -224,7 +226,7 @@ class Tournaments(models.Model):
         return self.name
 
     def is_contender(self,user):
-        """Returns whether a user is a contender in a tournament"""
+        """Returns whether a user is a contender in this tournament"""
         #user = User.objects.get(id=user_id)
         return user in self.contender.all()
 
@@ -233,9 +235,13 @@ class Tournaments(models.Model):
         return self.contender.count()
 
     def is_space_in_tournament(self):
-        """Returns whether a tournament has space for more contenders"""
-        count = self.contender.count()
-        return  (count < self.capacity)
+        """Returns whether this tournament has space for more contenders"""
+        return  (self.contender.count() < self.capacity)
+
+    def is_time_left(self):
+        """Returns whether there is time to apply to this tournament"""
+        current_time = timezone.now()
+        return (current_time < self.deadline)
 
     def toggle_apply(self, user_id):
         """ Toggles whether a user has applied to this tournament"""
@@ -244,12 +250,10 @@ class Tournaments(models.Model):
             self.contender.remove(user)
         else:
             if self.is_space_in_tournament():
-                self.contender.add(user)
-
-
+                if self.is_time_left():
+                    self.contender.add(user)
 
 class Match(models.Model):
-
     name = models.CharField(max_length=50, blank=False, unique=True)
     tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
