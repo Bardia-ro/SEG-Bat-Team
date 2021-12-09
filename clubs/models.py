@@ -1,5 +1,5 @@
 from typing import ClassVar
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
 from django import forms
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -194,10 +194,6 @@ class Role(models.Model):
 
 class Tournaments(models.Model):
 
-    name = models.CharField(max_length=50, blank=False, unique=True)
-    description = models.CharField(max_length=600, blank=False)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE)
-
     TWO = 2
     FOUR = 4
     EIGHT = 8
@@ -214,15 +210,19 @@ class Tournaments(models.Model):
         (SIXTY_FOUR, 'Sixty_Four'),
     )
 
+    name = models.CharField(max_length=50, blank=False, unique=True)
+    description = models.CharField(max_length=600, blank=False)
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    number_of_participants = models.PositiveIntegerField(default = 0, validators = [MinValueValidator(0), MaxValueValidator(64)])
     capacity = models.SmallIntegerField(
         blank=False, choices=CAPACITY_CHOICES)
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
     deadline = models.DateTimeField(blank=False)
+    #contenders = models.ManyToManyField(User)
+
 
     def __str__(self):
         return self.name
-
-
 
 
 class Match(models.Model):
