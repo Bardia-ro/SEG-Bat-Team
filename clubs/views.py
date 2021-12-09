@@ -190,7 +190,7 @@ def member_list(request, club_id):
 
     users = User.objects.filter(club__id = club_id)
     club_list = request.user.get_clubs_user_is_a_member()
-    return render(request, 'member_list.html', {'users': users, 'user_is_member': True, 'club_id': club_id, 'club_list': club_list})
+    return render(request, 'member_list.html', {'users': users, 'request_user_is_member': True, 'club_id': club_id, 'club_list': club_list})
 
 @login_required
 def approve_member(request, club_id, applicant_id):
