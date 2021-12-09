@@ -115,8 +115,6 @@ class Club(models.Model):
     def get_tournaments(self):
         return Tournaments.objects.filter(club=self)
 
-
-
 class Role(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
@@ -225,9 +223,9 @@ class Tournaments(models.Model):
     def __str__(self):
         return self.name
 
-    def is_contender(self,user):
+    def is_contender(self,user_id):
         """Returns whether a user is a contender in this tournament"""
-        #user = User.objects.get(id=user_id)
+        user = User.objects.get(id=user_id)
         return user in self.contender.all()
 
     def contender_count(self):
@@ -246,7 +244,7 @@ class Tournaments(models.Model):
     def toggle_apply(self, user_id):
         """ Toggles whether a user has applied to this tournament"""
         user = User.objects.get(id=user_id)
-        if self.is_contender(user):
+        if self.is_contender(user_id):
             self.contender.remove(user)
         else:
             if self.is_space_in_tournament():

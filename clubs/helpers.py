@@ -42,16 +42,6 @@ def get_is_user_applicant(club_id, user):
             return False
     return False
 
-def get_is_user_contender(tournament_id, user):
-    if user.is_authenticated:
-        try:
-            return Tournaments.objects.get(user__id=user.id, tournament__id = tournament_id)
-        except: #add error
-            return False
-    return False
-
-
-
 def only_current_user(func):
     def wrapper(request, club_id, user_id):
         current_user_id = request.user.id
