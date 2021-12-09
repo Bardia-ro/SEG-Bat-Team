@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
-from .models import User, Club
+from .models import User, Club, Tournaments
 from location_field.forms.plain import PlainLocationField
 
 #options for the 'experience' drop down box
@@ -13,6 +13,23 @@ EXPERIENCE_CHOICES = [
 ('class A', 'Class A'),
 ('expert', 'Expert'),
 ('master', 'Master'),
+]
+
+# options for tournament capacity
+TWO = 2
+FOUR = 4
+EIGHT = 8
+SIXTEEN = 16
+THIRTY_TWO = 32
+SIXTY_FOUR = 64
+
+CAPACITY_CHOICES = [
+    (TWO, 'Two',),
+    (FOUR, 'Four'),
+    (EIGHT, 'Eight'),
+    (SIXTEEN, 'Sixteen'),
+    (THIRTY_TWO, 'Thirty_Two'),
+    (SIXTY_FOUR, 'Sixty_Four'),
 ]
 
 class Password():
@@ -95,5 +112,24 @@ class ClubCreatorForm(forms.ModelForm):
         model = Club
         exclude = ('users', 'location')
 
+class TournamentForm(forms.ModelForm):
+    class Meta:
+        model = Tournaments
+        fields = ['name', 'description', 'capacity']
+        widgets = { 'capacity': forms.Select(choices = CAPACITY_CHOICES)}
+        #name, description, club, capacity, organiser, deadline
 
+    deadline = forms.DateTimeField()
+
+    def save(self):
+        super().save(commit=False)
+        tournament = Tournaments(
+            name = self.cleaned_data.get('name'),
+            description = self.cleaned_data.get('description'),
+            capacity = self.cleaned_data.get('capacity'),
+            #deadline = self.cleaned_data.get('deadline'),
+            #capacity = capacity,
+            deadline = deadline,
+        )
+        return tournament
     

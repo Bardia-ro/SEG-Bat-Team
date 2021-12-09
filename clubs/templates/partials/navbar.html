@@ -39,8 +39,15 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'pending_requests' club_id=club_id %}"> Pending Requests</a>
         </li>
+
+        
         {% endif %}
       </ul>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'create_tournament' club_id=club_id %}"> Create Tournament</a>
+      </li>
+
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="user-account-dropdown" role="button" data-bs-toggle="dropdown"
