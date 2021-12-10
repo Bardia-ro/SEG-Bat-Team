@@ -1,4 +1,5 @@
-from .models import User, Role, Club
+
+from .models import User, Role, Club, Tournaments
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -8,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
-
 
 def request_toggle(request, user_id, club_id):
 
@@ -25,20 +25,31 @@ def request_toggle(request, user_id, club_id):
     except:
         Role.objects.create(user = currentUser, club = club, role = 1)
 
-    user_is_officer = get_is_user_officer(club_id, request.user)
-    user_is_applicant = get_is_user_applicant(club_id, request.user)
-    club_list = Role.objects.filter(user = request.user)
-    club_members = Role.objects.filter(club=club)
+    return redirect('club_page', club_id=club_id)
 
-    return render(request, 'club_page.html' ,
-    {'club_id': club_id,
-    'user_is_applicant':user_is_applicant,
+def club_page(request, club_id):
+
+    club_list = request.user.get_clubs_user_is_a_member()
+    club = Club.objects.get(id=club_id)
+    club_members = Role.objects.filter(club=club, role=2)
+    role_at_club = request.user.get_role_as_text_at_club(club_id)
+
+    #following neesd to be refactored:
+    user_is_member = get_is_user_member(club_id, request.user)
+    user_is_applicant = get_is_user_applicant(club_id, request.user)
+    user_is_officer = get_is_user_officer(club_id, request. user)
+    user_is_owner = get_is_user_owner(club_id, request.user)
+
+    return render (request, 'club_page.html', {'club_id': club_id,
+    'user_is_applicant': user_is_applicant,
+    'user_is_officer': user_is_officer,
+    'user_is_member':user_is_member,
     'club': club,
     'club_list': club_list,
     'club_members': club_members,
-    'user_is_officer':user_is_officer,
-    'user_is_owner': user_is_owner})
-
+    'role_at_club': role_at_club,
+    'user_is_owner': user_is_owner,
+    })
 
 @redirect_authenticated_user
 def log_in(request):
@@ -171,15 +182,6 @@ def profile(request, club_id, user_id):
     club_list = user.get_clubs_user_is_a_member()
     return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club, 'club_list': club_list})
 
-def club_page(request, club_id):
-    club_list = request.user.get_clubs_user_is_a_member()
-    club = Club.objects.get(id=club_id)
-    club_members = Role.objects.filter(club=club, role=2)
-    user_is_member = get_is_user_member(club_id, request.user)
-    role_at_club = request.user.get_role_as_text_at_club(club_id)
-    user_is_applicant = get_is_user_applicant(club_id, request.user)
-    user_is_officer = get_is_user_officer(club_id, request. user)
-    return render (request, 'club_page.html', {'club_id': club_id,'user_is_applicant': user_is_applicant, 'user_is_officer': user_is_officer, 'user_is_member':user_is_member, 'club': club, 'club_list': club_list, 'club_members': club_members, 'role_at_club': role_at_club})
 
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
@@ -239,3 +241,17 @@ def pending_requests(request,club_id):
     applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
     # need applicants for a particular club
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
+
+
+def apply_tournament_toggle(request, user_id, club_id, tournament_id):
+    tournament = Tournaments.objects.get(id=tournament_id)
+    tournament.toggle_apply(user_id)
+
+    if tournament.is_time_left() == False:
+        messages.add_message(request, messages.ERROR, "The deadline has passed.")
+
+    if tournament.is_space() == False:
+        messages.add_message(request, messages.ERROR, "This tournament is full.")
+
+#    is_contender = tournament.is_contender(user_id)
+    return redirect('club_page', club_id=club_id)
