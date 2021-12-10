@@ -252,7 +252,7 @@ class Tournaments(models.Model):
                         self.contender.add(user)
 
 class Match(models.Model):
-    number = models.PositiveSmallIntegerField()
+    number = models.PositiveSmallIntegerField(default=1)
     tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
     player1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player1')
