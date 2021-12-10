@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
 from .models import User, Club, Tournaments
 from location_field.forms.plain import PlainLocationField
+import datetime
 
 #options for the 'experience' drop down box
 EXPERIENCE_CHOICES = [
@@ -127,3 +128,6 @@ class TournamentForm(forms.ModelForm):
         instance.organiser = organiser
         instance.save()
         return instance
+            
+
+
