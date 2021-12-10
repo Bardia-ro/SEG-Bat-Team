@@ -5,7 +5,7 @@
        <div class = "row">
           <div class = "col-12">
             <h1>Tournament Creation</h1>
-            <p>Deadline format (Year-Month-Day Hours:Minutes:Seconds) e.g. 2021-12-12 08:30:00</p>   
+            <p>Deadline format (YYYY-MM-DD HH:MM:SS) e.g. 2021-12-12 08:30:00</p>   
         <form action="{% url 'create_tournament' club_id=club_id user_id=user_id %}" method="post">
             {% csrf_token %}
             {% include 'partials/bootstrap_form.html' with form=form %}
