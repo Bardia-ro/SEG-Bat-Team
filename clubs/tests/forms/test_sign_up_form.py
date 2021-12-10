@@ -32,6 +32,7 @@ class SignUpFormTestCase(TestCase):
         email_field = form.fields['email']
         self.assertTrue(isinstance(email_field, forms.EmailField))
         self.assertIn('bio', form.fields)
+        self.assertIn('personal_statement', form.fields)
         self.assertIn('new_password', form.fields)
         new_password_widget = form.fields['new_password'].widget
         self.assertTrue(isinstance(new_password_widget, forms.PasswordInput))
@@ -61,7 +62,7 @@ class SignUpFormTestCase(TestCase):
         form = SignUpForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
-    def test_new_password_and_password_confrimtaino_are_identical(self):
+    def test_new_password_and_password_confirmation_are_identical(self):
         self.form_input['password_confirmation'] = 'WrongPassword123'
         form = SignUpForm(data=self.form_input)
         self.assertFalse(form.is_valid())
