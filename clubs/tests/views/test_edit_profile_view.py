@@ -18,11 +18,11 @@ class EditProfileViewTestCase(TestCase):
         self.url = reverse('edit_profile', kwargs={"club_id": 0, "user_id": 200})
 
     def test_edit_profile_url(self):
-        self.assertEqual(self.url, '/edit_profile/0/200')
+        self.assertEqual(self.url, '/edit_profile/0/200/')
 
     def test_non_logged_in_user_gets_edit_profile_page(self):
         response = self.client.get(self.url, follow=True)
-        expected_url = '/log_in/?next=/edit_profile/0/200'
+        expected_url = '/log_in/?next=/edit_profile/0/200/'
         self.assertRedirects(response, expected_url)
         self.assertTemplateUsed(response, 'log_in.html')
 

@@ -17,11 +17,11 @@ class ProfileViewTestCase(TestCase):
         self.url = reverse('profile', kwargs={"club_id": 0, "user_id": 200})
 
     def test_profile_url(self):
-        self.assertEqual(self.url, '/profile/0/200')
+        self.assertEqual(self.url, '/profile/0/200/')
 
     def test_non_logged_in_user_gets_user_profile_page(self):
         response = self.client.get(self.url, follow=True)
-        expected_url = '/log_in/?next=/profile/0/200'
+        expected_url = '/log_in/?next=/profile/0/200/'
         self.assertRedirects(response, expected_url)
         self.assertTemplateUsed(response, 'log_in.html')
 
@@ -140,6 +140,21 @@ class ProfileViewTestCase(TestCase):
         request_user = User.objects.get(id=76)
         self.assertQuerysetEqual(response.context['club_list'], request_user.get_clubs_user_is_a_member())
 
+    def test_officer_gets_user_not_associated_with_club_profile_page(self):
+        self.client.login(email='erinswanson@example.org', password='Password123')
+        response = self.client.get(self.url, follow=True)
+        expected_url = reverse('profile', kwargs={"club_id": 1, "user_id": 20})
+        self.assertRedirects(response, expected_url)
+        self.assertTemplateUsed(response, 'profile.html')
+        user = User.objects.get(email='erinswanson@example.org')
+        self.assertEqual(response.context['user'], user)
+        self.assertEqual(response.context['club_id'], 1)  
+        self.assertTrue(response.context['request_user_is_member']) 
+        self.assertTrue(response.context['is_current_user'])
+        self.assertEqual(response.context['request_user_role'], 3)
+        self.assertEqual(response.context['user_role'], 3)
+        request_user = user
+        self.assertQuerysetEqual(response.context['club_list'], request_user.get_clubs_user_is_a_member())
 
     def test_officer_gets_applicant_profile_page(self):
         url = reverse('profile', kwargs={"club_id": 1,"user_id": 35})
@@ -209,6 +224,22 @@ class ProfileViewTestCase(TestCase):
         request_user = User.objects.get(id=20)
         self.assertQuerysetEqual(response.context['club_list'], request_user.get_clubs_user_is_a_member())
         self._assert_response_contains_content(response, user)
+    
+    def test_owner_gets_user_not_associated_with_club_profile_page(self):
+        self.client.login(email='billie@example.org', password='Password123')
+        response = self.client.get(self.url, follow=True)
+        expected_url = reverse('profile', kwargs={"club_id": 1, "user_id": 103})
+        self.assertRedirects(response, expected_url)
+        self.assertTemplateUsed(response, 'profile.html')
+        user = User.objects.get(email='billie@example.org')
+        self.assertEqual(response.context['user'], user)
+        self.assertEqual(response.context['club_id'], 1)  
+        self.assertTrue(response.context['request_user_is_member']) 
+        self.assertTrue(response.context['is_current_user'])
+        self.assertEqual(response.context['request_user_role'], 4)
+        self.assertEqual(response.context['user_role'], 4)
+        request_user = user
+        self.assertQuerysetEqual(response.context['club_list'], request_user.get_clubs_user_is_a_member())
     
     def test_owner_gets_applicant_profile_page(self):
         url = reverse('profile', kwargs={"club_id": 1,"user_id": 35})
