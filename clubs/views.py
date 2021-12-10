@@ -81,7 +81,7 @@ def sign_up(request):
 
     return render(request, 'sign_up.html', {'form':form})
 
-def club_creator(request):
+def club_creator(request, club_id, user_id):
     if (request.user.is_authenticated != True):
         club_id = request.user.get_first_club_id_user_is_associated_with()
         return redirect('profile', club_id=club_id, user_id=request.user.id)
@@ -97,9 +97,9 @@ def club_creator(request):
     else:
         form = ClubCreatorForm()
 
-    return render(request, 'club_creator.html', {'form': form})
+    return render(request, 'club_creator.html', {'form': form, 'club_id': club_id, 'user_id': user_id})
 
-def create_tournament(request, club_id):
+def create_tournament(request, club_id, user_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
     if (role.role_name() == "Officer" and request.method == 'POST'):
         organiser = User.objects.filter(id = request.user.id).first()
@@ -109,7 +109,7 @@ def create_tournament(request, club_id):
             tournament = form.save(organiser, club)
             return redirect('profile', club_id=club_id, user_id=request.user.id)
     form = TournamentForm()
-    return render(request, 'create_tournament.html', {'form': form, 'club_id': club_id})
+    return render(request, 'create_tournament.html', {'form': form, 'club_id': club_id, 'user_id': user_id})
 
 
 @login_required
@@ -228,10 +228,10 @@ def transfer_ownership(request, club_id, new_owner_id):
     return redirect('profile', club_id=club_id, user_id=new_owner_id)
 
 @login_required
-def club_list(request):
+def club_list(request, club_id):
     user = User.objects.get(id=request.user.id)
     clubs = Club.objects.all()
-    club_id = request.user.get_first_club_id_user_is_associated_with()
+    #club_id = request.user.get_first_club_id_user_is_associated_with()
     club_list = user.get_clubs_user_is_a_member()
     return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id, 'club_list': club_list})
 
