@@ -12,18 +12,18 @@
       <ul class="navbar-nav mr-auto">
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'club_ist' %}">Find Clubs</a>
+          <a class="nav-link" href="{% url 'club_list' club_id=club_id %}">Find Clubs</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'club_creator' %}">Create Club</a>
+          <a class="nav-link" href="{% url 'club_creator' club_id=club_id user_id=user.id %}">Create Club</a>
         </li>
 
         {% if club_list != None %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="user-account-dropdown" role="button"
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span>My Clubs</span>
+            <span>My Clubs </span>
           </a>
           <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="club-dropdown">
             {% for item in club_list %}
@@ -40,13 +40,14 @@
           <a class="nav-link" href="{% url 'pending_requests' club_id=club_id %}"> Pending Requests</a>
         </li>
 
-        
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'create_tournament' club_id=club_id user_id=user.id %}"> Create Tournament</a>
+        </li>
+
         {% endif %}
       </ul>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'create_tournament' club_id=club_id %}"> Create Tournament</a>
-      </li>
+
 
 
       <li class="nav-item dropdown">
