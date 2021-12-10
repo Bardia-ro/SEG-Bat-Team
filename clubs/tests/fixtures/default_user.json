@@ -1,16 +1,17 @@
 [
     {
         "model": "clubs.User",
-        "pk": 0,
+        "pk": 1,
         "fields": {
-            "role": 1,
             "email": "johndoe@example.org",
             "first_name": "John",
             "last_name": "Doe",
             "bio": "Hey guys!",
-            "experience": "class B",
+            "experience": "class D",
             "personal_statement": "Hi everyone. I love chess!",
             "password": "pbkdf2_sha256$260000$YfWA9vJZy1NSDBx92f9Fl6$d7EwKLswx6y3bj7y/t8asD/VZgzgVUn8zI7fA6ndt/8="
+            
         }
     }
+
 ]
