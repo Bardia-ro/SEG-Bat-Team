@@ -253,7 +253,31 @@ class Tournaments(models.Model):
 
 class Match(models.Model):
     number = models.PositiveSmallIntegerField()
-    tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
-    winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
     player1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player1')
     player2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player2')
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
+
+class EliminationStages(models.Model):
+    tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
+
+    PLAYER_NUMBER_CHOICES = [
+        (2, 2),
+        (4, 4),
+        (8, 8),
+        (16, 16)
+    ]
+    number_of_players = models.PositiveSmallIntegerField(choices=PLAYER_NUMBER_CHOICES)
+    
+
+# ROUND_CHOICES = [
+#         (2, 'Final'),
+#         (4, 'Semi-final'),
+#         (8, 'Quarter-final'),
+#         (16, 'Round-of-sixteen')
+#     ]
+
+# elimination_round = models.CharField(choices=ROUND_CHOICES)
+
+class EliminationMatch(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    elimination_stages = models.ForeignKey(EliminationStages, on_delete=models.CASCADE)
