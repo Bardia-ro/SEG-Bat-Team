@@ -153,6 +153,9 @@ class Role(models.Model):
         self.role = Role.MEMBER
         self.save()
 
+    def reject_membership(self):
+        self.delete()
+
     def promote_member_to_officer(self):
         self.role = Role.OFFICER
         self.save()
