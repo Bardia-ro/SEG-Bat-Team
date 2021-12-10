@@ -7,11 +7,8 @@ from clubs.models import User, Club
 class ClubCreatorTestCase(TestCase):
     """Unit tests for the Sign Up Form."""
 
-    fixtures = [
-        'clubs/tests/fixtures/default_user.json']
 
     def setUp(self):
-        self.user = User.objects.get(email='johndoe@example.org')
         self.form_input = {
             'name': 'Club A',
             'city': 'London',
