@@ -1,0 +1,22 @@
+[
+    {
+        "model": "clubs.Club",
+        "pk": 0,
+        "fields": {
+            "name": "Club A",
+            "city": "London",
+            "location": "London",
+            "description": "This is Club A"
+        }
+    },
+
+    {
+        "model": "clubs.Role",
+        "pk": 0,
+        "fields": {
+            "club": 0,
+            "user": 1,
+            "role": 4
+        }
+    }
+]
