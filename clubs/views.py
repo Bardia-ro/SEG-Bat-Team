@@ -1,5 +1,5 @@
 
-from .models import User, Role, Club, Tournaments
+from .models import User, UserInClub, Club, Tournament
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -17,13 +17,13 @@ def request_toggle(request, user_id, club_id):
     user_is_owner = get_is_user_owner(club_id, request.user)
 
     try:
-        role = Role.objects.get(user = currentUser, club = club)
+        role = UserInClub.objects.get(user = currentUser, club = club)
         if user_is_owner:
             messages.add_message(request, messages.ERROR, "You must transfer ownership first.")
         else:
             role.delete()
     except:
-        Role.objects.create(user = currentUser, club = club, role = 1)
+        UserInClub.objects.create(user = currentUser, club = club, role = 1)
 
     return redirect('club_page', club_id=club_id)
 
@@ -31,7 +31,7 @@ def club_page(request, club_id):
 
     club_list = request.user.get_clubs_user_is_a_member()
     club = Club.objects.get(id=club_id)
-    club_members = Role.objects.filter(club=club, role=2)
+    club_members = UserInClub.objects.filter(club=club, role=2)
     role_at_club = request.user.get_role_as_text_at_club(club_id)
 
     #following neesd to be refactored:
@@ -103,7 +103,7 @@ def club_creator(request, club_id, user_id):
             club = form.save()
             club_id = request.user.get_first_club_id_user_is_associated_with()
             #attempt to add user as owner of the new club
-            Role.objects.create(user = request.user, club = club, role = 4)
+            UserInClub.objects.create(user = request.user, club = club, role = 4)
             return redirect('profile', club_id=club_id, user_id=request.user.id)
     else:
         form = ClubCreatorForm()
@@ -111,7 +111,7 @@ def club_creator(request, club_id, user_id):
     return render(request, 'club_creator.html', {'form': form, 'club_id': club_id, 'user_id': user_id})
 
 def create_tournament(request, club_id, user_id):
-    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
+    role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id=request.user.id)
     if (role.role_name() == "Officer" and request.method == 'POST'):
         organiser = User.objects.filter(id = request.user.id).first()
         club = Club.objects.filter(id = club_id).first()
@@ -198,32 +198,32 @@ def member_list(request, club_id):
 
 @login_required
 def approve_member(request, club_id, applicant_id):
-    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = applicant_id)
-    officer_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
+    role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = applicant_id)
+    officer_role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
         role.approve_membership()
     return redirect('pending_requests', club_id=club_id)
 
 @login_required
 def promote_member_to_officer(request, club_id, member_id):
-    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = member_id)
-    owner_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
+    role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = member_id)
+    owner_role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Member" and owner_role.role_name() == "Owner"):
         role.promote_member_to_officer()
     return redirect('profile', club_id=club_id, user_id=member_id)
 
 @login_required
 def demote_officer_to_member(request, club_id, officer_id):
-    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = officer_id)
-    owner_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
+    role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = officer_id)
+    owner_role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Officer" and owner_role.role_name() == "Owner"):
         role.demote_officer_to_member()
     return redirect('profile', club_id=club_id, user_id=officer_id)
 
 @login_required
 def transfer_ownership(request, club_id, new_owner_id):
-    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
-    new_owner_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = new_owner_id)
+    role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = request.user.id)
+    new_owner_role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = new_owner_id)
     if (role.role_name() == "Owner" and new_owner_role.role_name() == "Officer"):
         role.change_owner(club_id, new_owner_id)
     return redirect('profile', club_id=club_id, user_id=new_owner_id)
@@ -237,13 +237,13 @@ def club_list(request, club_id):
     return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id, 'club_list': club_list})
 
 def pending_requests(request,club_id):
-    applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
+    applicants = UserInClub.objects.all().filter(role = 1).filter(club_id = club_id)
     # need applicants for a particular club
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
 
 
 def apply_tournament_toggle(request, user_id, club_id, tournament_id):
-    tournament = Tournaments.objects.get(id=tournament_id)
+    tournament = Tournament.objects.get(id=tournament_id)
     tournament.toggle_apply(user_id)
 
     if tournament.is_time_left() == False:
@@ -254,3 +254,9 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 
 #    is_contender = tournament.is_contender(user_id)
     return redirect('club_page', club_id=club_id)
+
+def adjust_elo_rating_after_match(request, club_id, user1_id, user2_id, result):
+    role = get_object_or_404(UserInClub.all(), club_id = club_id, user_id = request.user.id)
+    if (role.role_name() == "Officer"):
+        role.adjust_elo_rating(club_id, user1_id,user2_id, result)
+    return redirect('profile', club_id = club_id, user_id = user1_id)

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
-from .models import User, Club, Tournaments
+from .models import User, Club, Tournament
 from location_field.forms.plain import PlainLocationField
 
 #options for the 'experience' drop down box
@@ -114,7 +114,7 @@ class ClubCreatorForm(forms.ModelForm):
 
 class TournamentForm(forms.ModelForm):
     class Meta:
-        model = Tournaments
+        model = Tournament
         exclude = ('club', 'organiser','contender')
 
     def save(self, organiser, club):

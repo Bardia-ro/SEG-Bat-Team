@@ -56,11 +56,11 @@ class User(AbstractBaseUser, PermissionsMixin):
             return club.id
 
     def get_role_at_club(self, club_id):
-        return Role.objects.get(club__id=club_id, user__id=self.id).role
+        return UserInClub.objects.get(club__id=club_id, user__id=self.id).role
 
     def get_role_as_text_at_club(self, club_id):
         try:
-            role = Role.objects.get(club_id=club_id, user=self).role
+            role = UserInClub.objects.get(club_id=club_id, user=self).role
         except:
             return "Not a member"
         if role == 2:
@@ -75,15 +75,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_is_user_associated_with_club(self, club_id):
         try:
-            Role.objects.get(club__id=club_id, user__id=self.id)
+            UserInClub.objects.get(club__id=club_id, user__id=self.id)
             return True
-        except Role.DoesNotExist:
+        except UserInClub.DoesNotExist:
             return False
 
     def get_clubs_user_is_a_member(self):
-        as_member = Role.objects.filter(role=2, user=self)
-        as_officer = Role.objects.filter(role=3, user=self)
-        as_owner = Role.objects.filter(role=4, user=self)
+        as_member = UserInClub.objects.filter(role=2, user=self)
+        as_officer = UserInClub.objects.filter(role=3, user=self)
+        as_owner = UserInClub.objects.filter(role=4, user=self)
         return as_member.union(as_officer,as_owner)
 
 class Club(models.Model):
@@ -91,33 +91,34 @@ class Club(models.Model):
     city = models.CharField(max_length =255)
     location = PlainLocationField(based_fields = ['city'], zoom = 7)
     description = models.CharField(max_length=600, blank=False)
-    users = models.ManyToManyField(User, through='Role')
+    users = models.ManyToManyField(User, through='UserInClub')
 
 
     def __str__(self):
         return self.name
 
     def get_total(self):
-        the_members = Role.objects.filter(club=self, role=2)
-        the_officers = Role.objects.filter (club=self, role=3)
-        the_owner = Role.objects.filter(club=self, role=4)
+        the_members = UserInClub.objects.filter(club=self, role=2)
+        the_officers = UserInClub.objects.filter (club=self, role=3)
+        the_owner = UserInClub.objects.filter(club=self, role=4)
         return the_officers.union(the_members,the_owner).count()
 
     def get_owner(self):
-        return Role.objects.get(club=self, role=4).user
+        return UserInClub.objects.get(club=self, role=4).user
 
     def get_officers(self):
-        return Role.objects.filter(club=self, role=3)
+        return UserInClub.objects.filter(club=self, role=3)
 
     def get_members(self):
-        return Role.objects.filter(club=self, role=2)
+        return UserInClub.objects.filter(club=self, role=2)
 
     def get_tournaments(self):
-        return Tournaments.objects.filter(club=self)
+        return Tournament.objects.filter(club=self)
 
-class Role(models.Model):
+class UserInClub(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    elo_rating = models.IntegerField(blank=False, default=1000)
 
     NO_CLUB = 0
     APPlICANT = 1
@@ -137,39 +138,40 @@ class Role(models.Model):
         blank=False, default=APPlICANT, choices=ROLE_CHOICES)
 
     def role_name(self):
-        if self.role == Role.APPlICANT:
+        if self.role == UserInClub.APPlICANT:
            return "Applicant"
-        elif self.role == Role.MEMBER:
+        elif self.role == UserInClub.MEMBER:
             return "Member"
-        elif self.role == Role.OFFICER:
+        elif self.role == UserInClub.OFFICER:
             return "Officer"
-        elif self.role == Role.OWNER:
+        elif self.role == UserInClub.OWNER:
             return "Owner"
+            
 
     def user_email(self):
         return self.user.email
 
     def approve_membership(self):
-        self.role = Role.MEMBER
+        self.role = UserInClub.MEMBER
         self.save()
 
     def promote_member_to_officer(self):
-        self.role = Role.OFFICER
+        self.role = UserInClub.OFFICER
         self.save()
 
     def demote_officer_to_member(self):
-        self.role = Role.MEMBER
+        self.role = UserInClub.MEMBER
         self.save()
 
     def demote_member_to_applicant(self):
-        self.role = Role.APPlICANT
+        self.role = UserInClub.APPlICANT
         self.save()
 
     def change_owner(self, club_id, new_owner_id):
-        self.role = Role.OFFICER
+        self.role = UserInClub.OFFICER
         self.save()
-        new_owner_role_instance = Role.objects.get(club_id=club_id, user_id=new_owner_id)
-        new_owner_role_instance.role = Role.OWNER
+        new_owner_role_instance = UserInClub.objects.get(club_id=club_id, user_id=new_owner_id)
+        new_owner_role_instance.role = UserInClub.OWNER
         new_owner_role_instance.save()
 
     def is_owner(self):
@@ -188,11 +190,45 @@ class Role(models.Model):
         return self.role > 1
 
     def get_Officers(self):
-        officers = Role.objects.all().filter(role = 3)
+        officers = UserInClub.objects.all().filter(role = 3)
         return officers
+    
+    def adjust_elo_rating(self, club_id, user1_id, user2_id, result):
+        player_1 = UserInClub.objects.get(club_id=club_id, user_id=user1_id)
+        player_2 = UserInClub.objects.get(club_id=club_id, user_id=user2_id)
+        tup = self.calculate_expected_scores(player_1.elo_rating, player_2.elo_rating, result)
+        player_1.elo_rating = tup[0]
+        player_2.elo_rating = tup[1]
+        
+    def calculate_expected_scores(self, elo_A, elo_B, result):
+        res_A = 1
+        res_B = 1
+        divA = (elo_B - elo_A)/400
+        divA_ = (10**divA) + 1
+        E_A = 1/divA_
+
+        divB = (elo_A - elo_B)/400
+        divB_ = (10**divB) + 1
+        E_B = 1/divB_
+        if result == "A": 
+            res_A = 1
+            res_B = 0
+        elif result == "B":
+            res_A = 0
+            res_B = 1
+        elif result == "Draw":
+            res_A = 0.5
+            res_B = 0.5 
+
+        new_elo_A = elo_A + 32 * (res_A - E_A)
+        new_elo_B = elo_B + 32 * (res_B - E_B)
+
+        return new_elo_A , new_elo_B
 
 
-class Tournaments(models.Model):
+
+
+class Tournament(models.Model):
 
     TWO = 2
     FOUR = 4
@@ -253,9 +289,11 @@ class Tournaments(models.Model):
 
 class Match(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)
-    tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
     loser = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'loser')
 
     def __str__(self):
         return self.name
+
+
