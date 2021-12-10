@@ -57,7 +57,7 @@
         </a>
         <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="user-account-dropdown">
           {% if club_id != None %}
-          <li><a class="dropdown-item" href="{% url 'profile' club_id=club_id user_id=user.id %}"> My profile</a></li>
+          <li><a class="dropdown-item" href="{% url 'profile' club_id=club_id user_id=request.user.id %}"> My profile</a></li>
           <li><a class="dropdown-item" href="{% url 'change_password' club_id=club_id user_id=user.id %}">Change
               password</a></li>
           {% endif %}
