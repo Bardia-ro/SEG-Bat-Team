@@ -10,11 +10,10 @@ class EditProfileFormTestCase(TestCase):
         'clubs/tests/fixtures/default_user.json']
 
     def setUp(self):
-        self.user = User.objects.get(email='johndoe@example.org')
         self.form_input = {
             'first_name': 'John',
             'last_name': 'Doe',
-            'email': 'johndoe@example.com',
+            'email': 'johndoe@example.org',
             'bio': 'New bio',
             'experience' : 'Class D',
             'personal_statement' : 'New statement'
@@ -45,25 +44,8 @@ class EditProfileFormTestCase(TestCase):
         form = EditProfileForm(data=self.form_input)
         self.assertFalse(form.is_valid())
     
-    def test_form_rejects_blank_bio(self):
-        self.form_input['bio']= ''
-        form = EditProfileForm(data=self.form_input)
-        self.assertFalse(form.is_valid())
-    
     def test_form_rejects_blank_personal_statement(self):
-        self.form_input['personal']= ''
+        self.form_input['personal_statement']= ''
         form = EditProfileForm(data=self.form_input)
         self.assertFalse(form.is_valid())
     
-    def test_form_must_save_correctly(self):
-        form = EditProfileForm(data=self.form_input)
-        before = User.objects.get(email='johndoe@example.org')
-        form.save()
-        after = User.objects.get(email='johndoe@example.org')
-        self.assertNotEqual(after, before)
-        self.assertEqual(after.first_name, 'Jane')
-        self.assertEqual(after.last_name, 'Doe')
-        self.assertEqual(after.email, 'johndoe@example.org')
-        self.assertEqual(after.bio, 'New bio')
-        self.assertEqual(after.personal_statement, 'New statement')
-        self.assertEqual(after.experience, 'Class D')
