@@ -44,7 +44,7 @@ class SignUpFormTestCase(TestCase):
         type_field_widget = form.fields['experience'].widget
         self.assertTrue(isinstance(type_field_widget, forms.Select))
         self.assertIn('personal_statement', form.fields)
-        personal_statement_widget = form.fields['experience'].widget
+        personal_statement_widget = form.fields['personal_statement'].widget
         self.assertTrue(isinstance(personal_statement_widget, forms.Textarea))
         
 
