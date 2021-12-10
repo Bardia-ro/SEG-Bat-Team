@@ -4,6 +4,7 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.fields import BLANK_CHOICE_DASH, proxy
+from django.db.models.query import QuerySet
 from django.http import request
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import PermissionsMixin
@@ -218,23 +219,23 @@ class Tournaments(models.Model):
     deadline = models.DateTimeField(blank=False)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
-    contender = models.ManyToManyField(User, related_name = '+')
+    players = models.ManyToManyField(User, related_name = '+')
 
     def __str__(self):
         return self.name
 
-    def is_contender(self,user_id):
-        """Returns whether a user is a contender in this tournament"""
+    def is_player(self,user_id):
+        """Returns whether a user is a player in this tournament"""
         user = User.objects.get(id=user_id)
-        return user in self.contender.all()
+        return user in self.players.all()
 
-    def contender_count(self):
-        """ Returns the number of contenders in this tournament"""
-        return self.contender.count()
+    def player_count(self):
+        """ Returns the number of players in this tournament"""
+        return self.players.count()
 
     def is_space(self):
-        """Returns whether this tournament has space for more contenders"""
-        return  (self.contender.count() < self.capacity)
+        """Returns whether this tournament has space for more players"""
+        return  (self.players.count() < self.capacity)
 
     def is_time_left(self):
         """Returns whether there is time to apply to this tournament"""
@@ -246,10 +247,38 @@ class Tournaments(models.Model):
         user = User.objects.get(id=user_id)
         if self.is_time_left():
             if self.is_contender(user_id):
-                    self.contender.remove(user)
+                    self.players.remove(user)
             else:
                 if self.is_space():
-                        self.contender.add(user)
+                        self.players.add(user)
+
+    def create_elimination_matches(self):
+        num_players = len(self.players)
+        elimination_stages_instance = EliminationStages.objects.create(
+            tournament = self,
+            number_of_players = num_players
+        )
+
+        for n in range(1, (num_players/2)+1, 2):
+            match = Match.objects.create(
+                number = n,
+                player1 = self.players[n],
+                player2 = self.players[n+1]
+            )
+            EliminationMatch.objects.create(
+                match = match, 
+                elimination_stages = elimination_stages_instance
+            )
+
+        for n in range((num_players/2)+1, num_players):
+            match = Match.objects.create(number = n)
+            EliminationMatch.objects.create(
+                match = match, 
+                elimination_stages = elimination_stages_instance
+            )
+
+    def set_elimination_match_winner(self):
+        
 
 class Match(models.Model):
     number = models.PositiveSmallIntegerField()
