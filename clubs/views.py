@@ -81,7 +81,7 @@ def log_in(request):
             if user is not None:
                 login(request, user)
                 club_id = user.get_first_club_id_user_is_associated_with()
-                return redirect('profile', club_id=club_id, user_id=request.user.id)
+                return redirect(next or 'profile', club_id=club_id, user_id=request.user.id)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     else:
         next = request.GET.get('next') or ''
