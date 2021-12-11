@@ -44,5 +44,5 @@ class MatchAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for Matches."""
 
     list_display = [
-        'number','tournament', 'winner', 'player1', 'player2',
+        'number', 'player1', 'player2', 'winner'
     ]
