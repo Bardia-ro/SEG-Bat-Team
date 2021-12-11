@@ -44,7 +44,8 @@ class Password():
             )]
     )
     password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
-    
+
+
 class SignUpForm(forms.ModelForm, Password):
     class Meta:
         model = User
@@ -113,10 +114,21 @@ class ClubCreatorForm(forms.ModelForm):
         model = Club
         exclude = ('users', 'location')
 
+
+class DateTimeLocalInput(forms.DateTimeInput):
+    input_type = 'datetime-local'
+
+class DateTimeLocalField(forms.DateTimeField):
+    input_formats = [
+         "%Y-%m-%dT%H:%M:%S","%Y-%m-%dT%H:%M:%S.%f","%Y-%m-%dT%H:%M"
+    ]
+
 class TournamentForm(forms.ModelForm):
+    
     class Meta:
         model = Tournaments
         exclude = ('club', 'organiser','contender')
+        widgets = {'deadline': DateTimeLocalInput(format="%Y-%m-%dT%H:%M")}
 
     def save(self, organiser, club):
         instance = super(TournamentForm, self).save(commit=False)
