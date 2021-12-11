@@ -27,6 +27,8 @@ def request_toggle(request, user_id, club_id):
 
     return redirect('club_page', club_id=club_id)
 
+
+@login_required
 def club_page(request, club_id):
 
     club_list = request.user.get_clubs_user_is_a_member()
@@ -51,6 +53,22 @@ def club_page(request, club_id):
     'user_is_owner': user_is_owner,
     })
 
+
+#class LogInView(View):
+    #"""View that handles log in"""
+
+#    http_method_names = ['get', 'post']
+#
+#    def get(self, request):
+    #    """Display log in template."""
+    #    self.next = request.GET.get('next') or ''
+    #    return self.render()
+
+    #def post(self, request):
+    #    """Handle log in attempt."""
+
+
+
 @redirect_authenticated_user
 def log_in(request):
     if request.method == 'POST':
@@ -68,7 +86,7 @@ def log_in(request):
     else:
         next = request.GET.get('next') or ''
     form = LogInForm()
-    return render(request, 'log_in.html', {'form': form})
+    return render(request, 'log_in.html', {'form': form, 'next': next})
 
 def log_out(request):
     logout(request)
@@ -92,6 +110,7 @@ def sign_up(request):
 
     return render(request, 'sign_up.html', {'form':form})
 
+@login_required
 def club_creator(request, club_id, user_id):
     if (request.user.is_authenticated != True):
         club_id = request.user.get_first_club_id_user_is_associated_with()
@@ -110,6 +129,7 @@ def club_creator(request, club_id, user_id):
 
     return render(request, 'club_creator.html', context={'form': form, 'club_id': club_id, 'user_id': user_id})
 
+@login_required
 def create_tournament(request, club_id, user_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
     if (role.role_name() == "Officer" and request.method == 'POST'):
@@ -183,6 +203,8 @@ def profile(request, club_id, user_id):
     club_list = request.user.get_clubs_user_is_a_member()
     return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'request_user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club, 'club_list': club_list})
 
+
+@login_required
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
         club_id = request.user.get_first_club_id_user_is_associated_with()
@@ -247,12 +269,14 @@ def club_list(request, club_id):
     club_list = user.get_clubs_user_is_a_member()
     return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id, 'club_list': club_list})
 
+
+@login_required
 def pending_requests(request,club_id):
     applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
     # need applicants for a particular club
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
 
-
+@login_required
 def apply_tournament_toggle(request, user_id, club_id, tournament_id):
     tournament = Tournaments.objects.get(id=tournament_id)
     tournament.toggle_apply(user_id)
