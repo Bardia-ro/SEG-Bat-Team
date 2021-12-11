@@ -286,7 +286,6 @@ class Match(models.Model):
     number = models.PositiveSmallIntegerField()
     player1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player1')
     player2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player2')
-<<<<<<< HEAD
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
 
 class EliminationStages(models.Model):
@@ -313,5 +312,3 @@ class EliminationStages(models.Model):
 class EliminationMatch(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     elimination_stages = models.ForeignKey(EliminationStages, on_delete=models.CASCADE)
-=======
->>>>>>> main
