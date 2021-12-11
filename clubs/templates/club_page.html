@@ -98,8 +98,6 @@
                                         <span>
                                           {% if user == tournament.organiser%}
                                           <button type="button" disabled>Your tournament</button>
-                                          {% elif tournament.full %}
-                                          <button type="button" disabled>Full</button>
                                           {% elif user not in tournament.contender.all %}
                                           <button class="btn btn-primary">Join</button>
                                           {% else %}
