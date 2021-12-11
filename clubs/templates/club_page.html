@@ -92,13 +92,13 @@
                               <p class="card-text">
                                 <ul>
                                     <strong>  Description: </strong> <l>{{ tournament.description}}</l>
-                                    <br><strong> Number of participants: </strong> <l> {{tournament.contender_count}} </l>
+                                    <br><strong> Number of participants: </strong> <l> {{tournament.player_count}} </l>
                                     </ul>
                                     <form action="{% url 'apply_toggle' user_id=user.id club_id=club.id  tournament_id=tournament.id %}" method="get">
                                         <span>
                                           {% if user == tournament.organiser%}
                                           <button type="button" disabled>Your tournament</button>
-                                          {% elif user not in tournament.contender.all %}
+                                          {% elif user not in tournament.players.all %}
                                           <button class="btn btn-primary">Join</button>
                                           {% else %}
                                           <button class="btn btn-secondary">Withdraw</button>
