@@ -253,6 +253,7 @@ class Tournaments(models.Model):
                 if self.is_space():
                         self.contender.add(user)
 
+
 class Match(models.Model):
     number = models.PositiveSmallIntegerField()
     tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)

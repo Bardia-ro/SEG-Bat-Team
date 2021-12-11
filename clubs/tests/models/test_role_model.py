@@ -5,7 +5,8 @@ from clubs.models import Club, User, Role
 class RoleModelTest(TestCase):
 
     fixtures = ['clubs/tests/fixtures/default_user.json',
-                'clubs/tests/fixtures/default_club.json']
+                'clubs/tests/fixtures/default_club.json',
+                'clubs/tests/fixtures/other_users.json']
 
     def setUp(self):
         super(TestCase, self).setUp()
@@ -31,6 +32,26 @@ class RoleModelTest(TestCase):
     def test_role_must_valid_choice(self):
         self.role.role=5
         self.assert_role_is_invalid()
+
+    def test_assert_owner_role_assigned_correctly(self):
+        self.role.role = 4
+        role_name = self.role.role_name()
+        self.assertAlmostEqual("Owner" ,role_name)
+
+    def test_assert_officer_role_assigned_correctly(self):
+        self.role.role = 3
+        role_name = self.role.role_name()
+        self.assertAlmostEqual("Officer" ,role_name)
+
+    def test_assert_member_role_assigned_correctly(self):
+        self.role.role = 2
+        role_name = self.role.role_name()
+        self.assertAlmostEqual("Member" ,role_name)
+    
+    def test_assert_applicant_role_assigned_correctly(self):
+        self.role.role = 1
+        role_name = self.role.role_name()
+        self.assertAlmostEqual("Applicant" ,role_name)
     
     def assert_role_is_valid(self):
         try:
