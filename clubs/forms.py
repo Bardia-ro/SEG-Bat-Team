@@ -45,6 +45,17 @@ class Password():
     )
     password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
 
+class Deadline():
+    new_deadline = forms.DateTimeField(
+        label='Deadline',
+        validators=[
+            RegexValidator(
+                regex = r'^([0-9]{4})-([0-1][0-9])-([0-3][0-9])\s([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$',
+                message='Deadline must be in the format YYYY-MM-DD HH:MM:SS'
+            )
+        ]
+    )
+
 class SignUpForm(forms.ModelForm, Password):
     class Meta:
         model = User
@@ -128,6 +139,3 @@ class TournamentForm(forms.ModelForm):
         instance.organiser = organiser
         instance.save()
         return instance
-            
-
-

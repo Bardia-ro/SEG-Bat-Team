@@ -97,7 +97,7 @@ def club_creator(request, club_id, user_id):
     else:
         form = ClubCreatorForm()
 
-    return render(request, 'club_creator.html', {'form': form, 'club_id': club_id, 'user_id': user_id})
+    return render(request, 'club_creator.html', context={'form': form, 'club_id': club_id, 'user_id': user_id})
 
 def create_tournament(request, club_id, user_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
@@ -107,9 +107,10 @@ def create_tournament(request, club_id, user_id):
         form = TournamentForm(request.POST)
         if form.is_valid():
             tournament = form.save(organiser, club)
-            return redirect('profile', club_id=club_id, user_id=request.user.id)
-    form = TournamentForm()
-    return render(request, 'create_tournament.html', {'form': form, 'club_id': club_id, 'user_id': user_id})
+            return redirect('club_page', club_id=club_id)
+    else:
+        form = TournamentForm()
+    return render(request, 'create_tournament.html', context={'form': form, 'club_id': club_id, 'user_id': user_id})
 
 
 @login_required
