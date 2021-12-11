@@ -3,7 +3,7 @@
 
 <div class="container">
     <div class="main-body">
-
+ 
         <div class="row gutters-sm">
             <div class="col-md-4 mb-3">
                 <div class="card">
@@ -66,13 +66,6 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <h6 class="mb-0 text-secondary">Status: {{ role_at_club }}</h6>
-                            {% if user_is_owner or user_is_officer%}
-                            <form action="{% url 'member_list' club_id=club.id%}" method="get">
-                                <span>
-                                    <button class="btn btn-secondary">Admin</button>
-                                </span>
-                            </form>
-                            {% endif %}
                         </li>
                     </ul>
                 </div>
@@ -82,24 +75,6 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <h6 class="mb-0">Total Members: {{club.get_total}}</h6>
                         </li>
-                        {% if user_is_member %}
-                        {% for person in club.get_officers %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0"><img src="{{ person.user.mini_gravatar }}" alt="Gravatar"
-                                    class="rounded-circle" style="padding-right: 15px;">Officer:
-                                {{person.user.first_name}} {{person.user.last_name}}</h6>
-                            <span class="text-secondary">Bio: {{person.user.bio}}</span>
-                        </li>
-                        {% endfor %}
-                        {% for person in club.get_members %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0"><img src="{{ person.user.mini_gravatar }}" alt="Gravatar"
-                                    class="rounded-circle" style="padding-right: 15px;">Member:
-                                {{person.user.first_name}} {{person.user.last_name}}</h6>
-                            <span class="text-secondary">Bio: {{person.user.bio}}</span>
-                        </li>
-                        {% endfor %}
-                        {% endif %}
                     </ul>
                 </div>
 

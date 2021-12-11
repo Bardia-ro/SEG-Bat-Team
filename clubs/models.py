@@ -154,6 +154,9 @@ class Role(models.Model):
         self.role = Role.MEMBER
         self.save()
 
+    def reject_membership(self):
+        self.delete()
+
     def promote_member_to_officer(self):
         self.role = Role.OFFICER
         self.save()
@@ -215,7 +218,6 @@ class Tournaments(models.Model):
     description = models.CharField(max_length=600, blank=False)
     capacity = models.SmallIntegerField(
         blank=False, choices=CAPACITY_CHOICES)
-    #number_of_contenders = models.PositiveIntegerField(default = 0, validators = [MinValueValidator(2), MaxValueValidator(capacity)])
     deadline = models.DateTimeField(blank=False)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -284,6 +286,7 @@ class Match(models.Model):
     number = models.PositiveSmallIntegerField()
     player1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player1')
     player2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player2')
+<<<<<<< HEAD
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
 
 class EliminationStages(models.Model):
@@ -310,3 +313,5 @@ class EliminationStages(models.Model):
 class EliminationMatch(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     elimination_stages = models.ForeignKey(EliminationStages, on_delete=models.CASCADE)
+=======
+>>>>>>> main

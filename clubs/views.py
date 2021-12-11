@@ -104,11 +104,11 @@ def club_creator(request, club_id, user_id):
             club_id = request.user.get_first_club_id_user_is_associated_with()
             #attempt to add user as owner of the new club
             Role.objects.create(user = request.user, club = club, role = 4)
-            return redirect('profile', club_id=club_id, user_id=request.user.id)
+            return redirect('club_page', club_id=club_id)
     else:
         form = ClubCreatorForm()
 
-    return render(request, 'club_creator.html', {'form': form, 'club_id': club_id, 'user_id': user_id})
+    return render(request, 'club_creator.html', context={'form': form, 'club_id': club_id, 'user_id': user_id})
 
 def create_tournament(request, club_id, user_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
@@ -118,9 +118,10 @@ def create_tournament(request, club_id, user_id):
         form = TournamentForm(request.POST)
         if form.is_valid():
             tournament = form.save(organiser, club)
-            return redirect('profile', club_id=club_id, user_id=request.user.id)
-    form = TournamentForm()
-    return render(request, 'create_tournament.html', {'form': form, 'club_id': club_id, 'user_id': user_id})
+            return redirect('club_page', club_id=club_id)
+    else:
+        form = TournamentForm()
+    return render(request, 'create_tournament.html', context={'form': form, 'club_id': club_id, 'user_id': user_id})
 
 
 @login_required
@@ -202,6 +203,14 @@ def approve_member(request, club_id, applicant_id):
     officer_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
         role.approve_membership()
+    return redirect('pending_requests', club_id=club_id)
+
+@login_required
+def reject_member(request, club_id, applicant_id):
+    role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = applicant_id)
+    officer_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
+    if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
+        role.reject_membership()
     return redirect('pending_requests', club_id=club_id)
 
 @login_required
