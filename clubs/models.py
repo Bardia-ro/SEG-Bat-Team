@@ -258,29 +258,39 @@ class Tournaments(models.Model):
         num_players = len(self.players)
 
         match = Match.objects.create(number = num_players-1)
-        EliminationMatch.objects.create(match = match)
+        EliminationMatch.objects.create(
+            tournament = self, 
+            match = match
+        )
 
         for n in range(num_players-2, num_players/2):
-            adjusted
             match = Match.objects.create(number = n)
-            EliminationMatch.objects.create(
-                match = match, 
-                next_match = EliminationMatch.objects.get(match__tournament = self, match__number = n/2 + num_players/2)
-            )
+            self._create_elimination_match(n, match, num_players)
 
-        for n in range(1, (num_players/2)+1, 2):
+        for n in range(1, (num_players/2)+1):
             match = Match.objects.create(
                 number = n,
-                player1 = self.players[n],
-                player2 = self.players[n+1]
-            )
-            EliminationMatch.objects.create(
-                match = match,
-                winner_next_match = 
+                player1 = self.players[2*n-2],
+                player2 = self.players[2*n-1]
             )
 
-        
+            self._create_elimination_match(n, match, num_players)
+            
+            
 
+    def _create_elimination_match_with_non_null_winner_next_match_field(self, n, match, num_players):
+        if n % 2 == 1:
+                adjusted_for_oddness_n = n + 1
+        else:
+            adjusted_for_oddness_n = n
+
+        EliminationMatch.objects.create(
+            tournament = self,
+            match = match,
+            winner_next_match = EliminationMatch.objects.get(
+                match__tournament = self, 
+                match__number = adjusted_for_oddness_n/2 + num_players/2)
+        )
 
 class Match(models.Model):
     number = models.PositiveSmallIntegerField()
@@ -310,8 +320,7 @@ class Match(models.Model):
 # elimination_round = models.CharField(choices=ROUND_CHOICES)
 
 class EliminationMatch(models.Model):
+    tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     # elimination_stages = models.ForeignKey(EliminationStages, on_delete=models.CASCADE)
     winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE)
-    
-#tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
