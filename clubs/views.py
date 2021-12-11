@@ -180,7 +180,9 @@ def member_list(request, club_id):
     if not request_user_is_member:
         return redirect('profile', club_id=club_id, user_id=request.user.id)
 
-    users = User.objects.filter(club__id = club_id)
+    members = User.objects.filter(club__id = club_id, role__role=2)
+    officers = User.objects.filter(club__id = club_id, role__role=3)
+    users = User.objects.filter(club__id= club_id, role__role=4).union(members, officers)
     club_list = request.user.get_clubs_user_is_a_member()
     return render(request, 'member_list.html', {'users': users, 'request_user_is_member': True, 'club_id': club_id, 'club_list': club_list})
 
