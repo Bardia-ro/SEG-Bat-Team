@@ -248,7 +248,7 @@ class Tournaments(models.Model):
         """ Toggles whether a user has applied to this tournament"""
         user = User.objects.get(id=user_id)
         if self.is_time_left():
-            if self.is_contender(user_id):
+            if self.is_player(user_id):
                     self.players.remove(user)
             else:
                 if self.is_space():
