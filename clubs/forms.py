@@ -127,7 +127,7 @@ class TournamentForm(forms.ModelForm):
     
     class Meta:
         model = Tournaments
-        exclude = ('club', 'organiser','contender')
+        exclude = ('club', 'organiser','players')
         widgets = {'deadline': DateTimeLocalInput(format="%Y-%m-%dT%H:%M")}
 
     def save(self, organiser, club):
