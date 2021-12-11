@@ -217,7 +217,6 @@ class Tournaments(models.Model):
     description = models.CharField(max_length=600, blank=False)
     capacity = models.SmallIntegerField(
         blank=False, choices=CAPACITY_CHOICES)
-    #number_of_contenders = models.PositiveIntegerField(default = 0, validators = [MinValueValidator(2), MaxValueValidator(capacity)])
     deadline = models.DateTimeField(blank=False)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
