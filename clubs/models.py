@@ -15,7 +15,7 @@ from django import template
 from django.utils.safestring import mark_safe
 from location_field.models.plain import PlainLocationField
 from libgravatar import Gravatar
-from django.utils import timezone
+from django.utils import timezone, tree
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -284,10 +284,9 @@ class Tournaments(models.Model):
 
 class Match(models.Model):
     number = models.PositiveSmallIntegerField()
-    tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
-    player1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player1')
-    player2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player2')
-    winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
+    player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= 'player1')
+    player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= 'player2')
 
 # class EliminationStages(models.Model):
 #     tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
@@ -314,3 +313,5 @@ class EliminationMatch(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     # elimination_stages = models.ForeignKey(EliminationStages, on_delete=models.CASCADE)
     winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE)
+    
+#tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
