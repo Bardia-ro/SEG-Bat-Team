@@ -323,4 +323,4 @@ class EliminationMatch(models.Model):
     tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     # elimination_stages = models.ForeignKey(EliminationStages, on_delete=models.CASCADE)
-    winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE)
+    winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name = 'winner_next_match')
