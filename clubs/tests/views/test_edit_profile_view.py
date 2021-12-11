@@ -7,17 +7,22 @@ from clubs.forms import EditProfileForm
 class EditProfileViewTestCase(TestCase):
     """Tests for the edit_profile view"""
 
-    fixtures = ["clubs/tests/fixtures/default_user.json", "clubs/tests/fixtures/other_users.json"]
+    fixtures = [
+        "clubs/tests/fixtures/default_user.json", 
+        "clubs/tests/fixtures/specific_users.json", 
+        "clubs/tests/fixtures/specific_roles.json", 
+        "clubs/tests/fixtures/specific_clubs.json"
+    ]
 
     def setUp(self):
-        self.url = reverse('edit_profile', kwargs={"user_id": 0})
+        self.url = reverse('edit_profile', kwargs={"club_id": 0, "user_id": 200})
 
     def test_edit_profile_url(self):
-        self.assertEqual(self.url, '/edit_profile/0')
+        self.assertEqual(self.url, '/edit_profile/0/200/')
 
     def test_non_logged_in_user_gets_edit_profile_page(self):
         response = self.client.get(self.url, follow=True)
-        expected_url = '/log_in/?next=/edit_profile/0'
+        expected_url = '/log_in/?next=/edit_profile/0/200/'
         self.assertRedirects(response, expected_url)
         self.assertTemplateUsed(response, 'log_in.html')
 
@@ -26,37 +31,79 @@ class EditProfileViewTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'edit_profile.html')
-        user = User.objects.get(id=0)
         self.assertIsInstance(response.context['form'], EditProfileForm)   
-        self.assertFalse(response.context['user_is_member']) 
+        self.assertEqual(response.context['club_id'], 0)
+        self.assertFalse(response.context['request_user_is_member'])
+        user = User.objects.get(id=200)
+        self.assertQuerysetEqual(response.context['club_list'], user.get_clubs_user_is_a_member())
         self.assertContains(response, 'Save')
+
+    def test_user_not_in_club_gets_user_who_is_in_club_edit_profile_page(self):
+        self.client.login(email='johndoe@example.org', password='Password123')
+        url = reverse('edit_profile', kwargs={"club_id": 1,"user_id": 76})
+        response = self.client.get(url, follow=True)
+        expected_url = reverse('profile', kwargs={"club_id": 0, "user_id": 200})
+        self.assertRedirects(response, expected_url)
+        user = User.objects.get(id=200)
+        self.assertTemplateUsed(response, 'profile.html')
+        self.assertEqual(response.context['user'], user)
+        self.assertEqual(response.context['club_id'], 0)
+        self.assertFalse(response.context['request_user_is_member'])
+        self.assertTrue(response.context['is_current_user'])
         
     def test_user_gets_other_user_edit_profile_page(self):
-        user = User.objects.get(id=1)
-        self.client.login(email='janedoe@example.org', password='Password123')
-        response = self.client.get(self.url, follow=True)
-        expected_url = reverse('profile', kwargs={"user_id": 1})
+        self.client.login(email='billie@example.org', password='Password123')
+        url = reverse('edit_profile', kwargs={"club_id": 1,"user_id": 76})
+        response = self.client.get(url, follow=True)
+        expected_url = reverse('profile', kwargs={"club_id": 1, "user_id": 76})
         self.assertRedirects(response, expected_url)
+        user = User.objects.get(id=76)
         self.assertTemplateUsed(response, 'profile.html')
-        self.assertEqual(response.context['user'], user)   
-        self.assertTrue(response.context['user_is_member']) 
-        self.assertTrue(response.context['is_current_user'])
+        self.assertEqual(response.context['user'], user)
+        self.assertEqual(response.context['club_id'], 1) 
+        self.assertTrue(response.context['request_user_is_member'])
+        self.assertFalse(response.context['is_current_user'])
+        self.assertEqual(response.context['request_user_role'], 4)
+        self.assertEqual(response.context['user_role'], 2)
+        request_user = User.objects.get(id=103)
+        self.assertQuerysetEqual(response.context['club_list'], request_user.get_clubs_user_is_a_member())
 
     def test_user_makes_valid_post_request_to_own_edit_profile_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
-        form_data = {'first_name': 'John', 
+        user = User.objects.get(email='johndoe@example.org')
+        self.assertEqual(user.experience, 'class B')
+        form_data = {
+            'first_name': 'John', 
             'last_name': 'Doe', 
-            'bio': 'Hi, I am John and I am eighteen years old', 
+            'bio': 'Hey guys!', 
             'experience': 'class A', 
-            'personal_statement': 'I love chess'}
+            'personal_statement': 'Hi everyone. I love chess!'
+        }
         response = self.client.post(self.url, form_data, follow=True)
-        expected_url = reverse('profile', kwargs={"user_id": 0})
+        expected_url = reverse('profile', kwargs={"club_id": 0, "user_id": 200})
         self.assertRedirects(response, expected_url)
         self.assertTemplateUsed(response, 'profile.html')
         user = User.objects.get(email='johndoe@example.org')
         self.assertEqual(response.context['user'], user)
-        self.assertFalse(response.context['user_is_member'])
+        self.assertEqual(response.context['club_id'], 0)
+        self.assertFalse(response.context['request_user_is_member'])
         self.assertTrue(response.context['is_current_user'])
+        self.assertEqual(user.experience, 'class A')
 
     def test_user_makes_post_request_with_invalid_data_to_own_edit_profile_page(self):
-        pass
+        self.client.login(email='johndoe@example.org', password='Password123')
+        form_data = {'first_name': '', 
+            'last_name': 'Doe', 
+            'bio': 'Hi, I am John and I am eighteen years old', 
+            'experience': 'class A', 
+            'personal_statement': 'I love chess'}
+        response = self.client.post(self.url, form_data)
+        self.assertTemplateUsed(response, 'edit_profile.html')
+        self.assertIsInstance(response.context['form'], EditProfileForm)
+        self.assertEqual(response.context['club_id'], 0)  
+        self.assertFalse(response.context['request_user_is_member'])
+        user = User.objects.get(id=200)
+        self.assertQuerysetEqual(response.context['club_list'], user.get_clubs_user_is_a_member())
+        self.assertContains(response, 'Save')
+        first_name_form_field_error_messages = response.context['form'].fields['first_name'].error_messages
+        self.assertTrue('required' in first_name_form_field_error_messages)

@@ -1,9 +1,8 @@
 [
     {
         "model": "clubs.User",
-        "pk": 0,
+        "pk": 200,
         "fields": {
-            "role": 1,
             "email": "johndoe@example.org",
             "first_name": "John",
             "last_name": "Doe",

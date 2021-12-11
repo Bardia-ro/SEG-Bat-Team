@@ -12,24 +12,25 @@
       <ul class="navbar-nav mr-auto">
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'club_ist' %}">Find Clubs</a>
+          <a class="nav-link" href="{% url 'club_list' club_id=club_id %}">Find Clubs</a>
         </li>
 
         {% if club_id != None %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'club_creator' %}">Club creation</a>
+              <a class="nav-link" href="{% url 'club_creator' club_id=club_id user_id=user.id %}">Create Club</a>
             </li>
 
             <li class="nav-item">
               <a class="nav-link" href="{% url 'member_list' club_id=club_id %}">Members</a>
             </li>
             {% endif %}
+       
 
         {% if club_list != None %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="user-account-dropdown" role="button"
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span>My Clubs</span>
+            <span>My Clubs </span>
           </a>
           <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="club-dropdown">
             {% for item in club_list %}
@@ -45,8 +46,16 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'pending_requests' club_id=club_id %}"> Pending Requests</a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'create_tournament' club_id=club_id user_id=user.id %}"> Create Tournament</a>
+        </li>
+
         {% endif %}
       </ul>
+
+
+
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="user-account-dropdown" role="button" data-bs-toggle="dropdown"
@@ -55,7 +64,7 @@
         </a>
         <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="user-account-dropdown">
           {% if club_id != None %}
-          <li><a class="dropdown-item" href="{% url 'profile' club_id=club_id user_id=user.id %}"> My profile</a></li>
+          <li><a class="dropdown-item" href="{% url 'profile' club_id=club_id user_id=request.user.id %}"> My profile</a></li>
           <li><a class="dropdown-item" href="{% url 'change_password' club_id=club_id user_id=user.id %}">Change
               password</a></li>
           {% endif %}

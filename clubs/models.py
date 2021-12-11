@@ -1,5 +1,5 @@
 from typing import ClassVar
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
 from django import forms
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -14,6 +14,8 @@ from django import template
 from django.utils.safestring import mark_safe
 from location_field.models.plain import PlainLocationField
 from libgravatar import Gravatar
+from django.utils import timezone
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
@@ -113,8 +115,6 @@ class Club(models.Model):
     def get_tournaments(self):
         return Tournaments.objects.filter(club=self)
 
-
-
 class Role(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
@@ -152,6 +152,9 @@ class Role(models.Model):
     def approve_membership(self):
         self.role = Role.MEMBER
         self.save()
+
+    def reject_membership(self):
+        self.delete()
 
     def promote_member_to_officer(self):
         self.role = Role.OFFICER
@@ -194,10 +197,6 @@ class Role(models.Model):
 
 class Tournaments(models.Model):
 
-    name = models.CharField(max_length=50, blank=False, unique=True)
-    description = models.CharField(max_length=600, blank=False)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE)
-
     TWO = 2
     FOUR = 4
     EIGHT = 8
@@ -214,23 +213,49 @@ class Tournaments(models.Model):
         (SIXTY_FOUR, 'Sixty_Four'),
     )
 
+    name = models.CharField(max_length=50, blank=False, unique=True)
+    description = models.CharField(max_length=600, blank=False)
     capacity = models.SmallIntegerField(
         blank=False, choices=CAPACITY_CHOICES)
-    organiser = models.ForeignKey(User, on_delete=models.CASCADE)
     deadline = models.DateTimeField(blank=False)
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    organiser = models.ForeignKey(User, on_delete=models.CASCADE)
+    contender = models.ManyToManyField(User, related_name = '+')
 
     def __str__(self):
         return self.name
 
+    def is_contender(self,user_id):
+        """Returns whether a user is a contender in this tournament"""
+        user = User.objects.get(id=user_id)
+        return user in self.contender.all()
 
+    def contender_count(self):
+        """ Returns the number of contenders in this tournament"""
+        return self.contender.count()
 
+    def is_space(self):
+        """Returns whether this tournament has space for more contenders"""
+        return  (self.contender.count() < self.capacity)
+
+    def is_time_left(self):
+        """Returns whether there is time to apply to this tournament"""
+        current_time = timezone.now()
+        return (current_time < self.deadline)
+
+    def toggle_apply(self, user_id):
+        """ Toggles whether a user has applied to this tournament"""
+        user = User.objects.get(id=user_id)
+        if self.is_time_left():
+            if self.is_contender(user_id):
+                    self.contender.remove(user)
+            else:
+                if self.is_space():
+                        self.contender.add(user)
 
 class Match(models.Model):
-
-    name = models.CharField(max_length=50, blank=False, unique=True)
+    number = models.PositiveSmallIntegerField()
     tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
-    loser = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'loser')
-
-    def __str__(self):
-        return self.name
+    player1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player1')
+    player2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player2')

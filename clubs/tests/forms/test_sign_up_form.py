@@ -32,6 +32,8 @@ class SignUpFormTestCase(TestCase):
         email_field = form.fields['email']
         self.assertTrue(isinstance(email_field, forms.EmailField))
         self.assertIn('bio', form.fields)
+        bio_widget = form.fields['bio'].widget
+        self.assertTrue(isinstance(bio_widget, forms.Textarea))
         self.assertIn('new_password', form.fields)
         new_password_widget = form.fields['new_password'].widget
         self.assertTrue(isinstance(new_password_widget, forms.PasswordInput))
@@ -41,6 +43,9 @@ class SignUpFormTestCase(TestCase):
         self.assertIn('experience', form.fields)
         type_field_widget = form.fields['experience'].widget
         self.assertTrue(isinstance(type_field_widget, forms.Select))
+        self.assertIn('personal_statement', form.fields)
+        personal_statement_widget = form.fields['personal_statement'].widget
+        self.assertTrue(isinstance(personal_statement_widget, forms.Textarea))
         
 
     def test_password_must_contain_uppercase_character(self):
@@ -61,7 +66,7 @@ class SignUpFormTestCase(TestCase):
         form = SignUpForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
-    def test_new_password_and_password_confrimtaino_are_identical(self):
+    def test_new_password_and_password_confirmation_are_identical(self):
         self.form_input['password_confirmation'] = 'WrongPassword123'
         form = SignUpForm(data=self.form_input)
         self.assertFalse(form.is_valid())

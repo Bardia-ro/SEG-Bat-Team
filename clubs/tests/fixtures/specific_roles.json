@@ -1,0 +1,65 @@
+[
+    {
+        "model": "clubs.role",
+        "pk": 1,
+        "fields": {
+            "user": 103,
+            "club": 1,
+            "role": 4
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 2,
+        "fields": {
+            "user": 102,
+            "club": 1,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 3,
+        "fields": {
+            "user": 101,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 4,
+        "fields": {
+            "user": 20,
+            "club": 1,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 5,
+        "fields": {
+            "user": 76,
+            "club": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 18,
+        "fields": {
+            "user": 16,
+            "club": 1,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.role",
+        "pk": 19,
+        "fields": {
+            "user": 35,
+            "club": 1,
+            "role": 1
+        }
+    }
+]
