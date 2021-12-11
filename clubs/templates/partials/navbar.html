@@ -15,9 +15,15 @@
           <a class="nav-link" href="{% url 'club_ist' %}">Find Clubs</a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'club_creator' %}">Create Club</a>
-        </li>
+        {% if club_id != None %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'club_creator' %}">Club creation</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'member_list' club_id=club_id %}">Members</a>
+            </li>
+            {% endif %}
 
         {% if club_list != None %}
         <li class="nav-item dropdown">
