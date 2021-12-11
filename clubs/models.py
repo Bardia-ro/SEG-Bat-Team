@@ -236,8 +236,7 @@ class Tournaments(models.Model):
 
     def is_space(self):
         """Returns whether this tournament has space for more contenders"""
-        return  (self.contender.count() <= self.capacity)
-
+        return  (self.contender.count() < self.capacity)
 
     def is_time_left(self):
         """Returns whether there is time to apply to this tournament"""
@@ -253,6 +252,7 @@ class Tournaments(models.Model):
             else:
                 if self.is_space():
                         self.contender.add(user)
+
 
 class Match(models.Model):
     number = models.PositiveSmallIntegerField()

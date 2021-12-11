@@ -258,8 +258,8 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
     if tournament.is_time_left() == False:
         messages.add_message(request, messages.ERROR, "The deadline has passed.")
 
-    if tournament.is_space() == False:
-        messages.add_message(request, messages.ERROR, "This tournament is full.")
+    if tournament.is_contender(user_id) == False:
+        if tournament.is_space() == False:
+            messages.add_message(request, messages.ERROR, "This tournament is full.")
 
-#    is_contender = tournament.is_contender(user_id)
     return redirect('club_page', club_id=club_id)
