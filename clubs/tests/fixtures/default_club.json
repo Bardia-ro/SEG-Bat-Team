@@ -15,7 +15,7 @@
         "pk": 0,
         "fields": {
             "club": 0,
-            "user": 1,
+            "user": 200,
             "role": 4
         }
     }

@@ -24,5 +24,31 @@
             "personal_statement": "Hi everyone. I love chess!",
             "password": "pbkdf2_sha256$260000$YfWA9vJZy1NSDBx92f9Fl6$d7EwKLswx6y3bj7y/t8asD/VZgzgVUn8zI7fA6ndt/8="
         }
+    },
+    {
+        "model": "clubs.User",
+        "pk": 4,
+        "fields": {
+            "email": "jackdoe@example.org",
+            "first_name": "Jack",
+            "last_name": "Doe",
+            "bio": "Hey guys!",
+            "experience": "class A",
+            "personal_statement": "Hi everyone. I love chess!",
+            "password": "pbkdf2_sha256$260000$YfWA9vJZy1NSDBx92f9Fl6$d7EwKLswx6y3bj7y/t8asD/VZgzgVUn8zI7fA6ndt/8="
+        }
+    },
+    {
+        "model": "clubs.User",
+        "pk": 5,
+        "fields": {
+            "email": "tomdoe@example.org",
+            "first_name": "Tom",
+            "last_name": "Doe",
+            "bio": "Hey guys!",
+            "experience": "class A",
+            "personal_statement": "Hi everyone. I love chess!",
+            "password": "pbkdf2_sha256$260000$YfWA9vJZy1NSDBx92f9Fl6$d7EwKLswx6y3bj7y/t8asD/VZgzgVUn8zI7fA6ndt/8="
+        }
     }
 ]

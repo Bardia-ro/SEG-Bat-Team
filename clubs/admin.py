@@ -33,6 +33,7 @@ class ClubAdmin(admin.ModelAdmin):
 @admin.register(Tournaments)
 class TournamentsAdmin(admin.ModelAdmin):
      """Configuration of the admin interface for Tournaments."""
+     exclude = ['contender',]
 
      list_display = [
         'name', 'description', 'club', 'capacity', 'organiser', 'deadline',
@@ -43,5 +44,5 @@ class MatchAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for Matches."""
 
     list_display = [
-        'name','tournament', 'winner', 'loser',
+        'number','tournament', 'winner', 'player1', 'player2',
     ]
