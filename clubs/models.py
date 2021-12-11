@@ -255,7 +255,8 @@ class Tournaments(models.Model):
                         self.players.add(user)
 
     def create_elimination_matches(self):
-        num_players = len(self.players)
+        players = self.players.all()
+        num_players = len(players)
 
         match = Match.objects.create(number = num_players-1)
         EliminationMatch.objects.create(
@@ -270,8 +271,8 @@ class Tournaments(models.Model):
         for n in range(1, (num_players/2)+1):
             match = Match.objects.create(
                 number = n,
-                player1 = self.players[2*n-2],
-                player2 = self.players[2*n-1]
+                player1 = players[2*n-2],
+                player2 = players[2*n-1]
             )
 
             self._create_elimination_match(n, match, num_players)
