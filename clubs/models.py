@@ -264,20 +264,19 @@ class Tournaments(models.Model):
             match = match
         )
 
-        for n in range(num_players-2, num_players/2):
-            match = Match.objects.create(number = n)
-            self._create_elimination_match(n, match, num_players)
+        if num_players > 2:
+            for n in range(num_players-2, num_players/2):
+                match = Match.objects.create(number = n)
+                self._create_elimination_match(n, match, num_players)
 
-        for n in range(1, (num_players/2)+1):
-            match = Match.objects.create(
-                number = n,
-                player1 = players[2*n-2],
-                player2 = players[2*n-1]
-            )
+            for n in range(1, (num_players/2)+1):
+                match = Match.objects.create(
+                    number = n,
+                    player1 = players[2*n-2],
+                    player2 = players[2*n-1]
+                )
 
-            self._create_elimination_match(n, match, num_players)
-            
-            
+                self._create_elimination_match(n, match, num_players)    
 
     def _create_elimination_match_with_non_null_winner_next_match_field(self, n, match, num_players):
         if n % 2 == 1:
