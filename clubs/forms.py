@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
 from .models import User, Club, Tournament
 from location_field.forms.plain import PlainLocationField
+import datetime
 
 #options for the 'experience' drop down box
 EXPERIENCE_CHOICES = [
@@ -44,6 +45,7 @@ class Password():
     )
     password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
 
+
 class SignUpForm(forms.ModelForm, Password):
     class Meta:
         model = User
@@ -80,6 +82,16 @@ class LogInForm(forms.Form):
     email = forms.CharField(label="Email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
 
+    def get_user(self):
+        """Returns authenticated user if possible"""
+        user = None
+        if self.is_valid():
+            email = self.cleaned_data.get('email')
+            password = self.cleaned_data.get('password')
+            user = authenticate(email=email, password=password)
+        return user
+
+
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = User
@@ -112,10 +124,21 @@ class ClubCreatorForm(forms.ModelForm):
         model = Club
         exclude = ('users', 'location')
 
+
+class DateTimeLocalInput(forms.DateTimeInput):
+    input_type = 'datetime-local'
+
+class DateTimeLocalField(forms.DateTimeField):
+    input_formats = [
+         "%Y-%m-%dT%H:%M:%S","%Y-%m-%dT%H:%M:%S.%f","%Y-%m-%dT%H:%M"
+    ]
+
 class TournamentForm(forms.ModelForm):
+
     class Meta:
         model = Tournament
         exclude = ('club', 'organiser','contender')
+        widgets = {'deadline': DateTimeLocalInput(format="%Y-%m-%dT%H:%M")}
 
     def save(self, organiser, club):
         instance = super(TournamentForm, self).save(commit=False)

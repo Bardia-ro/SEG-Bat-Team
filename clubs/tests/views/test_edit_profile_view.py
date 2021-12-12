@@ -71,7 +71,7 @@ class EditProfileViewTestCase(TestCase):
     def test_user_makes_valid_post_request_to_own_edit_profile_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
         user = User.objects.get(email='johndoe@example.org')
-        self.assertEqual(user.experience, 'class B')
+        self.assertEqual(user.experience, 'class D')
         form_data = {
             'first_name': 'John', 
             'last_name': 'Doe', 

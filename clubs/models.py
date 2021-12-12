@@ -1,3 +1,4 @@
+"""Models in the clubs app."""
 from typing import ClassVar
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
@@ -18,6 +19,7 @@ from django.utils import timezone
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """User model used for authentication and creating clubs"""
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
@@ -155,6 +157,9 @@ class UserInClub(models.Model):
         self.role = UserInClub.MEMBER
         self.save()
 
+    def reject_membership(self):
+        self.delete()
+
     def promote_member_to_officer(self):
         self.role = UserInClub.OFFICER
         self.save()
@@ -250,7 +255,6 @@ class Tournament(models.Model):
     description = models.CharField(max_length=600, blank=False)
     capacity = models.SmallIntegerField(
         blank=False, choices=CAPACITY_CHOICES)
-    #number_of_contenders = models.PositiveIntegerField(default = 0, validators = [MinValueValidator(2), MaxValueValidator(capacity)])
     deadline = models.DateTimeField(blank=False)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -286,6 +290,7 @@ class Tournament(models.Model):
             else:
                 if self.is_space():
                         self.contender.add(user)
+
 
 class Match(models.Model):
     number = models.PositiveSmallIntegerField()
