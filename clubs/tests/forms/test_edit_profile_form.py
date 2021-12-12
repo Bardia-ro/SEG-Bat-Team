@@ -36,6 +36,22 @@ class EditProfileFormTestCase(TestCase):
         self.assertIn('personal_statement', form.fields)
         personal_statement_widget = form.fields['personal_statement'].widget
         self.assertTrue(isinstance(personal_statement_widget, forms.Textarea))
+    
+    def test_form_rejects_blank_first_name(self):
+        self.form_input['first_name']= ''
+        form = EditProfileForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_blank_last_name(self):
+        self.form_input['last_name']= ''
+        form = EditProfileForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+    
+    def test_form_rejects_blank_personal_statement(self):
+        self.form_input['personal_statement']= ''
+        form = EditProfileForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+    
 
     def test_form_must_save_correctly(self):
         user = User.objects.get(email='johndoe@example.org')
@@ -43,7 +59,7 @@ class EditProfileFormTestCase(TestCase):
         self.assertEqual(user.first_name, 'John')
         self.assertEqual(user.last_name, 'Doe')
         self.assertEqual(user.bio, 'Hey guys!')
-        self.assertEqual(user.experience, 'class B')
+        self.assertEqual(user.experience, 'class D')
         self.assertEqual(user.personal_statement, 'Hi everyone. I love chess!')
         form.save()
         self.assertEqual(user.first_name, 'Jonathan')

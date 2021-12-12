@@ -1,3 +1,4 @@
+"""Models in the clubs app."""
 from typing import ClassVar
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
@@ -20,6 +21,7 @@ from django.utils import timezone, tree
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """User model used for authentication and creating clubs"""
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
@@ -197,19 +199,18 @@ class Role(models.Model):
         officers = Role.objects.all().filter(role = 3)
         return officers
 
-    def adjust_elo_rating(self, match, club_id):
+    def adjust_elo_rating(self, match, club_id, winner):
         player_1 = match.match.player1
         player_2 = match.match.player2
         
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
         
-        tup = self.calculate_expected_scores(player_1, player_2, club_id, match.match.winner)
+        tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
         p1.elo_rating = tup[0]
         p2.elo_rating = tup[1]
         p1.save()
         p2.save()
-        print(p1.elo_rating)
         
     def calculate_expected_scores(self, player_1, player_2, club_id,winner):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
@@ -357,12 +358,13 @@ class Match(models.Model):
     number = models.PositiveSmallIntegerField()
     player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
     player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
-    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='+')
-
-    def set_winner(self, player):
-        self.winner = player
 
 class EliminationMatch(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
-    winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name = 'winner_next_match')
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='+')
+    winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name = '+')
+
+    def set_winner(self, player):
+        """Sets the winner for this match"""
+        self.winner = player

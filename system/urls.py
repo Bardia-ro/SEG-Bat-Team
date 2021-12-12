@@ -20,7 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name = 'home'),
     path('sign_up/', views.sign_up, name ='sign_up'),
-    path('log_in/', views.log_in, name ='log_in'),
+    path('log_in/', views.LogInView.as_view(), name ='log_in'),
     path('log_out/', views.log_out, name ='log_out'),
     path('profile/<int:club_id>/<int:user_id>/', views.profile, name='profile'),
     path('edit_profile/<int:club_id>/<int:user_id>/', views.edit_profile, name='edit_profile'),
@@ -39,6 +39,6 @@ urlpatterns = [
     path('create_tournament/<int:club_id>/<int:user_id>/', views.create_tournament, name='create_tournament'),
     path('apply_toggle/<int:user_id>/<int:club_id>/<int:tournament_id>', views.apply_tournament_toggle, name = 'apply_toggle'),
     path('match_schedule/<int:club_id>/<int:tournament_id>/', views.match_schedule, name = 'match_schedule'),
-    path('enter_match_results/<int:club_id>/<int:tournament_id>/', views.enter_match_results, name = 'enter_match_results'),
+    path('enter_match_results/<int:club_id>/<int:tournament_id>/<int:match_id>/', views.enter_match_results, name = 'enter_match_results'),
     path('generate_next_matches/<int:club_id>/<int:tournament_id>', views.generate_next_matches, name = 'generate_next_matches'),
     ]
