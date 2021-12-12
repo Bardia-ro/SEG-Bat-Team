@@ -146,10 +146,10 @@ def club_creator(request, club_id, user_id):
         form = ClubCreatorForm(request.POST)
         if form.is_valid():
             club = form.save()
-            club_id = request.user.get_first_club_id_user_is_associated_with()
+            #club_id = request.user.get_first_club_id_user_is_associated_with()
             #attempt to add user as owner of the new club
             Role.objects.create(user = request.user, club = club, role = 4)
-            return redirect('club_page', club_id=club_id)
+            return redirect('club_page', club_id=club.id)
     else:
         form = ClubCreatorForm()
 
