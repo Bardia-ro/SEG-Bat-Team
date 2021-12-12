@@ -31,22 +31,13 @@ def club_page(request, club_id):
 
     club_list = request.user.get_clubs_user_is_a_member()
     club = Club.objects.get(id=club_id)
-    club_members = Role.objects.filter(club=club, role=2)
     role_at_club = request.user.get_role_as_text_at_club(club_id)
 
-    #following neesd to be refactored:
-    user_is_member = get_is_user_member(club_id, request.user)
-    user_is_applicant = get_is_user_applicant(club_id, request.user)
-    user_is_officer = get_is_user_officer(club_id, request. user)
     user_is_owner = get_is_user_owner(club_id, request.user)
 
     return render (request, 'club_page.html', {'club_id': club_id,
-    'user_is_applicant': user_is_applicant,
-    'user_is_officer': user_is_officer,
-    'user_is_member':user_is_member,
     'club': club,
     'club_list': club_list,
-    'club_members': club_members,
     'role_at_club': role_at_club,
     'user_is_owner': user_is_owner,
     })
