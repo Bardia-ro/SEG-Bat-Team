@@ -321,3 +321,20 @@ class EliminationMatch(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
     winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name = 'winner_next_match')
+
+class Group(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    players = models.ManyToManyField(User)
+
+class GroupMatch(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
+    player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
+    player1_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE)
+    player2_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE)
+
+class GroupPoints(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    player = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
+    total_group_points = models.DecimalField(max_digits=2, decimal_places=1, default=0)
