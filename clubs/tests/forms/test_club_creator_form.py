@@ -5,7 +5,7 @@ from clubs.models import User, Club
 
 
 class ClubCreatorTestCase(TestCase):
-    """Unit tests for the Sign Up Form."""
+    """Unit tests for the Club Creator Form."""
 
 
     def setUp(self):
@@ -44,10 +44,10 @@ class ClubCreatorTestCase(TestCase):
     
     def test_form_must_save_correctly(self):
         form = ClubCreatorForm(data=self.form_input)
-        before_count = User.objects.count()
+        before_count = Club.objects.count()
         form.save()
-        after_count = User.objects.count()
-        self.assertNotEqual(after_count, before_count+1)
+        after_count = Club.objects.count()
+        self.assertEqual(after_count, before_count+1)
         club = Club.objects.get(name='Club A')
         self.assertEqual(club.name, 'Club A')
         self.assertEqual(club.city, 'London')
