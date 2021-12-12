@@ -1,15 +1,30 @@
 {% extends 'base_content.html' %}
 {% block content %}
 
+<style>
+   .top-buffer {
+     margin-top: 40px;
+     margin-left: 15px;
+     margin-bottom: 50px;
+   }
+
+   .text {
+      margin-left: 15px;
+   }
+ </style>
+
     <div class="container">
        <div class = "row">
           <div class = "col-12">
-            <h1>Sign up</h1>
+             <h1 class="text">Sign up</h1>
+             <div class="top-buffer">
+            
         <form action="{% url 'sign_up' %}" method="post">
           {% csrf_token %}
            {% include 'partials/bootstrap_form.html' with form=form %}
         <input type= "submit" value="Sign up" class = "btn btn-primary">
         </form>
+            </div>
           </div>
        </div>
     </div>
