@@ -335,6 +335,6 @@ def enter_match_results(request, club_id, tournament_id):
     if request.method=="POST":
         winner_id=request.POST['winner']
         winner = User.objects.get(id=winner_id)
-        match.match.set_winner(winner)
-        match.match.save()
+        match.set_winner(winner)
+        match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)

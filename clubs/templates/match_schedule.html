@@ -21,7 +21,7 @@ table,th,td{
         {% if match.match.player1 and match.match.player2 %}
            <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
             <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
-            {% if match.match.winner == None %}
+            {% if match.winner == None %}
             <td>
               <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id%}" method="post">
                 {% csrf_token %}
@@ -34,7 +34,7 @@ table,th,td{
               </form>
             </td>
             {%else%}
-            <td>{{match.match.winner.first_name}} {{match.match.winner.last_name}}</td>
+            <td>{{match.winner.first_name}} {{match.winner.last_name}}</td>
             {% endif%}
           </tr>
         {% endif %}
