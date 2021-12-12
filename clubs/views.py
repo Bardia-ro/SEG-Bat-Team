@@ -54,24 +54,23 @@ def club_page(request, club_id):
     })
 
 
-#class LogInView(View):
-    #"""View that handles log in"""
+class LogInView(View):
+    """View that handles log in."""
 
-#    http_method_names = ['get', 'post']
-#
-#    def get(self, request):
-    #    """Display log in template."""
-    #    self.next = request.GET.get('next') or ''
-    #    return self.render()
+    http_method_names = ['get', 'post']
+    @method_decorator(redirect_authenticated_user)
+    def dispatch(self, request):
+        return super().dispatch(request)
 
-    #def post(self, request):
-    #    """Handle log in attempt."""
+    def get(self, request):
+        """Display log in template."""
 
+        next = request.GET.get('next') or ''
+        return self.render(request,next)
 
+    def post(self, request):
+        """Handle log in attempt."""
 
-@redirect_authenticated_user
-def log_in(request):
-    if request.method == 'POST':
         form = LogInForm(request.POST)
         next = request.POST.get('next') or ''
         if form.is_valid():
@@ -83,10 +82,33 @@ def log_in(request):
                 club_id = user.get_first_club_id_user_is_associated_with()
                 return redirect(next or 'profile', club_id=club_id, user_id=request.user.id)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
-    else:
-        next = request.GET.get('next') or ''
-    form = LogInForm()
-    return render(request, 'log_in.html', {'form': form, 'next': next})
+        return self.render(request,next)
+
+    def render(self,request, next):
+        """Render log in template with blank log in form."""
+
+        form = LogInForm()
+        return render(request, 'log_in.html', {'form': form, 'next': next})
+
+
+#@redirect_authenticated_user
+#def log_in(request):
+#    if request.method == 'POST':
+    #    form = LogInForm(request.POST)
+    #    next = request.POST.get('next') or ''
+        #if form.is_valid():
+        #    email = form.cleaned_data.get('email')
+        #    password = form.cleaned_data.get('password')
+        #    user = authenticate(email=email, password=password)
+        #    if user is not None:
+    #            login(request, user)
+        #        club_id = user.get_first_club_id_user_is_associated_with()
+    #            return redirect(next or 'profile', club_id=club_id, user_id=request.user.id)
+#        messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
+#    else:
+    #    next = request.GET.get('next') or ''
+    #form = LogInForm()
+    #return render(request, 'log_in.html', {'form': form, 'next': next})
 
 def log_out(request):
     logout(request)
