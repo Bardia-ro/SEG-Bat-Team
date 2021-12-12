@@ -314,9 +314,10 @@ class Match(models.Model):
     number = models.PositiveSmallIntegerField()
     player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= 'player1')
     player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= 'player2')
-    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
+    
 
 class EliminationMatch(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
     winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name = 'winner_next_match')
