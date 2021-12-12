@@ -93,19 +93,22 @@
                                 <ul>
                                     <strong>  Description: </strong> <l>{{ tournament.description}}</l>
                                     <br><strong> Number of participants: </strong> <l> {{tournament.player_count}} </l>
-                                    </ul>
-                                    <form action="{% url 'apply_toggle' user_id=user.id club_id=club.id  tournament_id=tournament.id %}" method="get">
-                                        <span>
-                                          {% if user == tournament.organiser%}
-                                          <button type="button" disabled>Your tournament</button>
-                                          {% elif user not in tournament.players.all %}
-                                          <button class="btn btn-primary">Join</button>
-                                          {% else %}
-                                          <button class="btn btn-secondary">Withdraw</button>
-                                          {% endif %}
-                                        </span>
-                                    </form>
-                                  </div>
+                                </ul>
+                                <form action="{% url 'apply_toggle' user_id=user.id club_id=club.id  tournament_id=tournament.id %}" method="get">
+                                    <span>
+                                        {% if user == tournament.organiser%}
+                                        <button type="button" disabled>Your tournament</button>
+                                        {% elif user not in tournament.players.all %}
+                                        <button class="btn btn-primary">Join</button>
+                                        {% else %}
+                                        <button class="btn btn-secondary">Withdraw</button>
+                                        {% endif %}
+                                    </span>
+                                </form>
+                                <form action="{% url 'match_schedule' tournament_id=tournament.id %}" method="get">
+                                    <button class="btn btn-primary">Match Schedule</button>
+                                </form>
+                            </div>
                           </div>
                         </div>
                         {% endfor %}
