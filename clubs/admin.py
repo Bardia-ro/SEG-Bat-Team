@@ -1,7 +1,7 @@
 """Configuration of the admin interface for clubs."""
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Match, Tournaments, User, Role, Club
+from .models import Match, Tournament, User, Role, Club
 
 
 @admin.register(User)
@@ -30,7 +30,7 @@ class ClubAdmin(admin.ModelAdmin):
         'name', 'location', 'description',
     ]
 
-@admin.register(Tournaments)
+@admin.register(Tournament)
 class TournamentsAdmin(admin.ModelAdmin):
      """Configuration of the admin interface for Tournaments."""
      exclude = ['contender',]

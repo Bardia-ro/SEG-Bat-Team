@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
-from .models import User, Club, Tournaments
+from .models import User, Club, Tournament
 from location_field.forms.plain import PlainLocationField
 import datetime
 
@@ -126,7 +126,7 @@ class DateTimeLocalField(forms.DateTimeField):
 class TournamentForm(forms.ModelForm):
     
     class Meta:
-        model = Tournaments
+        model = Tournament
         exclude = ('club', 'organiser','players')
         widgets = {'deadline': DateTimeLocalInput(format="%Y-%m-%dT%H:%M")}
 

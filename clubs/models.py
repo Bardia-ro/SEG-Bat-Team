@@ -114,7 +114,7 @@ class Club(models.Model):
         return Role.objects.filter(club=self, role=2)
 
     def get_tournaments(self):
-        return Tournaments.objects.filter(club=self)
+        return Tournament.objects.filter(club=self)
 
 class Role(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -196,7 +196,7 @@ class Role(models.Model):
         return officers
 
 
-class Tournaments(models.Model):
+class Tournament(models.Model):
 
     TWO = 2
     FOUR = 4
@@ -314,6 +314,6 @@ class Match(models.Model):
     winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
 
 class EliminationMatch(models.Model):
-    tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name = 'winner_next_match')

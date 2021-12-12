@@ -1,5 +1,5 @@
 
-from .models import User, Role, Club, Tournaments
+from .models import User, Role, Club, Tournament
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -252,7 +252,7 @@ def pending_requests(request,club_id):
 
 
 def apply_tournament_toggle(request, user_id, club_id, tournament_id):
-    tournament = Tournaments.objects.get(id=tournament_id)
+    tournament = Tournament.objects.get(id=tournament_id)
     tournament.toggle_apply(user_id)
 
     if tournament.is_time_left() == False:
