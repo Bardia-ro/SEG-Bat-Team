@@ -105,7 +105,7 @@
                                         {% endif %}
                                     </span>
                                 </form>
-                                <form action="{% url 'match_schedule' tournament_id=tournament.id %}" method="get">
+                                <form action="{% url 'match_schedule' club_id=club.id tournament_id=tournament.id %}" method="get">
                                     <button class="btn btn-primary">Match Schedule</button>
                                 </form>
                             </div>
