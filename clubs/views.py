@@ -1,4 +1,5 @@
-
+"""Views of the clubs app."""
+from django.core.exceptions import ImproperlyConfigured
 from .models import User, Role, Club, Tournaments
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
@@ -9,6 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
 
 def request_toggle(request, user_id, club_id):
 
@@ -54,13 +58,36 @@ def club_page(request, club_id):
     })
 
 
-class LogInView(View):
+class LoginProhibitedMixin:
+    """Mixin redirects when a user is logged in """
+
+    redirect_when_logged_in_url = None
+
+    def dispatch(self, *args, **kwargs):
+        """Refirect when logged in, or dispatch as normal otherwise."""
+        if self.request.user.is_authenticated:
+            url = self.redirect_when_logged_in_url()
+            club_id = self.request.user.get_first_club_id_user_is_associated_with()
+            return redirect('profile', club_id=club_id, user_id=self.request.user.id)
+            return redirect(url)
+        return super().dispatch(*args, **kwargs)
+
+    def redirect_when_logged_in_url(self):
+        """Returns the url to redirect to when not logged in"""
+        if self.redirect_when_logged_in_url is None:
+            raise ImproperlyConfigured(
+            "LoginProhibitedMixin requires either a value for "
+                "'redirect_when_logged_in_url', or an implementation for "
+                "'get_redirect_when_logged_in_url()'."
+            )
+        else:
+            return self.redirect_when_logged_in_url
+
+
+class LogInView(LoginProhibitedMixin, View):
     """View that handles log in."""
 
     http_method_names = ['get', 'post']
-    @method_decorator(redirect_authenticated_user)
-    def dispatch(self, request):
-        return super().dispatch(request)
 
     def get(self, request):
         """Display log in template."""
@@ -70,7 +97,6 @@ class LogInView(View):
 
     def post(self, request):
         """Handle log in attempt."""
-
         form = LogInForm(request.POST)
         self.next = request.POST.get('next') or ''
         user = form.get_user()
