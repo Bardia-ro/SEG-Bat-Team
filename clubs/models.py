@@ -313,6 +313,9 @@ class Match(models.Model):
     player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
     winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='+')
 
+    def set_winner(self, player):
+        self.winner = player
+
 class EliminationMatch(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     match = models.ForeignKey(Match, on_delete=models.CASCADE)

@@ -12,7 +12,7 @@ table,th,td{
         <th>Match Number</th>
         <th> Player One </th>
         <th> Player Two </th>
-        <th> Enter results </th>
+        <th> Results </th>
       </tr>
       {% if matches %}
       {% for match in matches %}
@@ -21,6 +21,21 @@ table,th,td{
         {% if match.match.player1 and match.match.player2 %}
            <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
             <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
+            {% if match.match.winner == None %}
+            <td>
+              <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id%}" method="post">
+                {% csrf_token %}
+                {% include 'partials/bootstrap_form.html' with form=form %}
+                <select name='winner'>
+                  <option value= "{{match.match.player1.id}}">{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</option>
+                  <option value= "{{match.match.player2.id}}">{{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </option>
+                </select>
+               <input type= "submit" value="Submit Results"/>
+              </form>
+            </td>
+            {%else%}
+            <td>{{match.match.winner.first_name}} {{match.match.winner.last_name}}</td>
+            {% endif%}
           </tr>
         {% endif %}
      {% endfor %}
@@ -32,9 +47,7 @@ table,th,td{
             <button class="btn btn-primary">Generate elimination matches</button>
         </form>
 
-        <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id%}" method="get">
-            <button class="btn btn-primary">Enter match results</button>
-        </form>
+
 
     {% endif %}
 {% endblock %}

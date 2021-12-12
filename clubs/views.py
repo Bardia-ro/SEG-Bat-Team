@@ -1,5 +1,5 @@
 
-from .models import EliminationMatch, User, Role, Club, Tournament
+from .models import EliminationMatch, Match, User, Role, Club, Tournament
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -247,7 +247,6 @@ def club_list(request, club_id):
 
 def pending_requests(request,club_id):
     applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
-    # need applicants for a particular club
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
 
 
@@ -280,4 +279,10 @@ def generate_next_matches(request, club_id, tournament_id):
 @login_required
 def enter_match_results(request, club_id, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
+    match = EliminationMatch.objects.get(tournament=tournament)
+    if request.method=="POST":
+        winner_id=request.POST['winner']
+        winner = User.objects.get(id=winner_id)
+        match.match.set_winner(winner)
+        match.match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
