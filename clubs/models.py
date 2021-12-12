@@ -263,7 +263,7 @@ class Tournament(models.Model):
         elif num_players == 4 or num_players == 8 or num_players == 16:
             match = Match.objects.create(number = num_players-1)
             EliminationMatch.objects.create(
-                tournament = self, 
+                tournament = self,
                 match = match
             )
 
@@ -302,16 +302,16 @@ class Tournament(models.Model):
             tournament = self,
             match = match,
             winner_next_match = EliminationMatch.objects.get(
-                tournament = self, 
+                tournament = self,
                 match__number = int(adjusted_for_oddness_n/2) + int(num_players/2)
             ).match
         )
 
 class Match(models.Model):
     number = models.PositiveSmallIntegerField()
-    player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= 'player1')
-    player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= 'player2')
-    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
+    player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
+    player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='+')
 
 class EliminationMatch(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
