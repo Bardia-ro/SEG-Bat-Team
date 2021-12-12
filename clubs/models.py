@@ -1,3 +1,4 @@
+"""Models in the clubs app."""
 from typing import ClassVar
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
@@ -18,6 +19,7 @@ from django.utils import timezone
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """User model used for authentication and creating clubs"""
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)

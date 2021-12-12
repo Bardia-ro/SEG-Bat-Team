@@ -12,8 +12,6 @@ from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-
 def request_toggle(request, user_id, club_id):
 
     currentUser = User.objects.get(id=user_id)
