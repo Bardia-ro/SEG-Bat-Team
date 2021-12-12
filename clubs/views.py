@@ -267,4 +267,10 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 @login_required
 def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
-    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list})
+    tournament = Tournament.objects.get(id=tournament_id)
+    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament})
+
+@login_required
+def generate_next_matches(request, club_id, tournament_id):
+    
+    return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
