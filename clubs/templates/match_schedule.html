@@ -1,5 +1,25 @@
 {% extends 'base_content.html' %}
 {% block content %}
+    {% if matches != None %}
+     {% for match in matches %}
+        {{ match.match.number }}
+        {% if match.match.player1 == None %}
+            TBD
+        {% else %}
+            {{ match.match.player1.first_name }} {{ match.match.player1.last_name }}
+        {% endif %}
+
+        vs
+
+        {% if match.match.player1 == None %}
+            TBD
+        {% else %}
+            {{ match.match.player2.first_name }} {{ match.match.player2.last_name }}
+        {% endif %}
+        <br></br>
+     {% endfor %}
+    {% endif %}
+
     {% if request.user == tournament.organiser %}
         <form action="{% url 'generate_next_matches' club_id=club_id tournament_id=tournament.id%}" method="get">
             <button class="btn btn-primary">Generate elimination matches</button>
