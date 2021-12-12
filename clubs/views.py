@@ -278,11 +278,14 @@ def generate_next_matches(request, club_id, tournament_id):
 
 @login_required
 def enter_match_results(request, club_id, tournament_id):
+    role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
     tournament = Tournament.objects.get(id=tournament_id)
     match = EliminationMatch.objects.get(tournament=tournament)
+    role.adjust_elo_rating(match, club_id)
     if request.method=="POST":
         winner_id=request.POST['winner']
         winner = User.objects.get(id=winner_id)
         match.match.set_winner(winner)
         match.match.save()
+        role.adjust_elo_rating(match,club_id)
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
