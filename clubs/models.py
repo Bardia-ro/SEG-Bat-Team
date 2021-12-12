@@ -1,3 +1,4 @@
+"""Models in the clubs app."""
 from typing import ClassVar
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
@@ -19,6 +20,7 @@ from django.utils import timezone, tree
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """User model used for authentication and creating clubs"""
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
@@ -307,16 +309,15 @@ class Tournament(models.Model):
             ).match
         )
 
+
 class Match(models.Model):
     number = models.PositiveSmallIntegerField()
-    player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
-    player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
-    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='+')
+    player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= 'player1')
+    player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= 'player2')
 
-    def set_winner(self, player):
-        self.winner = player
 
 class EliminationMatch(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
     winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name = 'winner_next_match')

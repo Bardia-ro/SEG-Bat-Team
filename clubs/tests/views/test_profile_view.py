@@ -3,15 +3,14 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.models import User
 
+
 class ProfileViewTestCase(TestCase):
     """Tests for the view which diplays a user's profile"""
 
-    fixtures = [
-        "clubs/tests/fixtures/default_user.json", 
+    fixtures = [ "clubs/tests/fixtures/default_user.json", 
         "clubs/tests/fixtures/specific_users.json", 
         "clubs/tests/fixtures/specific_roles.json", 
-        "clubs/tests/fixtures/specific_clubs.json"
-    ]
+        "clubs/tests/fixtures/specific_clubs.json"]
 
     def setUp(self):
         self.url = reverse('profile', kwargs={"club_id": 0, "user_id": 200})

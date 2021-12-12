@@ -6,5 +6,5 @@ class Command(BaseCommand):
         super().__init__()
 
     def handle(self, *args, **options):
-        User.objects.exclude(email="admin@example.com").delete()
+        User.objects.exclude(email="admin@example.org").delete()
         Club.objects.all().delete()
