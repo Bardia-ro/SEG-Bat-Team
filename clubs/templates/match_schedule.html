@@ -4,5 +4,10 @@
         <form action="{% url 'generate_next_matches' club_id=club_id tournament_id=tournament.id%}" method="get">
             <button class="btn btn-primary">Generate elimination matches</button>
         </form>
+
+        <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id%}" method="get">
+            <button class="btn btn-primary">Enter match results</button>
+        </form>
+
     {% endif %}
 {% endblock %}

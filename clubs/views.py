@@ -275,3 +275,8 @@ def generate_next_matches(request, club_id, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     tournament.create_elimination_matches()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
+@login_required
+def enter_match_results(request, club_id, tournament_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
