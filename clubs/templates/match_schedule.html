@@ -1,54 +1,50 @@
 {% extends 'base_content.html' %}
 {% block content %}
 
-<style>
-table,th,td{
-  border: 1px solid black;
-}
-</style>
+  <style>
+  table,th,td{
+    border: 1px solid black;
+  }
+  </style>
 
-<table>
-     <tr>
-        <th>Match Number</th>
-        <th> Player One </th>
-        <th> Player Two </th>
-        <th> Results </th>
+  <table>
+    <tr>
+      <th>Match Number</th>
+      <th> Player One </th>
+      <th> Player Two </th>
+      <th> Results </th>
+    </tr>
+    {% if matches %}
+      {% for match in matches %}
+      <tr>
+        {% if match.match.player1 and match.match.player2 %}
+          <td>{{ match.match.number }}</td>
+          <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
+          <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
+          {% if match.winner == None %}
+          <td>
+            <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id match_id=match.id %}" method="post">
+              {% csrf_token %}
+              {% include 'partials/bootstrap_form.html' with form=form %}
+              <select name='winner'>
+                <option value= "{{match.match.player1.id}}">{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</option>
+                <option value= "{{match.match.player2.id}}">{{ match.match.player2.first_name }} {{ match.match.player2.last_name }}</option>
+              </select>
+              <input type= "submit" value="Submit Results"/>
+            </form>
+          </td>
+          {%else%}
+          <td>{{match.winner.first_name}} {{match.winner.last_name}}</td>
+          {% endif%}
+        {% endif %}
       </tr>
-      {% if matches %}
-        {% for match in matches %}
-        <tr>
-          
-          {% if match.match.player1 and match.match.player2 %}
-            <td>{{ match.match.number }}</td>
-            <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
-              <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
-              {% if match.winner == None %}
-              <td>
-                <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id%}" method="post">
-                  {% csrf_token %}
-                  {% include 'partials/bootstrap_form.html' with form=form %}
-                  <select name='winner'>
-                    <option value= "{{match.match.player1.id}}">{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</option>
-                    <option value= "{{match.match.player2.id}}">{{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </option>
-                  </select>
-                <input type= "submit" value="Submit Results"/>
-                </form>
-              </td>
-              {%else%}
-              <td>{{match.winner.first_name}} {{match.winner.last_name}}</td>
-              {% endif%}
-          {% endif %}
-        </tr>
-        {% endfor %}
-      {% endif %}
+      {% endfor %}
+    {% endif %}
   </table>
 
-    {% if request.user == tournament.organiser and tournament.current_stage == 'F' %}
-        <form action="{% url 'generate_next_matches' club_id=club_id tournament_id=tournament.id%}" method="get">
-            <button class="btn btn-primary">Generate elimination matches</button>
-        </form>
-
-
-
-    {% endif %}
+  {% if request.user == tournament.organiser and tournament.current_stage == 'F' %}
+      <form action="{% url 'generate_next_matches' club_id=club_id tournament_id=tournament.id%}" method="get">
+          <button class="btn btn-primary">Generate elimination matches</button>
+      </form>
+  {% endif %}
 {% endblock %}
