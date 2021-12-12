@@ -225,6 +225,13 @@ class Tournament(models.Model):
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
     players = models.ManyToManyField(User, related_name = '+')
 
+    STAGE_CHOICES = [
+        ('F', 'Finished'),
+        ('E', 'Elimination rounds'),
+    ]
+
+    current_stage = models.CharField(max_length = 2, choices = STAGE_CHOICES, default = 'E')
+
     def __str__(self):
         return self.name
 
@@ -257,6 +264,8 @@ class Tournament(models.Model):
                         self.players.add(user)
 
     def create_elimination_matches(self):
+        self.current_stage = 'F'
+
         players = self.players.all()
         num_players = self.player_count()
 
