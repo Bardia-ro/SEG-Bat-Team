@@ -1,5 +1,5 @@
 
-from .models import User, Role, Club, Tournament
+from .models import EliminationMatch, User, Role, Club, Tournament
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -268,7 +268,8 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
-    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament})
+    matches = EliminationMatch.objects.filter(tournament=tournament)
+    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'matches': matches})
 
 @login_required
 def generate_next_matches(request, club_id, tournament_id):
