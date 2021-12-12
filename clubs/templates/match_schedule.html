@@ -1,24 +1,31 @@
 {% extends 'base_content.html' %}
 {% block content %}
-    {% if matches != None %}
-     {% for match in matches %}
-        {{ match.match.number }}
-        {% if match.match.player1 == None %}
-            TBD
-        {% else %}
-            {{ match.match.player1.first_name }} {{ match.match.player1.last_name }}
-        {% endif %}
 
-        vs
+<style>
+table,th,td{
+  border: 1px solid black;
+}
+</style>
 
-        {% if match.match.player1 == None %}
-            TBD
-        {% else %}
-            {{ match.match.player2.first_name }} {{ match.match.player2.last_name }}
+<table>
+     <tr>
+        <th>Match Number</th>
+        <th> Player One </th>
+        <th> Player Two </th>
+        <th> Enter results </th>
+      </tr>
+      {% if matches %}
+      {% for match in matches %}
+      <tr>
+         <td>{{ match.match.number }}</td>
+        {% if match.match.player1 and match.match.player2 %}
+           <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
+            <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
+          </tr>
         {% endif %}
-        <br></br>
      {% endfor %}
     {% endif %}
+  </table>
 
     {% if request.user == tournament.organiser %}
         <form action="{% url 'generate_next_matches' club_id=club_id tournament_id=tournament.id%}" method="get">
