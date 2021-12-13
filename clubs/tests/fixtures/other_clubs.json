@@ -1,0 +1,13 @@
+[
+    {
+        "model": "clubs.Club",
+        "pk": 1,
+        "fields": {
+            "name": "Club B",
+            "city": "London",
+            "location": "London",
+            "description": "This is Club A"
+        }
+    }
+
+]
