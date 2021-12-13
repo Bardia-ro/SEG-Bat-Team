@@ -378,8 +378,8 @@ class EliminationMatch(models.Model):
     def set_winner(self, player):
         """Sets the winner for this match"""
         self.winner = player
-        self.set_winner_as_player_in_winner_next_match()
         self.save()
+        self.set_winner_as_player_in_winner_next_match()
 
     def set_winner_as_player_in_winner_next_match(self):
         if self.winner_next_match:
@@ -387,3 +387,5 @@ class EliminationMatch(models.Model):
                 self.winner_next_match.player1 = self.winner
             else:
                 self.winner_next_match.player2 = self.winner
+        
+            self.winner_next_match.save()
