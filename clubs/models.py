@@ -273,9 +273,11 @@ class Tournament(models.Model):
     STAGE_CHOICES = [
         ('F', 'Finished'),
         ('E', 'Elimination rounds'),
+        ('G32', 'Group stage'),
+        ('S', 'Start'),
     ]
 
-    current_stage = models.CharField(max_length = 2, choices = STAGE_CHOICES, default = 'E')
+    current_stage = models.CharField(max_length = 2, choices = STAGE_CHOICES, default = 'S')
 
     def __str__(self):
         return self.name
@@ -312,8 +314,23 @@ class Tournament(models.Model):
         players = self.players.all()
         num_players = self.player_count()
 
-        if self.current_stage == 'E':
+        if self.current_stage == 'S':
+            self._set_current_stage_to_first_stage(num_players)
+        elif self.current_stage == 'G1':
+            self._generate_group_stage_for_32_people_or_less()
+        elif self.current_stage == 'E':
             self._create_elimination_matches(players, num_players)
+
+    def _set_current_stage_to_first_stage(self, num_players):
+        if num_players > 16 and num_players <= 32:
+            self.current_stage = 'G1'
+        else:
+            self.current_stage = 'E'
+
+        self.save()
+
+    def _generate_group_stage_for_32_people_or_less(self):
+        pass
 
     def _create_elimination_matches(self, players, num_players):
         self.current_stage = 'F'
