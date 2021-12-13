@@ -308,12 +308,16 @@ class Tournament(models.Model):
                 if self.is_space():
                         self.players.add(user)
 
-    def create_elimination_matches(self):
-        self.current_stage = 'F'
-        self.save()
-
+    def generate_next_matches(self):
         players = self.players.all()
         num_players = self.player_count()
+
+        if self.current_stage == 'E':
+            self._create_elimination_matches(players, num_players)
+
+    def _create_elimination_matches(self, players, num_players):
+        self.current_stage = 'F'
+        self.save()
 
         if num_players == 2:
             self._create_elimination_matches_for_two_players(players)
@@ -399,8 +403,8 @@ class GroupMatch(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    player1_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE)
-    player2_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE)
+    player1_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
+    player2_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
 
 class GroupPoints(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
