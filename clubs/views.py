@@ -319,7 +319,7 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
-    matches = EliminationMatch.objects.filter(tournament=tournament)
+    matches = EliminationMatch.objects.filter(tournament=tournament).order_by('match__number')
     return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'matches': matches})
 
 @login_required
