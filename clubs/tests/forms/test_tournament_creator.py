@@ -9,6 +9,7 @@ class TournamentCreatorTestCase(TestCase):
 
     fixtures = [
         "clubs/tests/fixtures/default_user.json",
+        "clubs/tests/fixtures/other_users.json",
         "clubs/tests/fixtures/default_club.json"]
 
     def setUp(self):

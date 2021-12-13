@@ -1,13 +1,5 @@
 [
-    {
-        "model": "clubs.role",
-        "pk": 1,
-        "fields": {
-            "user": 103,
-            "club": 1,
-            "role": 4
-        }
-    },
+
     {
         "model": "clubs.role",
         "pk": 2,
