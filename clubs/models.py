@@ -490,7 +490,7 @@ class GroupMatch(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    next_matches = models.ManyToManyField(Match, null=True, related_name = '+')
+    next_matches = models.ManyToManyField(Match, related_name = '+')
     # player1_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
     # player2_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
 
