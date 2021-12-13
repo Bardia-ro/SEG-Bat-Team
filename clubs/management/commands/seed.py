@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import models
 from faker import Faker
-from clubs.models import User, Club, Role
+from clubs.models import Tournaments, User, Club, Role
 import random
 
 
@@ -90,7 +90,7 @@ class Command(BaseCommand):
                 if counter==1:
                     Role.objects.create(club=a_club, user=User.objects.get(email="jeb@example.org"), role=3)
                     Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=4)
-                elif counter ==2:
+                elif counter==2:
                     Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
                     Role.objects.create(club=a_club, user=User.objects.get(email="val@example.org"), role=4)
                 else:
@@ -107,6 +107,17 @@ class Command(BaseCommand):
             for i in range(3):
                 Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
             counter=counter+1
+            if a_club.name !="Kerbal Chess Club":
+                the_tournament = Tournaments.objects.create(name='Tournament A',
+                    description= fake.paragraph(nb_sentences=5),
+                    capacity=self.get_random_capacity(),
+                    deadline=fake.future_datetime(),
+                    club=a_club,
+                    organiser = Role.objects.filter(club=a_club, role=3).first().user)
+                for i in range(0,the_tournament.capacity):
+                    the_tournament.contender=self.get_tournament_contenders(a_club, the_tournament.organiser)
+            
+                                        
 
     def get_random_user(self,users, club):
         found=False
@@ -120,3 +131,15 @@ class Command(BaseCommand):
                     found=True
                     return a_user
 
+    def get_random_capacity(self):
+        list= [2,4,8,16,32,64]
+        return random.choice(list)
+
+    def get_tournament_contenders(self,club,organiser):
+        found=False
+        a_user = ""
+        users=Role.objects.filter(club=club)
+        while(found==False):
+            a_user=random.choice(users)
+            if a_user!=organiser:
+                return a_user
