@@ -16,7 +16,7 @@ class CreateTournamentViewTestCase(TestCase, LogInTester):
 
     def setUp(self):
         self.user = User.objects.get(email='jackdoe@example.org')
-        self.url = reverse('create_tournament', kwargs={"club_id": 1, "user_id": self.user.id})
+        self.url = reverse('create_tournament', kwargs={"club_id": 0, "user_id": self.user.id})
         self.form_input = {
             'name': 'Tournament A',
             'description': 'This is the description',
@@ -25,7 +25,7 @@ class CreateTournamentViewTestCase(TestCase, LogInTester):
         }
         
     def test_create_tournament_url(self):
-        self.assertEqual(self.url,'/create_tournament/1/4/')
+        self.assertEqual(self.url,'/create_tournament/0/4/')
 
     def test_get_create_tournament(self):
         self.client.login(email=self.user.email, password='Password123')
@@ -38,13 +38,13 @@ class CreateTournamentViewTestCase(TestCase, LogInTester):
     
     def test_non_logged_in_user_gets_create_tournament(self):
         response = self.client.get(self.url, follow=True)
-        expected_url = '/log_in/?next=/create_tournament/1/4/'
+        expected_url = '/log_in/?next=/create_tournament/0/4/'
         self.assertRedirects(response, expected_url)
         self.assertTemplateUsed(response, 'log_in.html')
     
     
     def test_unsuccessful_create_tournament(self):
-        self.client.login(email='johndoe@example.org', password='Password123')
+        self.client.login(email='jackdoe@example.org', password='Password123')
         self.form_input['name'] = ' '
         before_count = Tournaments.objects.count()
         response = self.client.post(self.url, self.form_input)
@@ -57,7 +57,7 @@ class CreateTournamentViewTestCase(TestCase, LogInTester):
         self.assertTrue(form.is_bound)
     
     def test_successful_create_tournament(self):
-        self.client.login(email='johndoe@example.org', password='Password123')
+        self.client.login(email='jackdoe@example.org', password='Password123')
         before_count = Tournaments.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Tournaments.objects.count()
