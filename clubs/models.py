@@ -265,6 +265,7 @@ class Tournament(models.Model):
 
     def create_elimination_matches(self):
         self.current_stage = 'F'
+        self.save()
 
         players = self.players.all()
         num_players = self.player_count()
@@ -305,7 +306,7 @@ class Tournament(models.Model):
 
     def _create_elimination_match_with_non_null_winner_next_match_field(self, n, match, num_players):
         if n % 2 == 1:
-                adjusted_for_oddness_n = n + 1
+            adjusted_for_oddness_n = n + 1
         else:
             adjusted_for_oddness_n = n
 
@@ -332,3 +333,12 @@ class EliminationMatch(models.Model):
     def set_winner(self, player):
         """Sets the winner for this match"""
         self.winner = player
+        self.set_winner_as_player_in_winner_next_match()
+        self.save()
+
+    def set_winner_as_player_in_winner_next_match(self):
+        if self.winner_next_match:
+            if self.match.number % 2 == 1:
+                self.winner_next_match.player1 = self.winner
+            else:
+                self.winner_next_match.player2 = self.winner
