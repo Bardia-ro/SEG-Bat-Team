@@ -1,7 +1,7 @@
 
 """Views of the clubs app."""
 from django.core.exceptions import ImproperlyConfigured
-from .models import EliminationMatch, User, Role, Club, Tournament
+from .models import EliminationMatch, Elo_Rating, User, Role, Club, Tournament, Match
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -12,6 +12,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
+from itertools import chain
 
 def request_toggle(request, user_id, club_id):
 
@@ -223,11 +224,29 @@ def profile(request, club_id, user_id):
 
     if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
         return redirect('profile', club_id=club_id, user_id=request.user.id)
-
+    matches = Match.objects.filter(player1 = user)
+    matches2 = Match.objects.filter(player2 = user) 
+    matchesWon1 = Match.objects.filter(player1 = user)
+    matchesWon2 = Match.objects.filter(player2 = user)
+    totalMatchesWon = list(chain(matchesWon1, matchesWon2))
+    elimWon = EliminationMatch.objects.filter(winner = user)
+    resultMatches = list(chain(matches, matches2))
+    elo_rating = Elo_Rating.objects.filter(user = user).filter(club_id = club_id)
+    tournaments = Tournament.objects.filter(players = user).filter(club_id = club_id)
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
     club_list = request.user.get_clubs_user_is_a_member()
-    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'request_user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club, 'club_list': club_list})
+    return render(request, 'profile.html', {'user': user, 
+                           'club_id': club_id,
+                           'request_user_is_member': request_user_is_member, 
+                           'is_current_user': is_current_user, 
+                           'request_user_role': request_user_role_at_club, 
+                           'user_role': user_role_at_club, 
+                           'club_list': club_list,
+                           'matches' : resultMatches,
+                           'elo_rating' : elo_rating,
+                           'tournaments' : tournaments,
+                           'totalMatchesWon' : elimWon})
 
 
 @login_required

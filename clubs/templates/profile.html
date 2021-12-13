@@ -122,6 +122,20 @@
         </div>
     </div>
 
+    {% if user_role > 0 %}
+    <div>
+        {% for rating in elo_rating %}
+        <br> {{ rating.match.player1.first_name }} {{ rating.match.player1.last_name  }} VS {{ rating.match.player2.first_name }} {{ rating.match.player2.last_name }}
+        elo rating after the match : {{ rating.rating }} 
+        {% endfor %}
+        <br> matches played = {{ elo_rating.count }}
+        <br> matches won = {{ totalMatchesWon|length }}
+        
+    </div>
+
+............................................
+    {% endif %}
+
 
 
 

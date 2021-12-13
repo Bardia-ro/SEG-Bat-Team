@@ -202,15 +202,29 @@ class Role(models.Model):
     def adjust_elo_rating(self, match, club_id, winner):
         player_1 = match.match.player1
         player_2 = match.match.player2
-        
+        match.match.result = winner
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
         
+    
         tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
         p1.elo_rating = tup[0]
         p2.elo_rating = tup[1]
         p1.save()
         p2.save()
+        Elo_Rating.objects.create(
+                user = player_1,
+                match = match.match,
+                rating = tup[0],
+                club_id = club_id
+            )
+
+        Elo_Rating.objects.create(
+                user = player_2,
+                match = match.match,
+                rating = tup[1],
+                club_id = club_id
+            )      
         
     def calculate_expected_scores(self, player_1, player_2, club_id,winner):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
@@ -240,7 +254,6 @@ class Role(models.Model):
         new_elo_B = elo_B + 32 * (res_B - E_B)
 
         return new_elo_A , new_elo_B
-    
 
 
 class Tournament(models.Model):
@@ -355,6 +368,7 @@ class Tournament(models.Model):
         )
 
 class Match(models.Model):
+    result = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
     number = models.PositiveSmallIntegerField()
     player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
     player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
@@ -368,3 +382,9 @@ class EliminationMatch(models.Model):
     def set_winner(self, player):
         """Sets the winner for this match"""
         self.winner = player
+
+class Elo_Rating(models.Model):
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    rating = models.IntegerField(blank=False, default=1000)
