@@ -317,7 +317,7 @@ class Tournament(models.Model):
         if self.current_stage == 'S':
             self._set_current_stage_to_first_stage(num_players)
         elif self.current_stage == 'G1':
-            self._generate_group_stage_for_32_people_or_less()
+            self._generate_group_stage_for_32_people_or_less(players, num_players)
         elif self.current_stage == 'E':
             self._create_elimination_matches(players, num_players)
 
@@ -329,8 +329,76 @@ class Tournament(models.Model):
 
         self.save()
 
-    def _generate_group_stage_for_32_people_or_less(self):
-        pass
+    def _generate_group_stage_for_32_people_or_less(self, players, num_players):
+        self.current_stage = 'E'
+        self.save()
+
+        if num_players == 32:
+            num_players_per_group = 4
+            for i in range(0, 32, num_players_per_group):
+                self._create_group(i, players, num_players_per_group)
+
+    def _create_group(self, i, players, num_players_per_group):
+        group_players = players[i: i+num_players_per_group]
+        group = Group.objects.create(
+            number = int(i / num_players_per_group) + 1,
+            tournament = self,
+            players = group_players
+        )
+
+        for i in range(num_players_per_group):
+            self._set_group_player_points(group, group_players[i])
+
+        self._generate_group_matches(group, group_players, num_players_per_group)
+
+    def _set_group_player_points(self, group, player):
+        GroupPoints.objects.create(
+            group = group,
+            player = player
+        )
+
+    def _generate_group_matches(self, group, group_players, num_players_per_group):
+        for i in range(num_players_per_group-1):
+            for j in range(i+1, num_players_per_group):
+                match = Match.objects.create(
+                    player1 = group_players[i],
+                    player2 = group_players[j]
+                )
+
+                GroupMatch.objects.create(
+                    match = match,
+                    group = group,
+                )
+
+        group_matches = GroupMatch.objects.filter(group=group)
+        group_match_count = group_matches.count()
+        odd_match_number = 1
+        even_match_number = 2
+        num_players_per_group_divided_by_two = int(num_players_per_group/2)
+        for i in range(group_match_count):
+            if i < int(group_match_count/2):
+                group_matches[i].match.number = odd_match_number
+                odd_match_number += num_players_per_group_divided_by_two
+            else:
+                group_matches[i].match.number = even_match_number
+                even_match_number -= num_players_per_group_divided_by_two
+
+            group_matches[i].match.save()
+
+        for group_match in group_matches:
+            match_number = group_match.match.number
+            if match_number % 2 == 1:
+                adjusted_for_oddness_match_number = match_number + 1
+            else:
+                adjusted_for_oddness_match_number = match_number
+
+            group_match.next_matches = GroupMatch.objects.filter(
+                group=group,
+                match__number__gt = adjusted_for_oddness_match_number,
+                match__number__lt = adjusted_for_oddness_match_number + num_players_per_group_divided_by_two + 1
+            )
+
+            group_match.save()
 
     def _create_elimination_matches(self, players, num_players):
         self.current_stage = 'F'
@@ -386,7 +454,7 @@ class Tournament(models.Model):
         )
 
 class Match(models.Model):
-    number = models.PositiveSmallIntegerField()
+    number = models.PositiveSmallIntegerField(null=True)
     player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
     player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
 
@@ -412,6 +480,7 @@ class EliminationMatch(models.Model):
             self.winner_next_match.save()
 
 class Group(models.Model):
+    number = models.PositiveSmallIntegerField()
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     players = models.ManyToManyField(User)
 
@@ -420,8 +489,9 @@ class GroupMatch(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    player1_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
-    player2_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
+    next_matches = models.ManyToManyField(Match, on_delete=models.CASCADE, null=True)
+    # player1_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
+    # player2_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
 
 class GroupPoints(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
