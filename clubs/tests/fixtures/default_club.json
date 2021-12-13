@@ -38,5 +38,15 @@
             "user": 3,
             "role": 2
         }
+    },
+
+    {
+        "model": "clubs.Role",
+        "pk": 3,
+        "fields": {
+            "club": 0,
+            "user": 4,
+            "role": 3
+        }
     }
 ]

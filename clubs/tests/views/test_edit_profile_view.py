@@ -107,3 +107,9 @@ class EditProfileViewTestCase(TestCase):
         self.assertContains(response, 'Save')
         first_name_form_field_error_messages = response.context['form'].fields['first_name'].error_messages
         self.assertTrue('required' in first_name_form_field_error_messages)
+
+    def test_non_logged_in_user_gets_profile(self):
+        response = self.client.get(self.url, follow=True)
+        expected_url = '/log_in/?next=/edit_profile/0/200/'
+        self.assertRedirects(response, expected_url)
+        self.assertTemplateUsed(response, 'log_in.html')
