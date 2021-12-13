@@ -350,7 +350,7 @@ def generate_next_matches(request, club_id, tournament_id):
 @login_required
 def enter_match_results(request, club_id, tournament_id, match_id):
     tournament = Tournament.objects.get(id=tournament_id)
-    match = EliminationMatch.objects.get(tournament_id=tournament_id, match_id=match_id)
+    match = EliminationMatch.objects.get(match__id=match_id)
     role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
     if request.method=="POST":
         winner_id=request.POST['winner']
