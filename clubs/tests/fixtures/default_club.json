@@ -18,5 +18,35 @@
             "user": 200,
             "role": 4
         }
+    },
+
+    {
+        "model": "clubs.Role",
+        "pk": 1,
+        "fields": {
+            "club": 0,
+            "user": 2,
+            "role": 2
+        }
+    },
+
+    {
+        "model": "clubs.Role",
+        "pk": 2,
+        "fields": {
+            "club": 0,
+            "user": 3,
+            "role": 2
+        }
+    },
+
+    {
+        "model": "clubs.Role",
+        "pk": 3,
+        "fields": {
+            "club": 0,
+            "user": 4,
+            "role": 3
+        }
     }
 ]

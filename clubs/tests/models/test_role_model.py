@@ -12,7 +12,7 @@ class RoleModelTest(TestCase):
         super(TestCase, self).setUp()
         self.user=User.objects.get(email='johndoe@example.org')
         self.club=Club.objects.get(name='Club A')
-        self.role=Role.objects.get(club=self.club)
+        self.role=Role.objects.get(club=self.club, user__id=self.user.id)
 
     def test_valid_role(self):
         self.assert_role_is_valid()
