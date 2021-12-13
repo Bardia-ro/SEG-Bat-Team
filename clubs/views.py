@@ -299,7 +299,6 @@ def club_list(request, club_id):
 @login_required
 def pending_requests(request,club_id):
     applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
-    # need applicants for a particular club
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
 
 @login_required
@@ -320,11 +319,24 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
-    matches = EliminationMatch.objects.filter(tournament=tournament)
+    matches = EliminationMatch.objects.filter(tournament=tournament).order_by('match__number')
     return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'matches': matches})
 
 @login_required
 def generate_next_matches(request, club_id, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     tournament.create_elimination_matches()
+    return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
+@login_required
+def enter_match_results(request, club_id, tournament_id, match_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    match = EliminationMatch.objects.get(match__id=match_id)
+    role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
+    if request.method=="POST":
+        winner_id=request.POST['winner']
+        winner = User.objects.get(id=winner_id)
+        match.set_winner(winner)
+        match.save()
+        role.adjust_elo_rating(match,club_id,winner)
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
