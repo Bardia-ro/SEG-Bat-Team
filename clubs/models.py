@@ -10,6 +10,7 @@ from django.http import request
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import PermissionsMixin
 from .managers import CustomUserManager
+from django.shortcuts import get_object_or_404
 import hashlib
 import urllib
 from django import template
@@ -121,6 +122,7 @@ class Club(models.Model):
 class Role(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    elo_rating = models.IntegerField(blank=False, default=1000)
 
     NO_CLUB = 0
     APPlICANT = 1
@@ -196,6 +198,49 @@ class Role(models.Model):
     def get_Officers(self):
         officers = Role.objects.all().filter(role = 3)
         return officers
+
+    def adjust_elo_rating(self, match, club_id, winner):
+        player_1 = match.match.player1
+        player_2 = match.match.player2
+        
+        p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
+        p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
+        
+        tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
+        p1.elo_rating = tup[0]
+        p2.elo_rating = tup[1]
+        p1.save()
+        p2.save()
+        
+    def calculate_expected_scores(self, player_1, player_2, club_id,winner):
+        p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
+        p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
+        elo_A = p1.elo_rating
+        elo_B = p2.elo_rating
+        res_A = 1
+        res_B = 1
+        divA = (elo_B - elo_A)/400
+        divA_ = (10**divA) + 1
+        E_A = 1/divA_
+
+        divB = (elo_A - elo_B)/400
+        divB_ = (10**divB) + 1
+        E_B = 1/divB_
+        if winner == player_1: 
+            res_A = 1
+            res_B = 0
+        elif winner == player_2:
+            res_A = 0
+            res_B = 1
+        # elif winner == "Draw":
+        #     res_A = 0.5
+        #     res_B = 0.5 
+
+        new_elo_A = elo_A + 32 * (res_A - E_A)
+        new_elo_B = elo_B + 32 * (res_B - E_B)
+
+        return new_elo_A , new_elo_B
+    
 
 
 class Tournament(models.Model):
