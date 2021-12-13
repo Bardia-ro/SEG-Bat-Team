@@ -277,7 +277,7 @@ class Tournament(models.Model):
         ('S', 'Start'),
     ]
 
-    current_stage = models.CharField(max_length = 2, choices = STAGE_CHOICES, default = 'S')
+    current_stage = models.CharField(max_length = 3, choices = STAGE_CHOICES, default = 'S')
 
     def __str__(self):
         return self.name
@@ -316,7 +316,8 @@ class Tournament(models.Model):
 
         if self.current_stage == 'S':
             self._set_current_stage_to_first_stage(num_players)
-        elif self.current_stage == 'G1':
+        
+        if self.current_stage == 'G1':
             self._generate_group_stage_for_32_people_or_less(players, num_players)
         elif self.current_stage == 'E':
             self._create_elimination_matches(players, num_players)
@@ -489,7 +490,7 @@ class GroupMatch(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    next_matches = models.ManyToManyField(Match, on_delete=models.CASCADE, null=True)
+    next_matches = models.ManyToManyField(Match, null=True, related_name = '+')
     # player1_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
     # player2_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
 

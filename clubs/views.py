@@ -1,7 +1,7 @@
 
 """Views of the clubs app."""
 from django.core.exceptions import ImproperlyConfigured
-from .models import EliminationMatch, User, Role, Club, Tournament
+from .models import EliminationMatch, GroupMatch, User, Role, Club, Tournament, Group
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -319,8 +319,10 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
-    matches = EliminationMatch.objects.filter(tournament=tournament).order_by('match__number')
-    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'matches': matches})
+    g32_groups = Group.objects.filter(tournament=tournament)
+    g32_matches = GroupMatch.objects.all()
+    elim_matches = EliminationMatch.objects.filter(tournament=tournament).order_by('match__number')
+    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'elim_matches': elim_matches, 'g32_groups': g32_groups, 'g32_matches': g32_matches})
 
 @login_required
 def generate_next_matches(request, club_id, tournament_id):
