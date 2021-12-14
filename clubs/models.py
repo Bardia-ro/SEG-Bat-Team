@@ -495,19 +495,16 @@ class Group(models.Model):
     players = models.ManyToManyField(User)
 
     def get_group_groupmatches(self):
-        return GroupMatch.objects.filter(group=self)
+        return GroupMatch.objects.filter(group=self).order_by('match__number')
 
     def get_group_grouppoints(self):
-        return GroupPoints.objects.filter(group=self)
+        return GroupPoints.objects.filter(group=self).order_by('-total_group_points')
 
 class GroupMatch(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name = 'group')
     player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    # next_matches = models.ManyToManyField('self', related_name='+')
-    # player1_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
-    # player2_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
 
 class GroupMatchNextMatches(models.Model):
     group_match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)
