@@ -152,11 +152,12 @@ def club_creator(request, club_id, user_id):
             return redirect('club_page', club_id=club.id)
     else:
         form = ClubCreatorForm()
-
-    return render(request, 'club_creator.html', context={'form': form, 'club_id': club_id, 'user_id': user_id})
+    club_list = request.user.get_clubs_user_is_a_member()
+    return render(request, 'club_creator.html', context={'form': form, 'club_id': club_id, 'user_id': user_id, 'club_list': club_list})
 
 @login_required
 def create_tournament(request, club_id, user_id):
+
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
     if (role.role_name() == "Officer" and request.method == 'POST'):
         organiser = User.objects.filter(id = request.user.id).first()
@@ -167,7 +168,8 @@ def create_tournament(request, club_id, user_id):
             return redirect('club_page', club_id=club_id)
     else:
         form = TournamentForm()
-    return render(request, 'create_tournament.html', context={'form': form, 'club_id': club_id, 'user_id': user_id})
+    club_list = request.user.get_clubs_user_is_a_member()
+    return render(request, 'create_tournament.html', context={'form': form, 'club_id': club_id, 'user_id': user_id, 'club_list': club_list})
 
 
 @login_required
@@ -297,9 +299,11 @@ def club_list(request, club_id):
 
 
 @login_required
-def pending_requests(request,club_id):
+def pending_requests(request, club_id):
     applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
-    return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants })
+    # need applicants for a particular club
+    club_list = request.user.get_clubs_user_is_a_member()
+    return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants, 'club_list': club_list})
 
 @login_required
 def apply_tournament_toggle(request, user_id, club_id, tournament_id):
