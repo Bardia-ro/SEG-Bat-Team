@@ -12,7 +12,9 @@ class MemberListTest(TestCase):
     def setUp(self):
         self.url = reverse('member_list', kwargs={'club_id': 0})
         self.user = User.objects.get(email='johndoe@example.org')
-        self.members = Role.objects.filter(club__id=0)
+        self.members = Role.objects.filter(club__id=0, role=2)
+        self.owner = Role.objects.filter(club__id=0, role=4)
+        self.officers = Role.objects.filter(club__id=0, role=3)
 
     def test_member_list_url(self):
         self.assertEqual(self.url,'/member_list/0/')
@@ -22,7 +24,7 @@ class MemberListTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'member_list.html')
-        for member in self.members:
+        for member in self.members.union(self.owner,self.officers):
             user=member.user
             self.assertContains(response, user.first_name)
             self.assertContains(response, user.last_name)
