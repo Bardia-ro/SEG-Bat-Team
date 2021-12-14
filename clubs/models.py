@@ -533,18 +533,22 @@ class GroupMatch(models.Model):
         self.player1_points += 1
         self.save()
 
-        group_points_for_player1 = self.get_group_points_object_for_player1()
+        group_points_for_player1 = self._get_group_points_object_for_player1()
         group_points_for_player1.total_group_points += 1
         group_points_for_player1.save()
+
+        self._show_next_group_matches_in_match_schedule()
 
     def player2_won_points(self):
         """Set the score of player 2"""
         self.player2_points += 1
         self.save()
 
-        group_points_for_player2 = self.get_group_points_object_for_player2()
+        group_points_for_player2 = self._get_group_points_object_for_player2()
         group_points_for_player2.total_group_points += 1
         group_points_for_player2.save()
+
+        self._show_next_group_matches_in_match_schedule()
 
     def set_draw_points(self):
         """Updates the score if the match is a draw"""
@@ -552,25 +556,33 @@ class GroupMatch(models.Model):
         self.player2_points += 0.5
         self.save()
 
-        group_points_for_player1 = self.get_group_points_object_for_player1()
+        group_points_for_player1 = self._get_group_points_object_for_player1()
         group_points_for_player1.total_group_points += 0.5
         group_points_for_player1.save()
 
-        group_points_for_player2 = self.get_group_points_object_for_player2()
+        group_points_for_player2 = self._get_group_points_object_for_player2()
         group_points_for_player2.total_group_points += 0.5
         group_points_for_player2.save()
 
-    def get_group_points_object_for_player1(self):
+        self._show_next_group_matches_in_match_schedule()
+
+    def _get_group_points_object_for_player1(self):
         return GroupPoints.objects.get(
             group=self.group, 
             player=self.match.player1
         )
 
-    def get_group_points_object_for_player2(self):
+    def _get_group_points_object_for_player2(self):
         return GroupPoints.objects.get(
             group=self.group, 
             player=self.match.player2
         )
+    
+    def _show_next_group_matches_in_match_schedule(self):
+        group_match_next_matches_object = GroupMatchNextMatches.objects.get(group_match=self)
+        for group_match in group_match_next_matches_object.next_matches.all():
+            group_match.display = True
+            group_match.save()
 
 class GroupMatchNextMatches(models.Model):
     group_match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)
