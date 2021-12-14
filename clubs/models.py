@@ -202,16 +202,16 @@ class Role(models.Model):
     def adjust_elo_rating(self, match, club_id, winner):
         player_1 = match.match.player1
         player_2 = match.match.player2
-        
+
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
-        
+
         tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
         p1.elo_rating = tup[0]
         p2.elo_rating = tup[1]
         p1.save()
         p2.save()
-        
+
     def calculate_expected_scores(self, player_1, player_2, club_id,winner):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
@@ -226,7 +226,7 @@ class Role(models.Model):
         divB = (elo_A - elo_B)/400
         divB_ = (10**divB) + 1
         E_B = 1/divB_
-        if winner == player_1: 
+        if winner == player_1:
             res_A = 1
             res_B = 0
         elif winner == player_2:
@@ -234,13 +234,13 @@ class Role(models.Model):
             res_B = 1
         # elif winner == "Draw":
         #     res_A = 0.5
-        #     res_B = 0.5 
+        #     res_B = 0.5
 
         new_elo_A = elo_A + 32 * (res_A - E_A)
         new_elo_B = elo_B + 32 * (res_B - E_B)
 
         return new_elo_A , new_elo_B
-    
+
 
 
 class Tournament(models.Model):
@@ -316,7 +316,7 @@ class Tournament(models.Model):
 
         if self.current_stage == 'S':
             self._set_current_stage_to_first_stage(num_players)
-        
+
         if self.current_stage == 'G32':
             self._generate_group_stage_for_32_people_or_less(players, num_players)
         elif self.current_stage == 'E':
@@ -387,7 +387,7 @@ class Tournament(models.Model):
                 group_match.number = even_match_number
                 even_match_number -= num_players_per_group_divided_by_two
                 group_match.save()
-            
+
 
         for group_match in group_matches:
             match_number = group_match.match.number
@@ -491,7 +491,7 @@ class EliminationMatch(models.Model):
                 self.winner_next_match.player1 = self.winner
             else:
                 self.winner_next_match.player2 = self.winner
-        
+
             self.winner_next_match.save()
 
 class Group(models.Model):
@@ -508,9 +508,26 @@ class Group(models.Model):
 class GroupMatch(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name = 'group')
-    player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
+    player1_points = models.FloatField(null=True, default = 0)
+    player2_points = models.FloatField(null=True, default = 0)
     display = models.BooleanField(default = False)
+
+    def player1_won_points(self):
+        """Set the score of player 1"""
+        self.player1_points += 1
+        self.save()
+
+    def player2_won_points(self):
+        """Set the score of player 2"""
+        self.player2_points += 1
+        self.save()
+
+    def set_draw_points(self):
+        """Updates the score if the match is a draw"""
+        self.player1_points += 0.5
+        self.player2_points += 0.5
+        self.save()
+
 
 class GroupMatchNextMatches(models.Model):
     group_match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)

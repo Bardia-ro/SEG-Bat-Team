@@ -333,15 +333,40 @@ def generate_next_matches(request, club_id, tournament_id):
     tournament.generate_next_matches()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
+#@login_required
+#def enter_match_results(request, club_id, tournament_id, match_id):
+#    tournament = Tournament.objects.get(id=tournament_id)
+    #match = EliminationMatch.objects.get(id=match_id)
+    #role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
+    #if request.method=="POST":
+    #    winner_id=request.POST['winner']
+    #    winner = User.objects.get(id=winner_id)
+    #    match.set_winner(winner)
+    #    match.save()
+    #    role.adjust_elo_rating(match,club_id,winner)
+    #return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
+
 @login_required
 def enter_match_results(request, club_id, tournament_id, match_id):
     tournament = Tournament.objects.get(id=tournament_id)
-    match = EliminationMatch.objects.get(match__id=match_id)
-    role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
-    if request.method=="POST":
-        winner_id=request.POST['winner']
-        winner = User.objects.get(id=winner_id)
-        match.set_winner(winner)
-        match.save()
-        role.adjust_elo_rating(match,club_id,winner)
+    try:
+        match = EliminationMatch.objects.get(id=match_id)
+        if request.method=="POST":
+            winner_id=request.POST['winner']
+            winner = User.objects.get(id=winner_id)
+            match.set_winner(winner)
+            match.save()
+
+    except:
+        match = GroupMatch.objects.get(id=match_id)
+        if request.method=="POST":
+            result=request.POST['result']
+            if result == 'draw':
+                match.set_draw_points()
+            elif result == 'player1':
+                match.player1_won_points()
+            else:
+                match.player2_won_points()
+            match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
