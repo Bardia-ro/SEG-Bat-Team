@@ -370,6 +370,7 @@ class Tournament(models.Model):
                 GroupMatch.objects.create(
                     match = match,
                     group = group,
+                    display = False
                 )
 
         group_matches = GroupMatch.objects.filter(group=group)
@@ -391,6 +392,11 @@ class Tournament(models.Model):
 
         for group_match in group_matches:
             match_number = group_match.match.number
+
+            if match_number <= num_players_per_group_divided_by_two:
+                group_match.diplay = True
+                group_match.save()
+
             if match_number % 2 == 1:
                 adjusted_for_oddness_match_number = match_number + 1
             else:
@@ -505,6 +511,7 @@ class GroupMatch(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name = 'group')
     player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
+    display = models.BooleanField()
 
 class GroupMatchNextMatches(models.Model):
     group_match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)

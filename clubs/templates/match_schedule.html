@@ -56,7 +56,7 @@
         </tr>
           {% for match in group.get_group_groupmatches %}
               <tr>
-                {% if match.match.player1 or match.match.player2 %}
+                {% if match.display == True %}
                   <td>{{ match.match.number }}</td>
                   <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
                   <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
