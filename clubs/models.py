@@ -5,17 +5,19 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.fields import BLANK_CHOICE_DASH, proxy
+from django.db.models.query import QuerySet
 from django.http import request
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import PermissionsMixin
 from .managers import CustomUserManager
+from django.shortcuts import get_object_or_404
 import hashlib
 import urllib
 from django import template
 from django.utils.safestring import mark_safe
 from location_field.models.plain import PlainLocationField
 from libgravatar import Gravatar
-from django.utils import timezone
+from django.utils import timezone, tree
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -115,11 +117,12 @@ class Club(models.Model):
         return Role.objects.filter(club=self, role=2)
 
     def get_tournaments(self):
-        return Tournaments.objects.filter(club=self)
+        return Tournament.objects.filter(club=self)
 
 class Role(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    elo_rating = models.IntegerField(blank=False, default=1000)
 
     NO_CLUB = 0
     APPlICANT = 1
@@ -196,8 +199,66 @@ class Role(models.Model):
         officers = Role.objects.all().filter(role = 3)
         return officers
 
+    def adjust_elo_rating(self, match, club_id, winner):
+        player_1 = match.match.player1
+        player_2 = match.match.player2
+        match.match.result = winner
+        p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
+        p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
+        
+    
+        tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
+        p1.elo_rating = tup[0]
+        p2.elo_rating = tup[1]
+        p1.save()
+        p2.save()
+        Elo_Rating.objects.create(
+                result = winner,
+                user = player_1,
+                match = match.match,
+                rating = tup[0],
+                club_id = club_id
+            )
 
-class Tournaments(models.Model):
+        Elo_Rating.objects.create(
+                result = winner,
+                user = player_2,
+                match = match.match,
+                rating = tup[1],
+                club_id = club_id
+            )      
+        
+    def calculate_expected_scores(self, player_1, player_2, club_id,winner):
+        p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
+        p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
+        elo_A = p1.elo_rating
+        elo_B = p2.elo_rating
+        res_A = 1
+        res_B = 1
+        divA = (elo_B - elo_A)/400
+        divA_ = (10**divA) + 1
+        E_A = 1/divA_
+
+        divB = (elo_A - elo_B)/400
+        divB_ = (10**divB) + 1
+        E_B = 1/divB_
+        if winner == player_1: 
+            res_A = 1
+            res_B = 0
+        elif winner == player_2:
+            res_A = 0
+            res_B = 1
+        # elif winner == "Draw":
+        #     res_A = 0.5
+        #     res_B = 0.5 
+
+        new_elo_A = elo_A + 32 * (res_A - E_A)
+        new_elo_B = elo_B + 32 * (res_B - E_B)
+
+        return new_elo_A , new_elo_B
+
+
+class Tournament(models.Model):
 
     TWO = 2
     FOUR = 4
@@ -222,23 +283,23 @@ class Tournaments(models.Model):
     deadline = models.DateTimeField(blank=False)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
-    contender = models.ManyToManyField(User, related_name = '+')
+    players = models.ManyToManyField(User, related_name = '+')
 
     def __str__(self):
         return self.name
 
-    def is_contender(self,user_id):
-        """Returns whether a user is a contender in this tournament"""
+    def is_player(self,user_id):
+        """Returns whether a user is a player in this tournament"""
         user = User.objects.get(id=user_id)
-        return user in self.contender.all()
+        return user in self.players.all()
 
-    def contender_count(self):
-        """ Returns the number of contenders in this tournament"""
-        return self.contender.count()
+    def player_count(self):
+        """ Returns the number of players in this tournament"""
+        return self.players.count()
 
     def is_space(self):
-        """Returns whether this tournament has space for more contenders"""
-        return  (self.contender.count() < self.capacity)
+        """Returns whether this tournament has space for more players"""
+        return  (self.players.count() < self.capacity)
 
     def is_time_left(self):
         """Returns whether there is time to apply to this tournament"""
@@ -249,16 +310,84 @@ class Tournaments(models.Model):
         """ Toggles whether a user has applied to this tournament"""
         user = User.objects.get(id=user_id)
         if self.is_time_left():
-            if self.is_contender(user_id):
-                    self.contender.remove(user)
+            if self.is_player(user_id):
+                    self.players.remove(user)
             else:
                 if self.is_space():
-                        self.contender.add(user)
+                        self.players.add(user)
 
+    def create_elimination_matches(self):
+        players = self.players.all()
+        num_players = self.player_count()
+
+        if num_players == 2:
+            self._create_elimination_matches_for_two_players(players)
+        elif num_players == 4 or num_players == 8 or num_players == 16:
+            match = Match.objects.create(number = num_players-1)
+            EliminationMatch.objects.create(
+                tournament = self,
+                match = match
+            )
+
+            for n in range(num_players-2, int(num_players/2), -1):
+                match = Match.objects.create(number = n)
+                self._create_elimination_match_with_non_null_winner_next_match_field(n, match, num_players)
+
+            for n in range(1, (int(num_players/2))+1):
+                match = Match.objects.create(
+                    number = n,
+                    player1 = players[2*n-2],
+                    player2 = players[2*n-1]
+                )
+
+                self._create_elimination_match_with_non_null_winner_next_match_field(n, match, num_players)
+
+    def _create_elimination_matches_for_two_players(self, players):
+        match = Match.objects.create(
+            number = 1,
+            player1 = players[0],
+            player2 = players[1]
+        )
+
+        EliminationMatch.objects.create(
+            tournament = self,
+            match = match
+        )
+
+    def _create_elimination_match_with_non_null_winner_next_match_field(self, n, match, num_players):
+        if n % 2 == 1:
+                adjusted_for_oddness_n = n + 1
+        else:
+            adjusted_for_oddness_n = n
+
+        EliminationMatch.objects.create(
+            tournament = self,
+            match = match,
+            winner_next_match = EliminationMatch.objects.get(
+                tournament = self,
+                match__number = int(adjusted_for_oddness_n/2) + int(num_players/2)
+            ).match
+        )
 
 class Match(models.Model):
+    result = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
     number = models.PositiveSmallIntegerField()
-    tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
-    winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner')
-    player1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player1')
-    player2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'player2')
+    player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
+    player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
+
+class EliminationMatch(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='+')
+    winner_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name = '+')
+
+    def set_winner(self, player):
+        """Sets the winner for this match"""
+        self.winner = player
+
+class Elo_Rating(models.Model):
+    result = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    rating = models.IntegerField(blank=False, default=1000)

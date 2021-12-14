@@ -1,6 +1,7 @@
+
 """Views of the clubs app."""
 from django.core.exceptions import ImproperlyConfigured
-from .models import User, Role, Club, Tournaments
+from .models import EliminationMatch, Elo_Rating, User, Role, Club, Tournament, Match
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -11,6 +12,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
+from itertools import chain
 
 def request_toggle(request, user_id, club_id):
 
@@ -224,11 +226,24 @@ def profile(request, club_id, user_id):
 
     if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
         return redirect('profile', club_id=club_id, user_id=request.user.id)
-
+    elo_rating = Elo_Rating.objects.filter(user = user).filter(club_id = club_id)
+    matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
+    matchesLost = elo_rating.count() - matchWon.count()
+    tournaments = Tournament.objects.filter(players = user).filter(club_id = club_id)
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
     club_list = request.user.get_clubs_user_is_a_member()
-    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'request_user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club, 'club_list': club_list})
+    return render(request, 'profile.html', {'user': user, 
+                           'club_id': club_id,
+                           'request_user_is_member': request_user_is_member, 
+                           'is_current_user': is_current_user, 
+                           'request_user_role': request_user_role_at_club, 
+                           'user_role': user_role_at_club, 
+                           'club_list': club_list,
+                           'elo_rating' : elo_rating,
+                           'tournaments' : tournaments,
+                           'matchesLost' : matchesLost,
+                           'matchWon' : matchWon})
 
 
 @login_required
@@ -306,14 +321,40 @@ def pending_requests(request, club_id):
 
 @login_required
 def apply_tournament_toggle(request, user_id, club_id, tournament_id):
-    tournament = Tournaments.objects.get(id=tournament_id)
+    tournament = Tournament.objects.get(id=tournament_id)
     tournament.toggle_apply(user_id)
 
     if tournament.is_time_left() == False:
         messages.add_message(request, messages.ERROR, "The deadline has passed.")
 
-    if tournament.is_contender(user_id) == False:
+    if tournament.is_player(user_id) == False:
         if tournament.is_space() == False:
             messages.add_message(request, messages.ERROR, "This tournament is full.")
 
     return redirect('club_page', club_id=club_id)
+
+@login_required
+def match_schedule(request, club_id, tournament_id):
+    club_list = request.user.get_clubs_user_is_a_member()
+    tournament = Tournament.objects.get(id=tournament_id)
+    matches = EliminationMatch.objects.filter(tournament=tournament)
+    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'matches': matches})
+
+@login_required
+def generate_next_matches(request, club_id, tournament_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    tournament.create_elimination_matches()
+    return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
+@login_required
+def enter_match_results(request, club_id, tournament_id, match_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    match = EliminationMatch.objects.get(match__id=match_id)
+    role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
+    if request.method=="POST":
+        winner_id=request.POST['winner']
+        winner = User.objects.get(id=winner_id)
+        match.set_winner(winner)
+        match.save()
+        role.adjust_elo_rating(match,club_id,winner)
+    return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
