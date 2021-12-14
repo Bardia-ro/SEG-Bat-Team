@@ -320,7 +320,7 @@ class Tournament(models.Model):
         if self.current_stage == 'G32':
             self._generate_group_stage_for_32_people_or_less(players, num_players)
         elif self.current_stage == 'E':
-            self._create_elimination_matches(players, num_players)
+            return self._create_elimination_matches(players, num_players)
 
     def _set_current_stage_to_first_stage(self, num_players):
         if num_players > 16 and num_players <= 32:
@@ -406,9 +406,6 @@ class Tournament(models.Model):
                 match__number__gt = adjusted_for_oddness_match_number,
                 match__number__lt = adjusted_for_oddness_match_number + num_players_per_group_divided_by_two + 1
             )
-            # group_match.next_matches.set(next_matches)
-
-            # group_match.save()
 
             group_match_next_matches_instance = GroupMatchNextMatches.objects.create(
                 group_match = group_match
@@ -425,7 +422,7 @@ class Tournament(models.Model):
                 group_matches = GroupMatch.objects.filter(group=group)
                 for group_match in group_matches:
                     if group_match.player1_points == 0 and group_match.player2_points == 0:
-                        return 'All group matches must be played before generating elimination rounds matches'
+                        return 'All group matches results must be submitted before generating elimination rounds matches'
 
             elim_rounds_players = list(players[0: 16])
             for group in groups:
