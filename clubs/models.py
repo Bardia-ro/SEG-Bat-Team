@@ -419,16 +419,16 @@ class Tournament(models.Model):
         if num_players <= 16:
             elim_rounds_players = players
         elif num_players == 32:
-            elim_rounds_players = players[0: 16]
+            elim_rounds_players = list(players[0: 16])
             groups = Group.objects.filter(tournament = self)
             for group in groups:
                 group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
                 if group.number % 2 == 1:
                     elim_rounds_players[group.number-1] = group_points_objects[0].player
-                    elim_rounds_players[group.number*8-1] = group_points_objects[1].player
+                    elim_rounds_players[group.number+8-1] = group_points_objects[1].player
                 elif group.number % 2 == 0:
                     elim_rounds_players[group.number-1] = group_points_objects[1].player
-                    elim_rounds_players[group.number*8-1] = group_points_objects[0].player
+                    elim_rounds_players[group.number+8-1] = group_points_objects[0].player
 
         num_players_elim = elim_rounds_players
 
