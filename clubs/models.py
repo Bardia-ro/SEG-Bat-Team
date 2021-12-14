@@ -563,4 +563,4 @@ class GroupMatchNextMatches(models.Model):
 class GroupPoints(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     player = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
-    total_group_points = models.DecimalField(max_digits=2, decimal_places=1, default=0)
+    total_group_points = models.FloatField(default=0)
