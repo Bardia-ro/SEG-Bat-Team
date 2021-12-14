@@ -317,14 +317,14 @@ class Tournament(models.Model):
         if self.current_stage == 'S':
             self._set_current_stage_to_first_stage(num_players)
         
-        if self.current_stage == 'G1':
+        if self.current_stage == 'G32':
             self._generate_group_stage_for_32_people_or_less(players, num_players)
         elif self.current_stage == 'E':
             self._create_elimination_matches(players, num_players)
 
     def _set_current_stage_to_first_stage(self, num_players):
         if num_players > 16 and num_players <= 32:
-            self.current_stage = 'G1'
+            self.current_stage = 'G32'
         else:
             self.current_stage = 'E'
 
@@ -344,8 +344,9 @@ class Tournament(models.Model):
         group = Group.objects.create(
             number = int(i / num_players_per_group) + 1,
             tournament = self,
-            players = group_players
+            # players = group_players
         )
+        group.players.set(group_players)
 
         for i in range(num_players_per_group):
             self._set_group_player_points(group, group_players[i])
@@ -374,17 +375,19 @@ class Tournament(models.Model):
         group_matches = GroupMatch.objects.filter(group=group)
         group_match_count = group_matches.count()
         odd_match_number = 1
-        even_match_number = 2
+        even_match_number = 6 #!!
         num_players_per_group_divided_by_two = int(num_players_per_group/2)
         for i in range(group_match_count):
+            group_match = group_matches[i].match
             if i < int(group_match_count/2):
-                group_matches[i].match.number = odd_match_number
+                group_match.number = odd_match_number
                 odd_match_number += num_players_per_group_divided_by_two
+                group_match.save()
             else:
-                group_matches[i].match.number = even_match_number
+                group_match.number = even_match_number
                 even_match_number -= num_players_per_group_divided_by_two
-
-            group_matches[i].match.save()
+                group_match.save()
+            
 
         for group_match in group_matches:
             match_number = group_match.match.number
@@ -393,13 +396,19 @@ class Tournament(models.Model):
             else:
                 adjusted_for_oddness_match_number = match_number
 
-            group_match.next_matches = GroupMatch.objects.filter(
+            next_matches = GroupMatch.objects.filter(
                 group=group,
                 match__number__gt = adjusted_for_oddness_match_number,
                 match__number__lt = adjusted_for_oddness_match_number + num_players_per_group_divided_by_two + 1
             )
+            # group_match.next_matches.set(next_matches)
 
-            group_match.save()
+            # group_match.save()
+
+            group_match_next_matches_instance = GroupMatchNextMatches.objects.create(
+                group_match = group_match
+            )
+            group_match_next_matches_instance.next_matches.set(next_matches)
 
     def _create_elimination_matches(self, players, num_players):
         self.current_stage = 'F'
@@ -490,9 +499,13 @@ class GroupMatch(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    next_matches = models.ManyToManyField(Match, related_name = '+')
+    # next_matches = models.ManyToManyField('self', related_name='+')
     # player1_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
     # player2_next_match = models.ForeignKey(Match, null=True, on_delete=models.CASCADE, related_name='+')
+
+class GroupMatchNextMatches(models.Model):
+    group_match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)
+    next_matches = models.ManyToManyField(GroupMatch, related_name='+')
 
 class GroupPoints(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
