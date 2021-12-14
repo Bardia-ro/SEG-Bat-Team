@@ -213,6 +213,7 @@ class Role(models.Model):
         p1.save()
         p2.save()
         Elo_Rating.objects.create(
+                result = winner,
                 user = player_1,
                 match = match.match,
                 rating = tup[0],
@@ -220,6 +221,7 @@ class Role(models.Model):
             )
 
         Elo_Rating.objects.create(
+                result = winner,
                 user = player_2,
                 match = match.match,
                 rating = tup[1],
@@ -384,7 +386,8 @@ class EliminationMatch(models.Model):
         self.winner = player
 
 class Elo_Rating(models.Model):
+    result = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     rating = models.IntegerField(blank=False, default=1000)

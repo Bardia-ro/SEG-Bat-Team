@@ -224,14 +224,9 @@ def profile(request, club_id, user_id):
 
     if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
         return redirect('profile', club_id=club_id, user_id=request.user.id)
-    matches = Match.objects.filter(player1 = user)
-    matches2 = Match.objects.filter(player2 = user) 
-    matchesWon1 = Match.objects.filter(player1 = user)
-    matchesWon2 = Match.objects.filter(player2 = user)
-    totalMatchesWon = list(chain(matchesWon1, matchesWon2))
-    elimWon = EliminationMatch.objects.filter(winner = user)
-    resultMatches = list(chain(matches, matches2))
     elo_rating = Elo_Rating.objects.filter(user = user).filter(club_id = club_id)
+    matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
+    matchesLost = elo_rating.count() - matchWon.count()
     tournaments = Tournament.objects.filter(players = user).filter(club_id = club_id)
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
@@ -243,10 +238,10 @@ def profile(request, club_id, user_id):
                            'request_user_role': request_user_role_at_club, 
                            'user_role': user_role_at_club, 
                            'club_list': club_list,
-                           'matches' : resultMatches,
                            'elo_rating' : elo_rating,
                            'tournaments' : tournaments,
-                           'totalMatchesWon' : elimWon})
+                           'matchesLost' : matchesLost,
+                           'matchWon' : matchWon})
 
 
 @login_required

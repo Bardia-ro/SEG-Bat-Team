@@ -52,5 +52,5 @@ class EloRatingAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for Matches."""
 
     list_display = [
-        'user', 'rating', 'club'
+        'user', 'rating', 'club','result'
     ]
