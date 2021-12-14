@@ -7,14 +7,15 @@
   }
   </style>
 
-  <table>
-    <tr>
-      <th>Match Number</th>
-      <th> Player One </th>
-      <th> Player Two </th>
-      <th> Results </th>
-    </tr>
-    {% if elim_matches %}
+  {% if elim_matches %}
+    <h3>Elimination Rounds</h3>
+    <table>
+      <tr>
+        <th>Match Number</th>
+        <th> Player One </th>
+        <th> Player Two </th>
+        <th> Results </th>
+      </tr>
       {% for match in elim_matches %}
       <tr>
         {% if match.match.player1 or match.match.player2 %}
@@ -39,23 +40,21 @@
         {% endif %}
       </tr>
       {% endfor %}
-    {% endif %}
-  </table>
+    </table>
+  {% endif %}
 
-  {% if elim_matches %}
+  {% if g32_groups %}
+    <h3>Round of 32</h3>
     {% for group in g32_groups %}
       <table>
-        <tr>
-          <th>Group Number {{group.number}}</th>
-        </tr>
+        <h5>Group Number {{group.number}}</h5>
         <tr>
           <th>Match Number</th>
           <th> Player One </th>
           <th> Player Two </th>
           <th> Results </th>
         </tr>
-          {% for match in g32_matches %}
-            {% if match.group == group %}
+          {% for match in group.get_group_groupmatches %}
               <tr>
                 {% if match.match.player1 or match.match.player2 %}
                   <td>{{ match.match.number }}</td>
@@ -75,12 +74,26 @@
                   </td>
                   {%else%}
                   <td>{{match.winner.first_name}} {{match.winner.last_name}}</td>
-                  {% endif%}
+                  {% endif %}
                 {% endif %}
               </tr>
-            {% endif %}
           {% endfor %}
       </table>
+      <br></br>
+      <table>
+        <h5>Group Number {{group.number}}</h5>
+        <tr>
+          <th> Player </th>
+          <th> Total player points </th>
+        </tr>
+          {% for group_points in group.get_group_grouppoints %}
+              <tr>
+                <td>{{ group_points.player.first_name }} {{ match.match.player.last_name }}</td>
+                <td> {{ group_points.total_group_points }}</td>
+              </tr>
+          {% endfor %}
+      </table>
+      <br></br>
     {% endfor %}
   {% endif %}
 
