@@ -46,15 +46,17 @@
   {% if g32_groups %}
     <h3>Round of 32</h3>
     {% for group in g32_groups %}
-      <table>
-        <h5>Group Number {{group.number}}</h5>
-        <tr>
-          <th>Match Number</th>
-          <th> Player One </th>
-          <th> Player Two </th>
-          <th> Winner </th>
-        </tr>
-          {% for group_match in group.get_group_groupmatches %}
+      <div class="row">
+        <div class="col">
+          <table>
+            <h5>Group Number {{group.number}}</h5>
+            <tr>
+              <th>Match Number</th>
+              <th> Player One </th>
+              <th> Player Two </th>
+              <th> Winner </th>
+            </tr>
+            {% for group_match in group.get_group_groupmatches %}
               <tr>
                 {% if group_match.display %}
                   <td>{{ group_match.match.number }}</td>
@@ -82,23 +84,27 @@
                 {% endif %}
                 {%endif%}
               </tr>
-          {% endfor %}
-      </table>
-      <br></br>
-      <table>
-        <h5>Group Number {{group.number}}</h5>
-        <tr>
-          <th> Player </th>
-          <th> Total player points </th>
-        </tr>
-          {% for group_points in group.get_group_grouppoints %}
-              <tr>
-                <td>{{ group_points.player.first_name }} {{ match.match.player.last_name }}</td>
-                <td> {{ group_points.total_group_points }}</td>
-              </tr>
-          {% endfor %}
-      </table>
-      <br></br>
+            {% endfor %}
+          </table>
+          <br></br>
+        </div>
+        <div class="col">
+          <table>
+            <h5>Group Number {{group.number}}</h5>
+            <tr>
+              <th> Player </th>
+              <th> Total player points </th>
+            </tr>
+              {% for group_points in group.get_group_grouppoints %}
+                  <tr>
+                    <td>{{ group_points.player.first_name }} {{ match.match.player.last_name }}</td>
+                    <td> {{ group_points.total_group_points }}</td>
+                  </tr>
+              {% endfor %}
+          </table>
+          <br></br>
+        </div>
+      </div>
     {% endfor %}
   {% endif %}
 
