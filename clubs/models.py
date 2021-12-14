@@ -370,7 +370,6 @@ class Tournament(models.Model):
                 GroupMatch.objects.create(
                     match = match,
                     group = group,
-                    display = False
                 )
 
         group_matches = GroupMatch.objects.filter(group=group)
@@ -511,7 +510,7 @@ class GroupMatch(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name = 'group')
     player1_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     player2_points = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    display = models.BooleanField()
+    display = models.BooleanField(default = False)
 
 class GroupMatchNextMatches(models.Model):
     group_match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)
