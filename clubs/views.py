@@ -350,23 +350,25 @@ def generate_next_matches(request, club_id, tournament_id):
 @login_required
 def enter_match_results(request, club_id, tournament_id, match_id):
     tournament = Tournament.objects.get(id=tournament_id)
-    try:
-        match = EliminationMatch.objects.get(id=match_id)
-        if request.method=="POST":
-            winner_id=request.POST['winner']
-            winner = User.objects.get(id=winner_id)
-            match.set_winner(winner)
-            match.save()
+    match = EliminationMatch.objects.get(id=match_id)
+    if request.method=="POST":
+        winner_id=request.POST['winner']
+        winner = User.objects.get(id=winner_id)
+        match.set_winner(winner)
+        match.save()
 
-    except:
-        match = GroupMatch.objects.get(id=match_id)
-        if request.method=="POST":
-            result=request.POST['result']
-            if result == 'draw':
-                match.set_draw_points()
-            elif result == 'player1':
-                match.player1_won_points()
-            else:
-                match.player2_won_points()
-            match.save()
+
+@login_required
+def enter_match_results_groups(request, club_id, tournament_id, match_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    match = GroupMatch.objects.get(id=match_id)
+    if request.method=="POST":
+        result=request.POST['result']
+        if result == 'draw':
+            match.set_draw_points()
+        elif result == 'player1':
+            match.player1_won_points()
+        else:
+            match.player2_won_points()
+        match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)

@@ -62,7 +62,7 @@
                   <td> {{ group_match.match.player2.first_name }} {{ group_match.match.player2.last_name }} </td>
                   {% if group_match.player1_points == 0 and group_match.player2_points == 0%}
                   <td>
-                    <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id match_id=group_match.id %}" method="post">
+                    <form action="{% url 'enter_match_results_groups' club_id=club_id tournament_id=tournament.id match_id=group_match.id %}" method="post">
                       {% csrf_token %}
                       {% include 'partials/bootstrap_form.html' with form=form %}
                       <select name='result'>
@@ -74,7 +74,7 @@
                     </form>
                   </td>
                   {%elif group_match.player1_points == 1 %}
-                  <td>{{ group_match.match.player1.first_name }}</td>
+                  <td>{{ group_match.match.player1.first_name }} </td>
                   {%elif group_match.player2_points == 1 %}
                   <td>{{ group_match.match.player2.first_name }}</td>
                   {%else%}
