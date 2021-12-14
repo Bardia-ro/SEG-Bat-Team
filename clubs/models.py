@@ -416,36 +416,52 @@ class Tournament(models.Model):
             group_match_next_matches_instance.next_matches.set(next_matches)
 
     def _create_elimination_matches(self, players, num_players):
+        if num_players <= 16:
+            elim_rounds_players = players
+        elif num_players == 32:
+            elim_rounds_players = players[0: 16]
+            groups = Group.objects.filter(tournament = self)
+            for group in groups:
+                group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
+                if group.number % 2 == 1:
+                    elim_rounds_players[group.number-1] = group_points_objects[0].player
+                    elim_rounds_players[group.number*8-1] = group_points_objects[1].player
+                elif group.number % 2 == 0:
+                    elim_rounds_players[group.number-1] = group_points_objects[1].player
+                    elim_rounds_players[group.number*8-1] = group_points_objects[0].player
+
+        num_players_elim = elim_rounds_players
+
         self.current_stage = 'F'
         self.save()
 
-        if num_players == 2:
-            self._create_elimination_matches_for_two_players(players)
-        elif num_players == 4 or num_players == 8 or num_players == 16:
-            match = Match.objects.create(number = num_players-1)
+        if num_players_elim == 2:
+            self._create_elimination_matches_for_two_players(elim_rounds_players)
+        elif num_players_elim == 4 or num_players_elim == 8 or num_players_elim == 16:
+            match = Match.objects.create(number = num_players_elim-1)
             EliminationMatch.objects.create(
                 tournament = self,
                 match = match
             )
 
-            for n in range(num_players-2, int(num_players/2), -1):
+            for n in range(num_players_elim-2, int(num_players_elim/2), -1):
                 match = Match.objects.create(number = n)
-                self._create_elimination_match_with_non_null_winner_next_match_field(n, match, num_players)
+                self._create_elimination_match_with_non_null_winner_next_match_field(n, match, num_players_elim)
 
-            for n in range(1, (int(num_players/2))+1):
+            for n in range(1, (int(num_players_elim/2))+1):
                 match = Match.objects.create(
                     number = n,
-                    player1 = players[2*n-2],
-                    player2 = players[2*n-1]
+                    player1 = elim_rounds_players[2*n-2],
+                    player2 = elim_rounds_players[2*n-1]
                 )
 
-                self._create_elimination_match_with_non_null_winner_next_match_field(n, match, num_players)
+                self._create_elimination_match_with_non_null_winner_next_match_field(n, match, num_players_elim)
 
-    def _create_elimination_matches_for_two_players(self, players):
+    def _create_elimination_matches_for_two_players(self, elim_rounds_players):
         match = Match.objects.create(
             number = 1,
-            player1 = players[0],
-            player2 = players[1]
+            player1 = elim_rounds_players[0],
+            player2 = elim_rounds_players[1]
         )
 
         EliminationMatch.objects.create(
@@ -453,7 +469,7 @@ class Tournament(models.Model):
             match = match
         )
 
-    def _create_elimination_match_with_non_null_winner_next_match_field(self, n, match, num_players):
+    def _create_elimination_match_with_non_null_winner_next_match_field(self, n, match, num_players_elim):
         if n % 2 == 1:
             adjusted_for_oddness_n = n + 1
         else:
@@ -464,7 +480,7 @@ class Tournament(models.Model):
             match = match,
             winner_next_match = EliminationMatch.objects.get(
                 tournament = self,
-                match__number = int(adjusted_for_oddness_n/2) + int(num_players/2)
+                match__number = int(adjusted_for_oddness_n/2) + int(num_players_elim/2)
             ).match
         )
 
