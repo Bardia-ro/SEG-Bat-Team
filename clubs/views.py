@@ -227,6 +227,14 @@ def profile(request, club_id, user_id):
     if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
         return redirect('profile', club_id=club_id, user_id=request.user.id)
     elo_rating = Elo_Rating.objects.filter(user = user).filter(club_id = club_id)
+    club_elo_rating = Elo_Rating.objects.filter(club_id = club_id)
+    max_elo = 0
+    min_elo = 100000
+    for ratings in club_elo_rating:
+        if ratings.rating > max_elo:
+            max_elo = ratings.rating
+        if ratings.rating < min_elo:
+            min_elo = ratings.rating
     matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
     matchesLost = elo_rating.count() - matchWon.count()
     tournaments = Tournament.objects.filter(players = user).filter(club_id = club_id)
@@ -243,7 +251,9 @@ def profile(request, club_id, user_id):
                            'elo_rating' : elo_rating,
                            'tournaments' : tournaments,
                            'matchesLost' : matchesLost,
-                           'matchWon' : matchWon})
+                           'matchWon' : matchWon,
+                           'max_elo' : max_elo,
+                           'min_elo' : min_elo})
 
 
 @login_required
