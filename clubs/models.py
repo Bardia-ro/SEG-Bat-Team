@@ -419,8 +419,15 @@ class Tournament(models.Model):
         if num_players <= 16:
             elim_rounds_players = players
         elif num_players == 32:
-            elim_rounds_players = list(players[0: 16])
             groups = Group.objects.filter(tournament = self)
+
+            for group in groups:
+                group_matches = GroupMatch.objects.filter(group=group)
+                for group_match in group_matches:
+                    if group_match.player1_points == 0 and group_match.player2_points == 0:
+                        return 'All group matches must be played before generating elimination rounds matches'
+
+            elim_rounds_players = list(players[0: 16])
             for group in groups:
                 group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
                 if group.number % 2 == 1:
@@ -524,8 +531,8 @@ class Group(models.Model):
 class GroupMatch(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name = 'group')
-    player1_points = models.FloatField(null=True, default = 0)
-    player2_points = models.FloatField(null=True, default = 0)
+    player1_points = models.FloatField(default = 0)
+    player2_points = models.FloatField(default = 0)
     display = models.BooleanField(default = False)
 
     def player1_won_points(self):
