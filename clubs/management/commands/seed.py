@@ -102,7 +102,7 @@ class Command(BaseCommand):
             if counter ==3:
                 Role.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=2)
 
-            for i in range(80):
+            for i in range(35):
                 Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=2)
             for i in range(3):
                 Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
@@ -157,7 +157,7 @@ class Command(BaseCommand):
                 found = False
                 while(not found):
                     not_jeb = self.get_tournament_players(a_club, the_tournament.organiser)
-                    if (not_jeb!=jeb):
+                    if (not_jeb!=jeb and not_jeb not in the_tournament.players.all()):
                         found=True
                 the_tournament.players.add(not_jeb)
             the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
