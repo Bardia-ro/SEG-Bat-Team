@@ -330,7 +330,9 @@ def match_schedule(request, club_id, tournament_id):
 @login_required
 def generate_next_matches(request, club_id, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
-    tournament.generate_next_matches()
+    message = tournament.generate_next_matches()
+    if message:
+        messages.add_message(request, messages.ERROR, message)
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
 #@login_required
