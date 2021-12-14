@@ -26,7 +26,7 @@ class MemberListTest(TestCase):
             user=member.user
             self.assertContains(response, user.first_name)
             self.assertContains(response, user.last_name)
-            self.assertContains(response, user.email)
+            self.assertContains(response, user.bio)
             user_url = reverse('profile', kwargs={'club_id': 0 ,'user_id': user.id})
             self.assertContains(response, user_url)
     

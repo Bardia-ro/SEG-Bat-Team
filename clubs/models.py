@@ -36,7 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return self.first_name
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -152,7 +152,7 @@ class Role(models.Model):
             return "Owner"
 
     def user_email(self):
-        return self.user.email
+        return self.user.first_name
 
     def approve_membership(self):
         self.role = Role.MEMBER

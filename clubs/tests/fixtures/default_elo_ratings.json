@@ -1,0 +1,12 @@
+[
+    {
+        "model": "clubs.elo_rating",
+        "pk": 200,
+        "fields": {
+            "club": 1,
+            "match": 1,
+            "rating": 1000
+        }
+    }
+
+]
