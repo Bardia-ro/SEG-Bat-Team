@@ -5,6 +5,9 @@ from django.urls import reverse
 from clubs.forms import TournamentForm
 from clubs.models import Tournaments, User
 from clubs.tests.helpers import LogInTester
+from django.utils.timezone import make_aware
+from datetime import datetime
+import pytz
 
 class CreateTournamentViewTestCase(TestCase, LogInTester):
     """Tests of the club creator view."""
@@ -21,7 +24,7 @@ class CreateTournamentViewTestCase(TestCase, LogInTester):
             'name': 'Tournament A',
             'description': 'This is the description',
             'capacity': 4,
-            'deadline': '2021-01-12 14:12:06'
+            'deadline': '2021-01-12 14:12'
         }
         
     def test_create_tournament_url(self):
@@ -68,4 +71,4 @@ class CreateTournamentViewTestCase(TestCase, LogInTester):
         tournament = Tournaments.objects.get(name='Tournament A')
         self.assertEqual(tournament.name, 'Tournament A')
         self.assertEqual(tournament.capacity, 4)
-        # self.assertEqual(tournament.deadline, '2021-01-12 14:12:06')
+        self.assertEqual(tournament.deadline, make_aware(datetime.strptime('2021-01-12 14:12', '%Y-%m-%d %H:%M'), timezone=pytz.timezone("UTC")))
