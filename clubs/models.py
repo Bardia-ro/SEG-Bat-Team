@@ -430,7 +430,7 @@ class Tournament(models.Model):
                     elim_rounds_players[group.number-1] = group_points_objects[1].player
                     elim_rounds_players[group.number+8-1] = group_points_objects[0].player
 
-        num_players_elim = elim_rounds_players
+        num_players_elim = len(elim_rounds_players)
 
         self.current_stage = 'F'
         self.save()
