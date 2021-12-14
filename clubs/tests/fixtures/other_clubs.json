@@ -8,6 +8,112 @@
             "location": "London",
             "description": "This is Club A"
         }
-    }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 7,
+        "fields": {
+            "club": 1,
+            "user": 8,
+            "role": 4
+        }
+    },
 
+    {
+        "model": "clubs.Role",
+        "pk": 8,
+        "fields": {
+            "club": 1,
+            "user": 9,
+            "role": 2
+        }
+    },
+
+    {
+        "model": "clubs.Role",
+        "pk": 9,
+        "fields": {
+            "club": 1,
+            "user": 10,
+            "role": 2
+        }
+    },
+
+    {
+        "model": "clubs.Role",
+        "pk": 10,
+        "fields": {
+            "club": 1,
+            "user": 11,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 11,
+        "fields": {
+            "club": 1,
+            "user": 12,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 12,
+        "fields": {
+            "club": 1,
+            "user": 13,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 13,
+        "fields": {
+            "club": 1,
+            "user": 14,
+            "role": 1
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 2,
+        "fields": {
+            "name": "Hartman, Davis and Mason",
+            "city": "North Kennethchester",
+            "location": "",
+            "description": "Society within town accept crime issue interest. Figure key they conference also over. Brother forward decide phone can. Direction amount listen break Democrat."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 3,
+        "fields": {
+            "name": "Carrillo-Hayes",
+            "city": "North Melissa",
+            "location": "",
+            "description": "Mention key measure. Old imagine several above just. Inside individual call road boy all culture. Decade price goal democratic. Life pick sort sign. Around family music special they the executive."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 4,
+        "fields": {
+            "name": "Berry-Flores",
+            "city": "Jamietown",
+            "location": "",
+            "description": "Whom computer mission watch also wait sport. They spring step indicate deal one. Provide discuss finally stand big. So help if travel candidate accept with. Whole behind box. Name respond thing at artist position. Build single program see safe allow."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 5,
+        "fields": {
+            "name": "Gardner-Randall",
+            "city": "Bensonborough",
+            "location": "",
+            "description": "Sure without enough scientist near baby. Value become baby eat bag size. Reveal effort smile who add seven owner. Reduce reduce five memory watch Democrat."
+        }
+    }
+    
 ]
