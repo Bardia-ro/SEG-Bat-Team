@@ -39,7 +39,6 @@
             "role": 2
         }
     },
-
     {
         "model": "clubs.Role",
         "pk": 3,
@@ -74,6 +73,28 @@
             "club": 0,
             "user": 7,
             "role": 1
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 7,
+        "fields": {
+            "club": 0,
+            "user": 1,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Tournaments",
+        "pk": 0,
+        "fields": {
+            "name": "Tournament 1",
+            "description": "This is the description",
+            "capacity": 4,
+            "deadline": "2021-01-12 14:12",
+            "club": 0,
+            "organiser": 5,
+            "contender": [3,2,4,1]
         }
     }
 ]
