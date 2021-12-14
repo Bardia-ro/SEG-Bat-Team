@@ -393,7 +393,7 @@ class Tournament(models.Model):
             match_number = group_match.match.number
 
             if match_number <= num_players_per_group_divided_by_two:
-                group_match.diplay = True
+                group_match.display = True
                 group_match.save()
 
             if match_number % 2 == 1:

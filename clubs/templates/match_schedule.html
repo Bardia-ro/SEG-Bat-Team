@@ -54,26 +54,26 @@
           <th> Player Two </th>
           <th> Results </th>
         </tr>
-          {% for match in group.get_group_groupmatches %}
+          {% for group_match in group.get_group_groupmatches %}
               <tr>
-                {% if match.display == True %}
-                  <td>{{ match.match.number }}</td>
-                  <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
-                  <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
+                {% if group_match.display %}
+                  <td>{{ group_match.match.number }}</td>
+                  <td>{{ group_match.match.player1.first_name }} {{ group_match.match.player1.last_name }}</td>
+                  <td> {{ group_match.match.player2.first_name }} {{ group_match.match.player2.last_name }} </td>
                   {% if match.winner == None %}
                   <td>
-                    <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id match_id=match.id %}" method="post">
+                    <!-- <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id match_id=group_match.id %}" method="post">
                       {% csrf_token %}
                       {% include 'partials/bootstrap_form.html' with form=form %}
                       <select name='winner'>
-                        <option value= "{{match.match.player1.id}}">{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</option>
-                        <option value= "{{match.match.player2.id}}">{{ match.match.player2.first_name }} {{ match.match.player2.last_name }}</option>
+                        <option value= "{{match.match.player1.id}}">{{ group_match.match.player1.first_name }} {{ group_match.match.player1.last_name }}</option>
+                        <option value= "{{match.match.player2.id}}">{{ group_match.match.player2.first_name }} {{ group_match.match.player2.last_name }}</option>
                       </select>
                       <input type= "submit" value="Submit Results"/>
-                    </form>
+                    </form> -->
                   </td>
                   {%else%}
-                  <td>{{match.winner.first_name}} {{match.winner.last_name}}</td>
+                  <td>{{group_match.winner.first_name}} {{group_match.winner.last_name}}</td>
                   {% endif %}
                 {% endif %}
               </tr>
