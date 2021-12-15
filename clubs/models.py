@@ -311,6 +311,8 @@ class Tournament(models.Model):
                         self.players.add(user)
 
     def generate_next_matches(self):
+        """Create the next matches that should be created in this tournament"""
+
         players = self.players.all()
         num_players = self.player_count()
 
@@ -323,6 +325,8 @@ class Tournament(models.Model):
             return self._create_elimination_matches(players, num_players)
 
     def _set_current_stage_to_first_stage(self, num_players):
+        """Set this tournament's current_stage field to the first stage for this tournament"""
+
         if num_players > 16 and num_players <= 32:
             self.current_stage = 'G32'
         else:
@@ -331,6 +335,8 @@ class Tournament(models.Model):
         self.save()
 
     def _generate_group_stage_for_32_people_or_less(self, players, num_players):
+        """Generate group stage if the number of players is between 17 and 32"""
+
         self.current_stage = 'E'
         self.save()
 
@@ -340,11 +346,12 @@ class Tournament(models.Model):
                 self._create_group(i, players, num_players_per_group)
 
     def _create_group(self, i, players, num_players_per_group):
+        """Create a group for a group stage"""
+
         group_players = players[i: i+num_players_per_group]
         group = Group.objects.create(
             number = int(i / num_players_per_group) + 1,
             tournament = self,
-            # players = group_players
         )
         group.players.set(group_players)
 
@@ -354,6 +361,8 @@ class Tournament(models.Model):
         self._generate_group_matches(group, group_players, num_players_per_group)
 
     def _set_group_player_points(self, group, player):
+        """Create a GroupPoint instance for a player in a group"""
+
         GroupPoints.objects.create(
             group = group,
             player = player
@@ -489,11 +498,15 @@ class Tournament(models.Model):
         )
 
 class Match(models.Model):
+    """Model representing a basic match"""
+
     number = models.PositiveSmallIntegerField(null=True)
     player1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
     player2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name= '+')
 
 class EliminationMatch(models.Model):
+    """Model representing an elimination match"""
+
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='+')
@@ -506,6 +519,8 @@ class EliminationMatch(models.Model):
         self.set_winner_as_player_in_winner_next_match()
 
     def set_winner_as_player_in_winner_next_match(self):
+        """Set the winner of this match as a player in their next match if they have a next match"""
+
         if self.winner_next_match:
             if self.match.number % 2 == 1:
                 self.winner_next_match.player1 = self.winner
@@ -515,17 +530,25 @@ class EliminationMatch(models.Model):
             self.winner_next_match.save()
 
 class Group(models.Model):
+    """Model representing a group"""
+
     number = models.PositiveSmallIntegerField()
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     players = models.ManyToManyField(User)
 
     def get_group_groupmatches(self):
+        """Return the group matches in this group"""
+
         return GroupMatch.objects.filter(group=self).order_by('match__number')
 
     def get_group_grouppoints(self):
+        """Return the GroupPoints objects associated with this group"""
+
         return GroupPoints.objects.filter(group=self).order_by('-total_group_points')
 
 class GroupMatch(models.Model):
+    """Model representing a group match"""
+
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name = 'group')
     player1_points = models.FloatField(default = 0)
@@ -537,9 +560,7 @@ class GroupMatch(models.Model):
         self.player1_points += 1
         self.save()
 
-        group_points_for_player1 = self._get_group_points_object_for_player1()
-        group_points_for_player1.total_group_points += 1
-        group_points_for_player1.save()
+        self._update_player1_total_group_points(1)
 
         self._show_next_group_matches_in_match_schedule()
 
@@ -548,9 +569,7 @@ class GroupMatch(models.Model):
         self.player2_points += 1
         self.save()
 
-        group_points_for_player2 = self._get_group_points_object_for_player2()
-        group_points_for_player2.total_group_points += 1
-        group_points_for_player2.save()
+        self._update_player2_total_group_points(1)
 
         self._show_next_group_matches_in_match_schedule()
 
@@ -560,39 +579,59 @@ class GroupMatch(models.Model):
         self.player2_points += 0.5
         self.save()
 
-        group_points_for_player1 = self._get_group_points_object_for_player1()
-        group_points_for_player1.total_group_points += 0.5
-        group_points_for_player1.save()
+        self._update_player1_total_group_points(0.5)
 
-        group_points_for_player2 = self._get_group_points_object_for_player2()
-        group_points_for_player2.total_group_points += 0.5
-        group_points_for_player2.save()
+        self._update_player2_total_group_points(0.5)
 
         self._show_next_group_matches_in_match_schedule()
 
     def _get_group_points_object_for_player1(self):
+        """Return GroupPoints object for player1 in the group that this group match is part of"""
+
         return GroupPoints.objects.get(
             group=self.group, 
             player=self.match.player1
         )
 
     def _get_group_points_object_for_player2(self):
+        """Return GroupPoints object for player2 in the group that this group match is part of"""
+
         return GroupPoints.objects.get(
             group=self.group, 
             player=self.match.player2
         )
+
+    def _update_player1_total_group_points(self, points):
+        """Update player1 total group points"""
+
+        group_points_for_player1 = self._get_group_points_object_for_player1()
+        group_points_for_player1.total_group_points += points
+        group_points_for_player1.save()
+
+    def _update_player2_total_group_points(self, points):
+        """Update player2 total group points"""
+
+        group_points_for_player2 = self._get_group_points_object_for_player2()
+        group_points_for_player2.total_group_points += 1
+        group_points_for_player2.save()
     
     def _show_next_group_matches_in_match_schedule(self):
+        """Set the display field of the next matches that should be displayed after the result of this group match has been submitted to True"""
+
         group_match_next_matches_object = GroupMatchNextMatches.objects.get(group_match=self)
         for group_match in group_match_next_matches_object.next_matches.all():
             group_match.display = True
             group_match.save()
 
 class GroupMatchNextMatches(models.Model):
+    """Model to hold the next group matches that should be displayed after the result for a group match has been submitted"""
+
     group_match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)
     next_matches = models.ManyToManyField(GroupMatch, related_name='+')
 
 class GroupPoints(models.Model):
+    """Model to hold the total points a player has in a group in a group stage"""
+
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     player = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')
     total_group_points = models.FloatField(default=0)
