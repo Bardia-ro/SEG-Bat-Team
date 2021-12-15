@@ -53,6 +53,14 @@ class RoleModelTest(TestCase):
         role_name = self.role.role_name()
         self.assertAlmostEqual("Applicant" ,role_name)
     
+    def test_elo_rating_must_not_be_blank(self):
+        self.role.elo_rating = ''
+        self.assert_role_is_invalid()
+    
+    def test_elo_rating_sets_default(self):
+        self.assertEqual(self.role.elo_rating,1000)
+
+    
     def assert_role_is_valid(self):
         try:
             self.role.full_clean()
