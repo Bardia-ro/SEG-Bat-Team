@@ -61,10 +61,6 @@ class EliminationMatchModel(TestCase):
         self.elimination_match.match=None
         self.assert_elimination_match_is_invalid()
 
-    #Class functionality tests
-    #def test_create_elimination_matches(self):
-    #    self.tournament._create_elimination_matches()
-
     #Valid or invalid methods
     def assert_elimination_match_is_valid(self):
         try:
