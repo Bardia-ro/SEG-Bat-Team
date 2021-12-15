@@ -353,8 +353,47 @@ def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
     g32_groups = Group.objects.filter(tournament=tournament)
-    elim_matches = EliminationMatch.objects.filter(tournament=tournament).order_by('match__number')
-    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'elim_matches': elim_matches, 'g32_groups': g32_groups})
+
+    num_players_in_tournament = tournament.player_count()
+    if num_players_in_tournament > 16:
+        num_players_elim_rounds = 16
+    else:
+        num_players_elim_rounds = num_players_in_tournament 
+
+    round_of_16_matches = EliminationMatch.objects.filter(
+        tournament=tournament, 
+        match__number__lte = num_players_elim_rounds - 8,
+        match__number__gte = num_players_elim_rounds - 15,
+    ).order_by('match__number')
+    quarter_final_matches = EliminationMatch.objects.filter(
+        tournament=tournament,
+        match__number__lte = num_players_elim_rounds - 4,
+        match__number__gte = num_players_elim_rounds - 7,
+    ).order_by('match__number')
+    semi_final_matches = EliminationMatch.objects.filter(
+        tournament=tournament,
+        match__number__lte = num_players_elim_rounds - 2,
+        match__number__gte = num_players_elim_rounds - 3,
+    ).order_by('match__number')
+    final_match = EliminationMatch.objects.filter(
+        tournament=tournament, 
+        match__number = num_players_elim_rounds - 1
+    ).order_by('match__number')
+
+    return render(
+        request, 
+        'match_schedule.html', 
+        {
+            'club_id': club_id, 
+            'club_list': club_list, 
+            'tournament':tournament, 
+            'round_of_16_matches': round_of_16_matches,
+            'quarter_final_matches': quarter_final_matches, 
+            'semi_final_matches': semi_final_matches,
+            'final_match': final_match,
+            'g32_groups': g32_groups
+        }
+    )
 
 @login_required
 def generate_next_matches(request, club_id, tournament_id):

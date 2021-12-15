@@ -7,40 +7,41 @@
   }
   </style>
 
-  {% if elim_matches %}
+  {% if final_match %}
+    {% for match in final_match %}
+      {% if match.winner != None %}
+        <h3>Tournament winner: {{ match.winner.first_name }} {{ match.winner.last_name }}</h3>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if round_of_16_matches or quarter_final_matches or semi_final_matches or final_match %}
     <h3>Elimination Rounds</h3>
-    <table>
-      <tr>
-        <th>Match Number</th>
-        <th> Player One </th>
-        <th> Player Two </th>
-        <th> Results </th>
-      </tr>
-      {% for match in elim_matches %}
-      <tr>
-        {% if match.match.player1 or match.match.player2 %}
-          <td>{{ match.match.number }}</td>
-          <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
-          <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
-          {% if match.winner == None %}
-          <td>
-            <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id match_id=match.id %}" method="post">
-              {% csrf_token %}
-              {% include 'partials/bootstrap_form.html' with form=form %}
-              <select name='winner'>
-                <option value= "{{match.match.player1.id}}">{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</option>
-                <option value= "{{match.match.player2.id}}">{{ match.match.player2.first_name }} {{ match.match.player2.last_name }}</option>
-              </select>
-              <input type= "submit" value="Submit Results"/>
-            </form>
-          </td>
-          {%else%}
-          <td>{{match.winner.first_name}} {{match.winner.last_name}}</td>
-          {% endif%}
-        {% endif %}
-      </tr>
-      {% endfor %}
-    </table>
+    <div class="row">
+      {% if round_of_16_matches %}
+        <div class="col">
+          <h5>Round-of-16</h5>
+          {% include 'partials/elimination_round_match_schedule_table.html' with elim_round_matches=round_of_16_matches %}
+        </div>
+      {% endif %}
+      {% if quarter_final_matches %}
+        <div class="col">
+          <h5>Quarter-final</h5>
+          {% include 'partials/elimination_round_match_schedule_table.html' with elim_round_matches=quarter_final_matches %}
+        </div>
+      {% endif %}
+      {% if semi_final_matches %}
+        <div class="col">
+          <h5>Semi-final</h5>
+          {% include 'partials/elimination_round_match_schedule_table.html' with elim_round_matches=semi_final_matches %}
+        </div>
+      {% endif %}
+      <div class="col">
+        <h5>Final</h5>
+        {% include 'partials/elimination_round_match_schedule_table.html' with elim_round_matches=final_match %}
+      </div>
+    </div>
+    <br></br>
   {% endif %}
 
   {% if g32_groups %}
