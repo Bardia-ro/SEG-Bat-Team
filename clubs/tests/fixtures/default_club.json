@@ -105,5 +105,24 @@
             "player1": 3,
             "player2": 2
         }
+    },
+    {
+        "model": "clubs.Match",
+        "pk": 1,
+        "fields": {
+            "number": 2,
+            "player1": 3,
+            "player2": 4
+        }
+    },
+    {
+        "model": "clubs.EliminationMatch",
+        "pk": 0,
+        "fields": {
+            "tournament": 0,
+            "match": 0,
+            "winner": 3,
+            "winner_next_match": 1
+        }
     }
 ]

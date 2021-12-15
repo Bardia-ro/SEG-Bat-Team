@@ -84,3 +84,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         redirect_url = reverse('profile', kwargs={'club_id': 0 ,'user_id': self.user.id})
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'profile.html')
+
+    def test_redirect_to_log_in(self):
+
+        pass
