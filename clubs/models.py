@@ -419,7 +419,6 @@ class Tournament(models.Model):
         group_matches = GroupMatch.objects.filter(group=group)
         group_match_count = group_matches.count()
         odd_match_number = 1
-        #merged main all good!!
         if group_match_count % 2 == 1:
             even_match_number = group_match_count - 1
         else:
