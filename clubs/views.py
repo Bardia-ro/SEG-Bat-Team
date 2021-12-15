@@ -1,7 +1,7 @@
 
 """Views of the clubs app."""
 from django.core.exceptions import ImproperlyConfigured
-from .models import EliminationMatch, Elo_Rating, User, Role, Club, Tournament, Match
+from .models import EliminationMatch, GroupMatch, User, Role, Club, Tournament, Group, GroupPoints, Elo_Rating
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -324,8 +324,10 @@ def club_list(request, club_id):
 
 @login_required
 def pending_requests(request, club_id):
-    applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
-    # need applicants for a particular club
+    applicant_id = Role.objects.all().filter(role = 1).filter(club_id = club_id).values_list("user", flat=True)
+    applicants = []
+    for item in applicant_id:
+        applicants.append(User.objects.get(id=item))
     club_list = request.user.get_clubs_user_is_a_member()
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants, 'club_list': club_list})
 
@@ -347,24 +349,57 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
-    matches = EliminationMatch.objects.filter(tournament=tournament)
-    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'matches': matches})
+    g32_groups = Group.objects.filter(tournament=tournament)
+    elim_matches = EliminationMatch.objects.filter(tournament=tournament).order_by('match__number')
+    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'elim_matches': elim_matches, 'g32_groups': g32_groups})
 
 @login_required
 def generate_next_matches(request, club_id, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
-    tournament.create_elimination_matches()
+    message = tournament.generate_next_matches()
+    if message:
+        messages.add_message(request, messages.ERROR, message)
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
+#@login_required
+#def enter_match_results(request, club_id, tournament_id, match_id):
+#    tournament = Tournament.objects.get(id=tournament_id)
+    #match = EliminationMatch.objects.get(id=match_id)
+    #role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
+    #if request.method=="POST":
+    #    winner_id=request.POST['winner']
+    #    winner = User.objects.get(id=winner_id)
+    #    match.set_winner(winner)
+    #    match.save()
+    #    role.adjust_elo_rating(match,club_id,winner)
+    #return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
 
 @login_required
 def enter_match_results(request, club_id, tournament_id, match_id):
     tournament = Tournament.objects.get(id=tournament_id)
-    match = EliminationMatch.objects.get(match__id=match_id)
+    match = EliminationMatch.objects.get(id=match_id)
     role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
     if request.method=="POST":
         winner_id=request.POST['winner']
         winner = User.objects.get(id=winner_id)
         match.set_winner(winner)
-        match.save()
         role.adjust_elo_rating(match,club_id,winner)
+        match.save()
+    return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
+
+@login_required
+def enter_match_results_groups(request, club_id, tournament_id, match_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    match = GroupMatch.objects.get(id=match_id)
+    if request.method=="POST":
+        result=request.POST['result']
+        if result == 'draw':
+            match.set_draw_points()
+        elif result == 'player1':
+            match.player1_won_points()
+        else:
+            match.player2_won_points()
+        match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)

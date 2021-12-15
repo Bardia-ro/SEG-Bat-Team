@@ -16,7 +16,7 @@ class ClubCreatorViewTestCase(TestCase, LogInTester):
 
     def setUp(self):
         self.user = User.objects.get(email='janedoe@example.org')
-        self.url = reverse('club_creator', kwargs={"club_id": 1, "user_id": self.user.id})
+        self.url = reverse('club_creator', kwargs={"club_id": 0, "user_id": self.user.id})
         self.form_input = {
             'name': 'New Club',
             'city': 'London',
@@ -24,7 +24,7 @@ class ClubCreatorViewTestCase(TestCase, LogInTester):
         }
         
     def test_club_creator_url(self):
-        self.assertEqual(self.url,'/club_creator/1/2/')
+        self.assertEqual(self.url,'/club_creator/0/2/')
 
     def test_get_club_creator(self):
         self.client.login(email='janedoe@example.org', password='Password123')
@@ -37,7 +37,7 @@ class ClubCreatorViewTestCase(TestCase, LogInTester):
     
     def test_non_logged_in_user_gets_club_creator(self):
         response = self.client.get(self.url, follow=True)
-        expected_url = '/log_in/?next=/club_creator/1/2/'
+        expected_url = '/log_in/?next=/club_creator/0/2/'
         self.assertRedirects(response, expected_url)
         self.assertTemplateUsed(response, 'log_in.html')
     

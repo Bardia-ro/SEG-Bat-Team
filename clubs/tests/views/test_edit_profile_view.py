@@ -9,9 +9,9 @@ class EditProfileViewTestCase(TestCase):
 
     fixtures = [
         "clubs/tests/fixtures/default_user.json", 
-        "clubs/tests/fixtures/specific_users.json", 
-        "clubs/tests/fixtures/specific_roles.json", 
-        "clubs/tests/fixtures/specific_clubs.json"
+        "clubs/tests/fixtures/other_users.json", 
+        "clubs/tests/fixtures/default_club.json",
+        "clubs/tests/fixtures/other_clubs.json"
     ]
 
     def setUp(self):
@@ -33,14 +33,14 @@ class EditProfileViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'edit_profile.html')
         self.assertIsInstance(response.context['form'], EditProfileForm)   
         self.assertEqual(response.context['club_id'], 0)
-        self.assertFalse(response.context['request_user_is_member'])
+        self.assertTrue(response.context['request_user_is_member'])
         user = User.objects.get(id=200)
         self.assertQuerysetEqual(response.context['club_list'], user.get_clubs_user_is_a_member())
         self.assertContains(response, 'Save')
 
-    def test_user_not_in_club_gets_user_who_is_in_club_edit_profile_page(self):
+    def test_redirect_user_get_another_user_edit_profile_page_from_different_club(self):
         self.client.login(email='johndoe@example.org', password='Password123')
-        url = reverse('edit_profile', kwargs={"club_id": 1,"user_id": 76})
+        url = reverse('edit_profile', kwargs={"club_id": 1,"user_id": 10})
         response = self.client.get(url, follow=True)
         expected_url = reverse('profile', kwargs={"club_id": 0, "user_id": 200})
         self.assertRedirects(response, expected_url)
@@ -51,22 +51,19 @@ class EditProfileViewTestCase(TestCase):
         self.assertFalse(response.context['request_user_is_member'])
         self.assertTrue(response.context['is_current_user'])
         
-    def test_user_gets_other_user_edit_profile_page(self):
-        self.client.login(email='billie@example.org', password='Password123')
-        url = reverse('edit_profile', kwargs={"club_id": 1,"user_id": 76})
+    def test_redirect_user_gets_other_user_edit_profile_page(self):
+        self.client.login(email='johndoe@example.org', password='Password123')
+        url = reverse('edit_profile', kwargs={"club_id": 0,"user_id": 2})
         response = self.client.get(url, follow=True)
-        expected_url = reverse('profile', kwargs={"club_id": 1, "user_id": 76})
+        expected_url = reverse('profile', kwargs={"club_id": 0, "user_id": 200})
         self.assertRedirects(response, expected_url)
-        user = User.objects.get(id=76)
+        user = User.objects.get(id=200)
         self.assertTemplateUsed(response, 'profile.html')
         self.assertEqual(response.context['user'], user)
-        self.assertEqual(response.context['club_id'], 1) 
-        self.assertTrue(response.context['request_user_is_member'])
-        self.assertFalse(response.context['is_current_user'])
-        self.assertEqual(response.context['request_user_role'], 4)
-        self.assertEqual(response.context['user_role'], 2)
-        request_user = User.objects.get(id=103)
-        self.assertQuerysetEqual(response.context['club_list'], request_user.get_clubs_user_is_a_member())
+        self.assertEqual(response.context['club_id'], 0) 
+        self.assertFalse(response.context['request_user_is_member'])
+        self.assertTrue(response.context['is_current_user'])
+
 
     def test_user_makes_valid_post_request_to_own_edit_profile_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
@@ -101,7 +98,7 @@ class EditProfileViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'edit_profile.html')
         self.assertIsInstance(response.context['form'], EditProfileForm)
         self.assertEqual(response.context['club_id'], 0)  
-        self.assertFalse(response.context['request_user_is_member'])
+        self.assertTrue(response.context['request_user_is_member'])
         user = User.objects.get(id=200)
         self.assertQuerysetEqual(response.context['club_list'], user.get_clubs_user_is_a_member())
         self.assertContains(response, 'Save')
