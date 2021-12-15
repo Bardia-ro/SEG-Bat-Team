@@ -61,7 +61,7 @@ class ClubCreatorViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Club.objects.count()
         self.assertEqual(after_count, before_count+1)
-        response_url = reverse('club_page', kwargs={'club_id': 0})
+        response_url = reverse('club_page', kwargs={'club_id': 1})
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'club_page.html')
         club = Club.objects.get(name='New Club')
