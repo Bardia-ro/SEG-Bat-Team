@@ -357,7 +357,16 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
-    g32_groups = Group.objects.filter(tournament=tournament)
+
+    g96_groups = Group.objects.filter(
+        tournament=tournament,
+        group_stage = 'G96'
+    )
+
+    g32_groups = Group.objects.filter(
+        tournament=tournament,
+        group_stage = 'G32'
+    )
 
     num_players_in_tournament = tournament.player_count()
     if num_players_in_tournament > 16:
@@ -396,7 +405,8 @@ def match_schedule(request, club_id, tournament_id):
             'quarter_final_matches': quarter_final_matches, 
             'semi_final_matches': semi_final_matches,
             'final_match': final_match,
-            'g32_groups': g32_groups
+            'g32_groups': g32_groups,
+            'g96_groups': g96_groups
         }
     )
 
