@@ -38,4 +38,10 @@ urlpatterns = [
     path('club_creator/<int:club_id>/<int:user_id>/', views.club_creator, name = 'club_creator'),
     path('create_tournament/<int:club_id>/<int:user_id>/', views.create_tournament, name='create_tournament'),
     path('apply_toggle/<int:user_id>/<int:club_id>/<int:tournament_id>', views.apply_tournament_toggle, name = 'apply_toggle'),
+    path('match_schedule/<int:club_id>/<int:tournament_id>/', views.match_schedule, name = 'match_schedule'),
+    path('enter_match_results/<int:club_id>/<int:tournament_id>/<int:match_id>/', views.enter_match_results, name = 'enter_match_results'),
+    path('enter_match_results_groups/<int:club_id>/<int:tournament_id>/<int:match_id>/', views.enter_match_results_groups, name = 'enter_match_results_groups'),
+    path('generate_next_matches/<int:club_id>/<int:tournament_id>', views.generate_next_matches, name = 'generate_next_matches'),
+    path('view_tournament_players/<int:club_id>/<int:tournament_id>', views.view_tournament_players, name = 'view_tournament_players'),
+    path('remove_a_player/<int:user_id>/<int:club_id>/<int:tournament_id>', views.remove_a_player, name = 'remove_a_player'),
     ]

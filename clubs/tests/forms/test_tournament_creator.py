@@ -1,7 +1,7 @@
 from django import forms
 from django.test import TestCase
 from clubs.forms import TournamentForm
-from clubs.models import Tournaments, User, Club
+from clubs.models import Tournament, User, Club
 
 
 class TournamentCreatorTestCase(TestCase):
@@ -60,11 +60,11 @@ class TournamentCreatorTestCase(TestCase):
     
     def test_form_must_save_correctly(self):
         form = TournamentForm(data=self.form_input)
-        before_count = Tournaments.objects.count()
+        before_count = Tournament.objects.count()
         form.save(self.user, self.club)
-        after_count = Tournaments.objects.count()
+        after_count = Tournament.objects.count()
         self.assertEqual(after_count, before_count+1)
-        tournament = Tournaments.objects.get(name='Tournament A')
+        tournament = Tournament.objects.get(name='Tournament A')
         self.assertEqual(tournament.name, 'Tournament A')
         self.assertEqual(tournament.description, 'This is the description')
         self.assertEqual(tournament.capacity, 4)

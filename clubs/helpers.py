@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from clubs.models import Role, Tournaments
+from clubs.models import Role, Tournament
 
 def redirect_authenticated_user(func):
     def wrapper(request):
