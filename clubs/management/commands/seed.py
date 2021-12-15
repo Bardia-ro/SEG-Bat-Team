@@ -145,7 +145,7 @@ class Command(BaseCommand):
                 deadline=fake.future_datetime(tzinfo=timezone.utc),
                 club=a_club,
                 organiser = Role.objects.filter(club=a_club, role=3).first().user)
-            for i in range(0,the_tournament.capacity):
+            for i in range(0,the_tournament.capacity+1):
                 the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
         else:
             the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
@@ -169,5 +169,5 @@ class Command(BaseCommand):
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org"))
             the_tournament.players.add(User.objects.get(email="jeb@example.org"))
-            for i in range(0,the_tournament.capacity-1):
+            for i in range(0,the_tournament.capacity):
                 the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from clubs.models import Tournaments, User, Club
+from clubs.models import User, Club
 
 class Command(BaseCommand):
     def __init__(self):
@@ -8,4 +8,3 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         User.objects.exclude(email="admin@example.org").delete()
         Club.objects.all().delete()
-        Tournaments.objects.all().delete()
