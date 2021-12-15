@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import check_password
 from django.test import TestCase
 from django.urls import reverse
 from clubs.forms import TournamentForm
-from clubs.models import Tournaments, User
+from clubs.models import Tournament, User
 from clubs.tests.helpers import LogInTester
 from django.utils.timezone import make_aware
 from datetime import datetime
@@ -49,9 +49,9 @@ class CreateTournamentViewTestCase(TestCase, LogInTester):
     def test_unsuccessful_create_tournament(self):
         self.client.login(email='jackdoe@example.org', password='Password123')
         self.form_input['name'] = ' '
-        before_count = Tournaments.objects.count()
+        before_count = Tournament.objects.count()
         response = self.client.post(self.url, self.form_input)
-        after_count = Tournaments.objects.count()
+        after_count = Tournament.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'create_tournament.html')
@@ -61,14 +61,14 @@ class CreateTournamentViewTestCase(TestCase, LogInTester):
     
     def test_successful_create_tournament(self):
         self.client.login(email='jackdoe@example.org', password='Password123')
-        before_count = Tournaments.objects.count()
+        before_count = Tournament.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
-        after_count = Tournaments.objects.count()
+        after_count = Tournament.objects.count()
         self.assertEqual(after_count, before_count+1)
         response_url = reverse('club_page', kwargs={'club_id': 0})
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'club_page.html')
-        tournament = Tournaments.objects.get(name='Tournament A')
+        tournament = Tournament.objects.get(name='Tournament A')
         self.assertEqual(tournament.name, 'Tournament A')
         self.assertEqual(tournament.capacity, 4)
         self.assertEqual(tournament.deadline, make_aware(datetime.strptime('2021-01-12 14:12', '%Y-%m-%d %H:%M'), timezone=pytz.timezone("UTC")))
