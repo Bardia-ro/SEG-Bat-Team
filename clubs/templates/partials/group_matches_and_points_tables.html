@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col">
+      <table>
+        <h5>Group {{group.number}} Matches</h5>
+        <tr>
+          <th>Match Number</th>
+          <th> Player One </th>
+          <th> Player Two </th>
+          <th> Winner </th>
+        </tr>
+        {% for group_match in group.get_group_groupmatches %}
+          <tr>
+            {% if group_match.display %}
+              <td>{{ group_match.match.number }}</td>
+              <td>{{ group_match.match.player1.first_name }} {{ group_match.match.player1.last_name }}</td>
+              <td> {{ group_match.match.player2.first_name }} {{ group_match.match.player2.last_name }} </td>
+              {% if group_match.player1_points == 0 and group_match.player2_points == 0%}
+              <td>
+                <form action="{% url 'enter_match_results_groups' club_id=club_id tournament_id=tournament.id match_id=group_match.id %}" method="post">
+                  {% csrf_token %}
+                  {% include 'partials/bootstrap_form.html' with form=form %}
+                  <select name='result'>
+                    <option value="player1">{{ group_match.match.player1.first_name }} {{ group_match.match.player1.last_name }}</option>
+                    <option value="player2">{{ group_match.match.player2.first_name }} {{ group_match.match.player2.last_name }}</option>
+                    <option value='draw'>Draw</option>
+                  </select>
+                  <input type= "submit" value="Submit Results"/>
+                </form>
+              </td>
+              {%elif group_match.player1_points == 1 %}
+              <td>{{ group_match.match.player1.first_name }} </td>
+              {%elif group_match.player2_points == 1 %}
+              <td>{{ group_match.match.player2.first_name }}</td>
+              {%else%}
+              <td>Draw</td>
+            {% endif %}
+            {%endif%}
+          </tr>
+        {% endfor %}
+      </table>
+      <br></br>
+    </div>
+    <div class="col">
+      <table>
+        <h5>Group {{group.number}} Points Table</h5>
+        <tr>
+          <th> Player </th>
+          <th> Total player points </th>
+        </tr>
+          {% for group_points in group.get_group_grouppoints %}
+              <tr>
+                <td>{{ group_points.player.first_name }} {{ match.match.player.last_name }}</td>
+                <td> {{ group_points.total_group_points }}</td>
+              </tr>
+          {% endfor %}
+      </table>
+      <br></br>
+    </div>
+  </div>
