@@ -97,7 +97,6 @@ class Club(models.Model):
     description = models.CharField(max_length=600, blank=False)
     users = models.ManyToManyField(User, through='Role')
 
-
     def __str__(self):
         return self.name
 
@@ -239,8 +238,8 @@ class Role(models.Model):
                     rating = tup[1],
                     club_id = club_id
                 )
-                   
-        
+
+
     def calculate_expected_scores(self, player_1, player_2, club_id,winner):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)

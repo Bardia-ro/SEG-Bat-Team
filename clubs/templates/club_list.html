@@ -2,7 +2,7 @@
 {% block content %}
 <style>
   .top-buffer {
-    margin-top: 40px;
+    margin-top: 20px;
     margin-left: 25px;
   }
 
@@ -10,12 +10,10 @@
     margin-top: 30px;
     margin-left: 0px;
   }
-
   .btn-success {
     margin-left: 60vmax;
   }
 </style>
-
 
 <div class="container">
     <h1 class="title-club">All Clubs</h1>
@@ -28,17 +26,14 @@
             <ul>
                 <strong> Description: </strong>
                 <l>{{ club.description }}</l>
-
                   <br><strong> Location: </strong>
                   <l>{{ club.city }}</l>
-
             </ul>
-          <a class="btn btn-success" href={% url "club_page" club_id=club.id %}>Details</a>
+          <a class="btn btn-primary" href={% url "club_page" club_id=club.id %}>View Club</a>
         </div>
       </div>
     </div>
     {% endfor %}
 </div>
-
 
 {% endblock %}
