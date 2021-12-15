@@ -372,11 +372,10 @@ def view_tournament_players(request,club_id, tournament_id):
 
     tournament = Tournament.objects.get(id=tournament_id)
     players = tournament.players.all()
-    return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id})
+    return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})
 
 def remove_a_player(request,user_id,club_id,tournament_id):
     """Removes a player from a tournament."""
-
     tournament = Tournament.objects.get(id=tournament_id)
     tournament.remove_player(user_id)
     return redirect('view_tournament_players', club_id = club_id, tournament_id = tournament_id)
