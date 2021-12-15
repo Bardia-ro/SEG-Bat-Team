@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
-from .models import User, Club, Tournaments
+from .models import User, Club, Tournament, EliminationMatch
 from location_field.forms.plain import PlainLocationField
 import datetime
 
@@ -32,6 +32,7 @@ CAPACITY_CHOICES = [
     (THIRTY_TWO, 'Thirty_Two'),
     (SIXTY_FOUR, 'Sixty_Four'),
 ]
+
 
 class Password():
     new_password = forms.CharField(
@@ -124,7 +125,6 @@ class ClubCreatorForm(forms.ModelForm):
         model = Club
         exclude = ('users', 'location')
 
-
 class DateTimeLocalInput(forms.DateTimeInput):
     input_type = 'datetime-local'
 
@@ -136,8 +136,8 @@ class DateTimeLocalField(forms.DateTimeField):
 class TournamentForm(forms.ModelForm):
 
     class Meta:
-        model = Tournaments
-        exclude = ('club', 'organiser','contender')
+        model = Tournament
+        exclude = ('club', 'organiser','players', 'current_stage')
         widgets = {'deadline': DateTimeLocalInput(format="%Y-%m-%dT%H:%M")}
 
     def save(self, organiser, club):

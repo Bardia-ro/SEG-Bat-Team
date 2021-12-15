@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import models
 from faker import Faker
-from clubs.models import Tournaments, User, Club, Role
+from clubs.models import Tournament, User, Club, Role
 import random
 
 
@@ -22,7 +22,7 @@ class Command(BaseCommand):
     def create_fake_users(self, fake):
         for i in range (100):
             fake_first_name = fake.first_name()
-            fake_last_name = fake.last_name()
+            fake_last_name = fake.unique.last_name()
             fake_email=fake_first_name.lower() + fake_last_name.lower() + "@example.org"
             fake_bio = fake.paragraph(nb_sentences=5)
             fake_personal_satement= fake.paragraph(nb_sentences=5)
@@ -102,7 +102,7 @@ class Command(BaseCommand):
             if counter ==3:
                 Role.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=2)
 
-            for i in range(12):
+            for i in range(35):
                 Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=2)
             for i in range(3):
                 Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
@@ -126,7 +126,7 @@ class Command(BaseCommand):
         list= [2,4,8,16,32,64]
         return random.choice(list)
 
-    def get_tournament_contenders(self,club,organiser):
+    def get_tournament_players(self,club,organiser):
         found=False
         a_user = ""
         users=Role.objects.filter(club=club)
@@ -137,16 +137,16 @@ class Command(BaseCommand):
 
     def create_tournaments(self,a_club, fake):
         if a_club.name !="Kerbal Chess Club":
-            the_tournament = Tournaments.objects.create(name=f'Tournament {fake.random_int()}',
+            the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=self.get_random_capacity(),
                 deadline=fake.future_datetime(),
                 club=a_club,
                 organiser = Role.objects.filter(club=a_club, role=3).first().user)
             for i in range(0,the_tournament.capacity):
-                the_tournament.contender.add(self.get_tournament_contenders(a_club, the_tournament.organiser))
+                the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
         else:
-            the_tournament = Tournaments.objects.create(name=f'Tournament {fake.random_int()}',
+            the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=32,
                 deadline=fake.future_datetime("+24h"),
@@ -156,16 +156,16 @@ class Command(BaseCommand):
                 jeb = User.objects.get(email="jeb@example.org")
                 found = False
                 while(not found):
-                    not_jeb = self.get_tournament_contenders(a_club, the_tournament.organiser)
-                    if (not_jeb!=jeb):
+                    not_jeb = self.get_tournament_players(a_club, the_tournament.organiser)
+                    if (not_jeb!=jeb and not_jeb not in the_tournament.players.all()):
                         found=True
-                the_tournament.contender.add(not_jeb)
-            the_tournament = Tournaments.objects.create(name=f'Tournament {fake.random_int()}',
+                the_tournament.players.add(not_jeb)
+            the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=16,
                 deadline=fake.past_datetime(),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org"))
-            the_tournament.contender.add(User.objects.get(email="jeb@example.org"))
+            the_tournament.players.add(User.objects.get(email="jeb@example.org"))
             for i in range(0,the_tournament.capacity-1):
-                the_tournament.contender.add(self.get_tournament_contenders(a_club, the_tournament.organiser))
+                the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
