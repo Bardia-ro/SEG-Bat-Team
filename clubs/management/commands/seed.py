@@ -85,6 +85,9 @@ class Command(BaseCommand):
         counter = 0
         for a_club in clubs:
             if a_club.name =="Kerbal Chess Club":
+                for user in User.objects.all()[0:97]:
+                    if(user.email[:5]!="admin"):
+                        Role.objects.create(club=a_club, user=user, role=2)
                 Role.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=4)
                 Role.objects.create(club=a_club, user=User.objects.get(email="val@example.org"), role=3)
                 Role.objects.create(club=a_club, user=User.objects.get(email="jeb@example.org"), role=2)
@@ -99,15 +102,15 @@ class Command(BaseCommand):
                     Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=4)
                     Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
 
-            Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
+                Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
 
-            if counter ==3:
-                Role.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=2)
-
-            for i in range(35):
-                Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=2)
-            for i in range(3):
-                Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
+                if counter ==3:
+                    Role.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=2)
+                
+                for i in range(35):
+                        Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=2)
+                for i in range(3):
+                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
             counter=counter+1
             self.create_tournaments(a_club,fake)
             
@@ -171,3 +174,21 @@ class Command(BaseCommand):
             the_tournament.players.add(User.objects.get(email="jeb@example.org"))
             for i in range(0,the_tournament.capacity):
                 the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
+
+            the_tournament = Tournament.objects.create(
+                name='Tournament 3',
+                description= fake.paragraph(nb_sentences=5),
+                capacity=64,
+                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                club=Club.objects.get(name="Kerbal Chess Club"),
+                organiser = User.objects.get(email="val@example.org")
+            )
+            
+            user_roles=Role.objects.filter(club=a_club)
+            player_count = 0
+            for user_role in user_roles:
+                if user_role.user != the_tournament.organiser:
+                    the_tournament.players.add(user_role.user)
+                    player_count += 1
+                if player_count == the_tournament.capacity:
+                    break

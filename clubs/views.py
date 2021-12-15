@@ -242,12 +242,22 @@ def profile(request, club_id, user_id):
     matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
     matchDrawn = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result__isnull = True)
     matchLost = elo_rating.count() - (matchWon.count() + matchDrawn.count())
+    current_elo_rating = Role.objects.filter(user = user_id).filter(club= club_id)
+    current_elo = 0
+    for rating in current_elo_rating:
+        current_elo = rating.elo_rating
     tournaments = Tournament.objects.filter(players = user).filter(club_id = club_id)
     total_tournaments = Tournament.objects.filter(players = user).count()
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
     club_list = request.user.get_clubs_user_is_a_member()
-    return render(request, 'profile.html', {'user': user,
+    total_points = matchWon.count() + matchDrawn.count() * 0.5
+    average_point = 0 
+    if elo_rating.count() > 0:
+        average_point = total_points/elo_rating.count()
+    rate_of_change_elo = ((current_elo - 1000)/1000)*100
+
+    return render(request, 'profile.html', {'user': user, 
                            'club_id': club_id,
                            'request_user_is_member': request_user_is_member,
                            'is_current_user': is_current_user,
@@ -261,7 +271,11 @@ def profile(request, club_id, user_id):
                            'max_elo' : max_elo,
                            'min_elo' : min_elo,
                            'matchDrawn' : matchDrawn,
-                           'total_tournaments': total_tournaments })
+                           'total_tournaments': total_tournaments,
+                           'total_points' : total_points,
+                           'current_elo' : current_elo,
+                           'average_point' : average_point,
+                           'rate_of_change_elo' : rate_of_change_elo })
 
 
 @login_required
@@ -356,7 +370,16 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
-    g32_groups = Group.objects.filter(tournament=tournament)
+
+    g96_groups = Group.objects.filter(
+        tournament=tournament,
+        group_stage = 'G96'
+    )
+
+    g32_groups = Group.objects.filter(
+        tournament=tournament,
+        group_stage = 'G32'
+    )
 
     num_players_in_tournament = tournament.player_count()
     if num_players_in_tournament > 16:
@@ -395,7 +418,8 @@ def match_schedule(request, club_id, tournament_id):
             'quarter_final_matches': quarter_final_matches,
             'semi_final_matches': semi_final_matches,
             'final_match': final_match,
-            'g32_groups': g32_groups
+            'g32_groups': g32_groups,
+            'g96_groups': g96_groups
         }
     )
 

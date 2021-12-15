@@ -303,6 +303,7 @@ class Tournament(models.Model):
         ('F', 'Finished'),
         ('E', 'Elimination rounds'),
         ('G32', 'Group stage'),
+        ('G96', 'Group stage'),
         ('S', 'Start'),
     ]
 
@@ -353,39 +354,81 @@ class Tournament(models.Model):
         if self.current_stage == 'S':
             self._set_current_stage_to_first_stage(num_players)
 
-        if self.current_stage == 'G32':
-            self._generate_group_stage_for_32_people_or_less(players, num_players)
+        if self.current_stage == 'G96':
+            self._generate_group_stage_for_96_people_or_less(players, num_players)
+        elif self.current_stage == 'G32':
+            return self._generate_group_stage_for_32_people_or_less(players, num_players)
         elif self.current_stage == 'E':
             return self._create_elimination_matches(players, num_players)
 
     def _set_current_stage_to_first_stage(self, num_players):
         """Set this tournament's current_stage field to the first stage for this tournament"""
 
-        if num_players > 16 and num_players <= 32:
+        if num_players > 32 and num_players <= 96:
+            self.current_stage = 'G96'
+        elif num_players > 16 and num_players <= 32:
             self.current_stage = 'G32'
         else:
             self.current_stage = 'E'
 
         self.save()
 
+    def _generate_group_stage_for_96_people_or_less(self, players, num_players):
+        """Generate group stage if the number of players is between 17 and 32"""
+
+        self.current_stage = 'G32'
+        self.save()
+
+        if num_players == 64:
+            num_players_per_group = 4
+            for i in range(0, num_players, num_players_per_group):
+                self._create_group(i, players, num_players_per_group, 'G96')
+
     def _generate_group_stage_for_32_people_or_less(self, players, num_players):
         """Generate group stage if the number of players is between 17 and 32"""
+
+        if num_players <= 32:
+            group_round_players = players
+        elif num_players > 32:#check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            groups = Group.objects.filter(
+                tournament = self,
+                group_stage = 'G96'
+            )
+
+            for group in groups:
+                group_matches = GroupMatch.objects.filter(group=group)
+                for group_match in group_matches:
+                    if group_match.player1_points == 0 and group_match.player2_points == 0:
+                        return 'All group match results must be submitted before generating next group stage matches'
+
+            group_round_players = list(players[0: 32])
+            for group in groups:
+                group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
+                if group.number % 2 == 1:
+                    group_round_players[group.number-1] = group_points_objects[0].player
+                    group_round_players[group.number+16-1] = group_points_objects[1].player
+                elif group.number % 2 == 0:
+                    group_round_players[group.number-1] = group_points_objects[1].player
+                    group_round_players[group.number+16-1] = group_points_objects[0].player
+
+        num_players_group_round = len(group_round_players)
 
         self.current_stage = 'E'
         self.save()
 
-        if num_players == 32:
+        if num_players_group_round == 32:
             num_players_per_group = 4
             for i in range(0, 32, num_players_per_group):
-                self._create_group(i, players, num_players_per_group)
+                self._create_group(i, group_round_players, num_players_per_group, 'G32')
 
-    def _create_group(self, i, players, num_players_per_group):
+    def _create_group(self, i, players, num_players_per_group, group_stage):
         """Create a group for a group stage"""
 
         group_players = players[i: i+num_players_per_group]
         group = Group.objects.create(
             number = int(i / num_players_per_group) + 1,
             tournament = self,
+            group_stage = group_stage
         )
         group.players.set(group_players)
 
@@ -461,14 +504,17 @@ class Tournament(models.Model):
     def _create_elimination_matches(self, players, num_players):
         if num_players <= 16:
             elim_rounds_players = players
-        elif num_players == 32:
-            groups = Group.objects.filter(tournament = self)
+        elif num_players > 16:#check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            groups = Group.objects.filter(
+                tournament = self,
+                group_stage = 'G32'
+            )
 
             for group in groups:
                 group_matches = GroupMatch.objects.filter(group=group)
                 for group_match in group_matches:
                     if group_match.player1_points == 0 and group_match.player2_points == 0:
-                        return 'All group matches results must be submitted before generating elimination rounds matches'
+                        return 'All group match results must be submitted before generating elimination rounds matches'
 
             elim_rounds_players = list(players[0: 16])
             for group in groups:
@@ -581,6 +627,13 @@ class Group(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     players = models.ManyToManyField(User)
 
+    GROUP_STAGE = [
+        ('G32', 'Group stage'),
+        ('G96', 'Group stage'),
+    ]
+
+    group_stage = models.CharField(max_length = 3, choices = GROUP_STAGE)
+
     def get_group_groupmatches(self):
         """Return the group matches in this group"""
 
@@ -657,7 +710,7 @@ class GroupMatch(models.Model):
         """Update player2 total group points"""
 
         group_points_for_player2 = self._get_group_points_object_for_player2()
-        group_points_for_player2.total_group_points += 1
+        group_points_for_player2.total_group_points += points
         group_points_for_player2.save()
 
     def _show_next_group_matches_in_match_schedule(self):
