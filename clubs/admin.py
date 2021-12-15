@@ -1,7 +1,7 @@
 """Configuration of the admin interface for clubs."""
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Match, Tournament, User, Role, Club
+from .models import Elo_Rating, Match, Tournament, User, Role, Club
 
 
 @admin.register(User)
@@ -45,4 +45,12 @@ class MatchAdmin(admin.ModelAdmin):
 
     list_display = [
         'number', 'player1', 'player2'
+    ]
+
+@admin.register(Elo_Rating)
+class EloRatingAdmin(admin.ModelAdmin):
+    """Configuration of the admin interface for Matches."""
+
+    list_display = [
+        'user', 'rating', 'club','result'
     ]

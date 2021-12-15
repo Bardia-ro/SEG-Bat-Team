@@ -152,7 +152,7 @@ class Role(models.Model):
             return "Owner"
 
     def user_email(self):
-        return self.user.email
+        return self.user.first_name
 
     def approve_membership(self):
         self.role = Role.MEMBER
@@ -211,7 +211,22 @@ class Role(models.Model):
         p2.elo_rating = tup[1]
         p1.save()
         p2.save()
+        Elo_Rating.objects.create(
+                result = winner,
+                user = player_1,
+                match = match.match,
+                rating = tup[0],
+                club_id = club_id
+            )
 
+        Elo_Rating.objects.create(
+                result = winner,
+                user = player_2,
+                match = match.match,
+                rating = tup[1],
+                club_id = club_id
+            )      
+        
     def calculate_expected_scores(self, player_1, player_2, club_id,winner):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
@@ -533,6 +548,14 @@ class EliminationMatch(models.Model):
                 self.winner_next_match.player2 = self.winner
 
             self.winner_next_match.save()
+
+class Elo_Rating(models.Model):
+    result = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    rating = models.IntegerField(blank=False, default=1000)
+
 
 class Group(models.Model):
     """Model representing a group"""
