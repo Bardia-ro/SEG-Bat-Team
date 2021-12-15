@@ -66,6 +66,10 @@ class TournamentTest(TestCase):
     def test_number_of_players_is_less_than_capacity(self):
         self.tournament.players.add(200)
         self.assert_tournament_is_invalid()
+
+    def test_current_stage_is_one_of_choices(self):
+        self.tournament.current_stage='XYZ'
+        self.assert_tournament_is_invalid()
     
     def assert_tournament_is_valid(self):
         try:
