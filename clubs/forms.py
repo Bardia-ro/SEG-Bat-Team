@@ -51,7 +51,9 @@ class SignUpForm(forms.ModelForm, Password):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'bio','experience','personal_statement']
-        widgets = { 'bio': forms.Textarea(), 'personal_statement': forms.Textarea(),'experience': forms.Select(choices = EXPERIENCE_CHOICES)}
+        widgets = { 'bio': forms.Textarea(),
+        'personal_statement': forms.Textarea(attrs={'placeholder':'Enter a short personal statement. This will be used to review your applications to clubs.'}),
+        'experience': forms.Select(choices = EXPERIENCE_CHOICES)}
 
     new_password = Password.new_password
     password_confirmation = Password.password_confirmation
@@ -97,7 +99,9 @@ class EditProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'bio','experience','personal_statement']
-        widgets = { 'bio': forms.Textarea(), 'personal_statement': forms.Textarea(),'experience': forms.Select(choices = EXPERIENCE_CHOICES)}
+        widgets = { 'bio': forms.Textarea(),
+        'personal_statement': forms.Textarea(),
+        'experience': forms.Select(choices = EXPERIENCE_CHOICES)}
 
 class ChangePasswordForm(forms.ModelForm, Password):
     class Meta:

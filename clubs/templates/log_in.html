@@ -1,23 +1,38 @@
 {% extends 'base_content.html' %}
 {% block content %}
-<div id = "cover-image">
-  <div class="container vh-100">
-    <div class="row h-100">
-        <div class="col-12 my-auto">
-          <div class = "modal-dialog text-center">
-            <div class="card cover-card">
-        <h1>Log in</h1>
+
+<style>
+   .top-buffer {
+     margin-top: 30px;
+     margin-left: 15px;
+     margin-right: 15px;
+     margin-bottom: 30px;
+   }
+
+   .text {
+      margin-left: 15px;
+      margin-top: 30px;
+   }
+ </style>
+
+    <div class="container">
+       <div class = "row">
+          <div class = "col-sm-12 col-md-6 offset-md-3">
+            <div class ="card">
+              <div class = "text-center">
+                <h1 class="text">Log in</h1>
+        <span class="abt">Don't have an account?<a href="{% url 'sign_up' %}"> Sign up</a></span>
+      </div>
+      <div class="top-buffer">
         <form action="{% url 'log_in' %}" method="post">
             {% csrf_token %}
             <input type = "hidden" name="next" value="{{ next }}">
             {% include 'partials/bootstrap_form.html' with form=form %}
-          <input type= "submit" value="Log in" class = "btn btn-primary">
+          <input type= "submit" value="Log in" class = "btn btn-primary btn-block">
         </form>
+      </div>
         </div>
+      </div>
        </div>
     </div>
-  </div>
-</div>
-</div>
-
 {% endblock %}
