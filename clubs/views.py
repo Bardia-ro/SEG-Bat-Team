@@ -238,21 +238,31 @@ def profile(request, club_id, user_id):
             min_elo = ratings.rating
     if elo_rating.count() == 0:
         max_elo = min_elo
-        min_elo = min_elo 
+        min_elo = min_elo
     matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
     matchDrawn = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result__isnull = True)
     matchLost = elo_rating.count() - (matchWon.count() + matchDrawn.count())
+    current_elo_rating = Role.objects.filter(user = user_id).filter(club= club_id)
+    current_elo = 0
+    for rating in current_elo_rating:
+        current_elo = rating.elo_rating
     tournaments = Tournament.objects.filter(players = user).filter(club_id = club_id)
     total_tournaments = Tournament.objects.filter(players = user).count()
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
     club_list = request.user.get_clubs_user_is_a_member()
+    total_points = matchWon.count() + matchDrawn.count() * 0.5
+    average_point = 0 
+    if elo_rating.count() > 0:
+        average_point = total_points/elo_rating.count()
+    rate_of_change_elo = ((current_elo - 1000)/1000)*100
+
     return render(request, 'profile.html', {'user': user, 
                            'club_id': club_id,
-                           'request_user_is_member': request_user_is_member, 
-                           'is_current_user': is_current_user, 
-                           'request_user_role': request_user_role_at_club, 
-                           'user_role': user_role_at_club, 
+                           'request_user_is_member': request_user_is_member,
+                           'is_current_user': is_current_user,
+                           'request_user_role': request_user_role_at_club,
+                           'user_role': user_role_at_club,
                            'club_list': club_list,
                            'elo_rating' : elo_rating,
                            'tournaments' : tournaments,
@@ -261,7 +271,11 @@ def profile(request, club_id, user_id):
                            'max_elo' : max_elo,
                            'min_elo' : min_elo,
                            'matchDrawn' : matchDrawn,
-                           'total_tournaments': total_tournaments })
+                           'total_tournaments': total_tournaments,
+                           'total_points' : total_points,
+                           'current_elo' : current_elo,
+                           'average_point' : average_point,
+                           'rate_of_change_elo' : rate_of_change_elo })
 
 
 @login_required
@@ -325,7 +339,6 @@ def transfer_ownership(request, club_id, new_owner_id):
 def club_list(request, club_id):
     user = User.objects.get(id=request.user.id)
     clubs = Club.objects.all()
-    #club_id = request.user.get_first_club_id_user_is_associated_with()
     club_list = user.get_clubs_user_is_a_member()
     return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id, 'club_list': club_list})
 
@@ -372,10 +385,10 @@ def match_schedule(request, club_id, tournament_id):
     if num_players_in_tournament > 16:
         num_players_elim_rounds = 16
     else:
-        num_players_elim_rounds = num_players_in_tournament 
+        num_players_elim_rounds = num_players_in_tournament
 
     round_of_16_matches = EliminationMatch.objects.filter(
-        tournament=tournament, 
+        tournament=tournament,
         match__number__lte = num_players_elim_rounds - 8,
         match__number__gte = num_players_elim_rounds - 15,
     ).order_by('match__number')
@@ -390,19 +403,19 @@ def match_schedule(request, club_id, tournament_id):
         match__number__gte = num_players_elim_rounds - 3,
     ).order_by('match__number')
     final_match = EliminationMatch.objects.filter(
-        tournament=tournament, 
+        tournament=tournament,
         match__number = num_players_elim_rounds - 1
     ).order_by('match__number')
 
     return render(
-        request, 
-        'match_schedule.html', 
+        request,
+        'match_schedule.html',
         {
-            'club_id': club_id, 
-            'club_list': club_list, 
-            'tournament':tournament, 
+            'club_id': club_id,
+            'club_list': club_list,
+            'tournament':tournament,
             'round_of_16_matches': round_of_16_matches,
-            'quarter_final_matches': quarter_final_matches, 
+            'quarter_final_matches': quarter_final_matches,
             'semi_final_matches': semi_final_matches,
             'final_match': final_match,
             'g32_groups': g32_groups,

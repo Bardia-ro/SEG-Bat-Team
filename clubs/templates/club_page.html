@@ -83,7 +83,6 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <h6 class="mb-0">Tournaments</h6>
                         </li>
-                        {% if user_is_member %}
                         {% for tournament in club.get_tournaments %}
                         <div class="top-buffer">
                           <div class="card">
@@ -94,6 +93,7 @@
                                     <strong>  Description: </strong> <l>{{ tournament.description}}</l>
                                     <br><strong> Number of participants: </strong> <l> {{tournament.player_count}} </l>
                                 </ul>
+                                {% if user_is_member %}
                                 <form action="{% url 'apply_toggle' user_id=user.id club_id=club.id  tournament_id=tournament.id %}" method="get">
                                     <span>
                                         {% if user == tournament.organiser%}
@@ -111,11 +111,11 @@
                                 <form action="{% url 'view_tournament_players' club_id=club.id tournament_id=tournament.id %}" method="get">
                                     <button class="btn btn-primary"> View players</button>
                                 </form>
+                                {% endif %}
                             </div>
                           </div>
                         </div>
                         {% endfor %}
-                        {% endif %}
                     </ul>
                 </div>
             </div>
