@@ -85,7 +85,7 @@
         }
     },
     {
-        "model": "clubs.Tournaments",
+        "model": "clubs.Tournament",
         "pk": 0,
         "fields": {
             "name": "Tournament 1",
@@ -94,7 +94,7 @@
             "deadline": "2021-01-12 14:12",
             "club": 0,
             "organiser": 5,
-            "contender": [3,2,4,1]
+            "players": [3,2,4,1]
         }
     }
 ]
