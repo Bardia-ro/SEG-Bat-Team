@@ -340,6 +340,11 @@ class Tournament(models.Model):
                 if self.is_space():
                         self.players.add(user)
 
+    def remove_player(self, user_id):
+        """Removes a player from a tournament"""
+        user = User.objects.get(id=user_id)
+        self.players.remove(user)
+
     def generate_next_matches(self):
         """Create the next matches that should be created in this tournament"""
 
@@ -627,7 +632,7 @@ class GroupMatch(models.Model):
         """Return GroupPoints object for player1 in the group that this group match is part of"""
 
         return GroupPoints.objects.get(
-            group=self.group, 
+            group=self.group,
             player=self.match.player1
         )
 
@@ -635,7 +640,7 @@ class GroupMatch(models.Model):
         """Return GroupPoints object for player2 in the group that this group match is part of"""
 
         return GroupPoints.objects.get(
-            group=self.group, 
+            group=self.group,
             player=self.match.player2
         )
 
@@ -652,7 +657,7 @@ class GroupMatch(models.Model):
         group_points_for_player2 = self._get_group_points_object_for_player2()
         group_points_for_player2.total_group_points += 1
         group_points_for_player2.save()
-    
+
     def _show_next_group_matches_in_match_schedule(self):
         """Set the display field of the next matches that should be displayed after the result of this group match has been submitted to True"""
 

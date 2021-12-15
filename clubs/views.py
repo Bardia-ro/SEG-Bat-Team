@@ -364,20 +364,6 @@ def generate_next_matches(request, club_id, tournament_id):
         messages.add_message(request, messages.ERROR, message)
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
-#@login_required
-#def enter_match_results(request, club_id, tournament_id, match_id):
-#    tournament = Tournament.objects.get(id=tournament_id)
-    #match = EliminationMatch.objects.get(id=match_id)
-    #role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
-    #if request.method=="POST":
-    #    winner_id=request.POST['winner']
-    #    winner = User.objects.get(id=winner_id)
-    #    match.set_winner(winner)
-    #    match.save()
-    #    role.adjust_elo_rating(match,club_id,winner)
-    #return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
-
-
 @login_required
 def enter_match_results(request, club_id, tournament_id, match_id):
     tournament = Tournament.objects.get(id=tournament_id)
@@ -415,3 +401,17 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
             role.adjust_elo_rating(group_match,club_id,player_2)
         group_match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
+@login_required
+def view_tournament_players(request,club_id, tournament_id):
+    """View all the players in a tournament"""
+
+    tournament = Tournament.objects.get(id=tournament_id)
+    players = tournament.players.all()
+    return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})
+
+def remove_a_player(request,user_id,club_id,tournament_id):
+    """Removes a player from a tournament."""
+    tournament = Tournament.objects.get(id=tournament_id)
+    tournament.remove_player(user_id)
+    return redirect('view_tournament_players', club_id = club_id, tournament_id = tournament_id)
