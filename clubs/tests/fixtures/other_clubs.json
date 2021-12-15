@@ -77,7 +77,7 @@
     },
     {
         "model": "clubs.Tournament",
-        "pk": 1,
+        "pk": 2,
         "fields": {
             "name": "Tournament 2",
             "description": "This is the description",
