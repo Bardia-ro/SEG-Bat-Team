@@ -40,6 +40,16 @@
             "player2_points": 5,
             "display": false
         }
+    },
+    {
+        "model": "clubs.EliminationMatch",
+        "pk": 1,
+        "fields": {
+            "tournament": 0,
+            "match": 0,
+            "winner": 3,
+            "winner_next_match": 1
+        }
     }
  
 ]
