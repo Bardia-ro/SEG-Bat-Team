@@ -231,15 +231,19 @@ def profile(request, club_id, user_id):
     club_elo_rating = Elo_Rating.objects.filter(club_id = club_id)
     max_elo = 0
     min_elo = 1000
-    for ratings in club_elo_rating:
+    for ratings in elo_rating:
         if ratings.rating > max_elo:
             max_elo = ratings.rating
         if ratings.rating < min_elo:
             min_elo = ratings.rating
+    if elo_rating.count() == 0:
+        max_elo = min_elo
+        min_elo = min_elo 
     matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
     matchDrawn = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result__isnull = True)
     matchLost = elo_rating.count() - (matchWon.count() + matchDrawn.count())
     tournaments = Tournament.objects.filter(players = user).filter(club_id = club_id)
+    total_tournaments = Tournament.objects.filter(players = user).count()
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
     club_list = request.user.get_clubs_user_is_a_member()
@@ -256,7 +260,8 @@ def profile(request, club_id, user_id):
                            'matchWon' : matchWon,
                            'max_elo' : max_elo,
                            'min_elo' : min_elo,
-                           'matchDrawn' : matchDrawn})
+                           'matchDrawn' : matchDrawn,
+                           'total_tournaments': total_tournaments })
 
 
 @login_required

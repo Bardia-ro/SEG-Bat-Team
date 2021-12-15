@@ -131,12 +131,13 @@
             <div class="card-body">
                 <p class="card-text">
                 <ul>
-                    <strong> Total matches played: {{ elo_rating.count }}</strong>
+                    <strong> Total tournaments: {{ total_tournaments }}</strong>
+                    <br><strong> Total matches played: {{ elo_rating.count }}</strong>
                     <br><strong> Won: {{ matchWon.count }}</strong>
                     <br><strong> Lost: {{ matchLost }} </strong>
                     <br><strong> Draw: {{ matchDrawn.count }} </strong>
-                    <br><strong> highest elo rating in the club: {{ max_elo }} </strong>
-                    <br><strong> lowest elo rating in the club: {{ min_elo }} </strong>
+                    <br><strong> highest elo rating: {{ max_elo }} </strong>
+                    <br><strong> lowest elo rating: {{ min_elo }} </strong>
                     <h5 class="card-header">Matches and elo ratings</h5>
                     {% for rating in elo_rating %}
                     <br><strong> {{ rating.match.player1.first_name }} {{ rating.match.player1.last_name  }} VS {{ rating.match.player2.first_name }} {{ rating.match.player2.last_name }} </strong>
