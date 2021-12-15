@@ -59,7 +59,7 @@ class TournamentTest(TestCase):
         self.tournament.club=None
         self.assert_tournament_is_invalid()
 
-    def test_tournament_takes_officers_as_organiser(self):
+    def test_tournament_only_takes_officer_as_organiser(self):
         self.tournament.organiser=User.objects.get(id=2)
         self.assert_tournament_is_invalid()
 
