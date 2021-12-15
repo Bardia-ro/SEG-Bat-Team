@@ -96,5 +96,14 @@
             "organiser": 5,
             "players": [3,2,4,1]
         }
+    },
+    {
+        "model": "clubs.Match",
+        "pk": 0,
+        "fields": {
+            "number": 1,
+            "player1": 3,
+            "player2": 2
+        }
     }
 ]
