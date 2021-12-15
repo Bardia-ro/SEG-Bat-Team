@@ -419,7 +419,10 @@ class Tournament(models.Model):
         group_matches = GroupMatch.objects.filter(group=group)
         group_match_count = group_matches.count()
         odd_match_number = 1
-        even_match_number = 6 #!!
+        if group_match_count % 2 == 1:
+            even_match_number = group_match_count - 1
+        else:
+            even_match_number = group_match_count
         num_players_per_group_divided_by_two = int(num_players_per_group/2)
         for i in range(group_match_count):
             group_match = group_matches[i].match
