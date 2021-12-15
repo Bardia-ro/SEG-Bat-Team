@@ -11,7 +11,7 @@
         <td>{{ match.match.number }}</td>
         <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
         <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
-        {% if match.winner == None and match.match.player1 and match.match.player2%}
+        {% if match.winner == None %}
         <td>
           <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id match_id=match.id %}" method="post">
             {% csrf_token %}
