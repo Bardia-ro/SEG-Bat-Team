@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator, MaxValueValidator, MinValueVa
 from django.db import models
 from django import forms
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.db.models.fields import BLANK_CHOICE_DASH, proxy
+from django.db.models.fields import BLANK_CHOICE_DASH, NullBooleanField, proxy
 from django.db.models.query import QuerySet
 from django.http import request
 from django.utils.translation import gettext_lazy as _
@@ -211,21 +211,35 @@ class Role(models.Model):
         p2.elo_rating = tup[1]
         p1.save()
         p2.save()
-        Elo_Rating.objects.create(
-                result = winner,
-                user = player_1,
-                match = match.match,
-                rating = tup[0],
-                club_id = club_id
-            )
-
-        Elo_Rating.objects.create(
-                result = winner,
-                user = player_2,
-                match = match.match,
-                rating = tup[1],
-                club_id = club_id
-            )      
+        if (winner != "Draw"):
+            Elo_Rating.objects.create(
+                    result = winner,
+                    user = player_1,
+                    match = match.match,
+                    rating = tup[0],
+                    club_id = club_id
+                )
+            Elo_Rating.objects.create(
+                    result = winner,
+                    user = player_2,
+                    match = match.match,
+                    rating = tup[1],
+                    club_id = club_id
+                )
+        else:
+            Elo_Rating.objects.create(
+                    user = player_1,
+                    match = match.match,
+                    rating = tup[0],
+                    club_id = club_id
+                )
+            Elo_Rating.objects.create(
+                    user = player_2,
+                    match = match.match,
+                    rating = tup[1],
+                    club_id = club_id
+                )
+                   
         
     def calculate_expected_scores(self, player_1, player_2, club_id,winner):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
@@ -247,9 +261,10 @@ class Role(models.Model):
         elif winner == player_2:
             res_A = 0
             res_B = 1
-        # elif winner == "Draw":
-        #     res_A = 0.5
-        #     res_B = 0.5
+        elif winner == "Draw":
+            print("called")
+            res_A = 0.5
+            res_B = 0.5
 
         new_elo_A = elo_A + 32 * (res_A - E_A)
         new_elo_B = elo_B + 32 * (res_B - E_B)
@@ -545,7 +560,7 @@ class EliminationMatch(models.Model):
             self.winner_next_match.save()
 
 class Elo_Rating(models.Model):
-    result = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    result = models.ForeignKey(User, on_delete=models.CASCADE,null=True ,related_name='+')
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     match = models.ForeignKey(Match, on_delete=models.CASCADE)

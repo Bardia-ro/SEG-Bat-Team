@@ -1,5 +1,6 @@
 
 """Views of the clubs app."""
+from contextlib import nullcontext
 from django.core.exceptions import ImproperlyConfigured
 from .models import EliminationMatch, GroupMatch, User, Role, Club, Tournament, Group, GroupPoints, Elo_Rating
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
@@ -12,7 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
-from itertools import chain
+from itertools import chain, count
 
 def request_toggle(request, user_id, club_id):
 
@@ -229,14 +230,15 @@ def profile(request, club_id, user_id):
     elo_rating = Elo_Rating.objects.filter(user = user).filter(club_id = club_id)
     club_elo_rating = Elo_Rating.objects.filter(club_id = club_id)
     max_elo = 0
-    min_elo = 100000
+    min_elo = 1000
     for ratings in club_elo_rating:
         if ratings.rating > max_elo:
             max_elo = ratings.rating
         if ratings.rating < min_elo:
             min_elo = ratings.rating
     matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
-    matchesLost = elo_rating.count() - matchWon.count()
+    matchDrawn = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result__isnull = True)
+    matchLost = elo_rating.count() - (matchWon.count() + matchDrawn.count())
     tournaments = Tournament.objects.filter(players = user).filter(club_id = club_id)
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
@@ -250,10 +252,11 @@ def profile(request, club_id, user_id):
                            'club_list': club_list,
                            'elo_rating' : elo_rating,
                            'tournaments' : tournaments,
-                           'matchesLost' : matchesLost,
+                           'matchLost' : matchLost,
                            'matchWon' : matchWon,
                            'max_elo' : max_elo,
-                           'min_elo' : min_elo})
+                           'min_elo' : min_elo,
+                           'matchDrawn' : matchDrawn})
 
 
 @login_required
@@ -392,14 +395,23 @@ def enter_match_results(request, club_id, tournament_id, match_id):
 @login_required
 def enter_match_results_groups(request, club_id, tournament_id, match_id):
     tournament = Tournament.objects.get(id=tournament_id)
-    match = GroupMatch.objects.get(id=match_id)
+    group_match = GroupMatch.objects.get(id=match_id)
+    role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
+    match = group_match.match
+    player_1 = match.player1
+    player_2 = match.player2
+    print(player_1)
+    print(player_2)
     if request.method=="POST":
         result=request.POST['result']
         if result == 'draw':
-            match.set_draw_points()
+            group_match.set_draw_points()
+            role.adjust_elo_rating(group_match,club_id,"Draw")
         elif result == 'player1':
-            match.player1_won_points()
+            group_match.player1_won_points()
+            role.adjust_elo_rating(group_match,club_id,player_1)
         else:
-            match.player2_won_points()
-        match.save()
+            group_match.player2_won_points()
+            role.adjust_elo_rating(group_match,club_id,player_2)
+        group_match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
