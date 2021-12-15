@@ -299,8 +299,10 @@ def club_list(request, club_id):
 
 @login_required
 def pending_requests(request, club_id):
-    applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
-    # need applicants for a particular club
+    applicant_id = Role.objects.all().filter(role = 1).filter(club_id = club_id).values_list("user", flat=True)
+    applicants = []
+    for item in applicant_id:
+        applicants.append(User.objects.get(id=item))
     club_list = request.user.get_clubs_user_is_a_member()
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants, 'club_list': club_list})
 
