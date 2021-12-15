@@ -1,8 +1,11 @@
 {% extends 'base_content.html' %}
 {% block content %}
-    <div class="container">
-       <div class = "row">
-          <div class = "col-sm-12 col-md-6 offset-md-3">
+<div id = "cover-image">
+  <div class="container vh-100">
+    <div class="row h-100">
+        <div class="col-12 my-auto">
+          <div class = "modal-dialog text-center">
+            <div class="card cover-card">
         <h1>Log in</h1>
         <form action="{% url 'log_in' %}" method="post">
             {% csrf_token %}
@@ -13,5 +16,8 @@
         </div>
        </div>
     </div>
+  </div>
+</div>
+</div>
 
 {% endblock %}
