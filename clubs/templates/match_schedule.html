@@ -17,40 +17,6 @@
 
   {% if round_of_16_matches or quarter_final_matches or semi_final_matches or final_match %}
     <h3>Elimination Rounds</h3>
-<<<<<<< HEAD
-    <table>
-      <tr>
-        <th>Match Number</th>
-        <th> Player One </th>
-        <th> Player Two </th>
-        <th> Results </th>
-      </tr>
-      {% for match in elim_matches %}
-      <tr>
-        {% if match.match.player1 or match.match.player2 %}
-          <td>{{ match.match.number }}</td>
-          <td>{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</td>
-          <td> {{ match.match.player2.first_name }} {{ match.match.player2.last_name }} </td>
-          {% if match.winner == None and match.match.player1 and match.match.player2%}
-          <td>
-            <form action="{% url 'enter_match_results' club_id=club_id tournament_id=tournament.id match_id=match.id %}" method="post">
-              {% csrf_token %}
-              {% include 'partials/bootstrap_form.html' with form=form %}
-              <select name='winner'>
-                <option value= "{{match.match.player1.id}}">{{ match.match.player1.first_name }} {{ match.match.player1.last_name }}</option>
-                <option value= "{{match.match.player2.id}}">{{ match.match.player2.first_name }} {{ match.match.player2.last_name }}</option>
-              </select>
-              <input type= "submit" value="Submit Results"/>
-            </form>
-          </td>
-          {%else%}
-          <td>{{match.winner.first_name}} {{match.winner.last_name}}</td>
-          {% endif%}
-        {% endif %}
-      </tr>
-      {% endfor %}
-    </table>
-=======
     <div class="row">
       {% if round_of_16_matches %}
         <div class="col">
@@ -76,7 +42,6 @@
       </div>
     </div>
     <br></br>
->>>>>>> main
   {% endif %}
 
   {% if g32_groups %}
