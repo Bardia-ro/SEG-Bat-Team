@@ -19,6 +19,8 @@ from location_field.models.plain import PlainLocationField
 from libgravatar import Gravatar
 from django.utils import timezone, tree
 
+import math
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """User model used for authentication and creating clubs"""
@@ -279,6 +281,7 @@ class Tournament(models.Model):
     FOUR = 4
     EIGHT = 8
     SIXTEEN = 16
+    TWENTY_FOUR = 24
     THIRTY_TWO = 32
     SIXTY_FOUR = 64
 
@@ -287,6 +290,7 @@ class Tournament(models.Model):
         (FOUR, 'Four'),
         (EIGHT, 'Eight'),
         (SIXTEEN, 'Sixteen'),
+        (TWENTY_FOUR, 'Twenty_four'),
         (THIRTY_TWO, 'Thirty_Two'),
         (SIXTY_FOUR, 'Sixty_Four'),
     )
@@ -419,7 +423,10 @@ class Tournament(models.Model):
 
         if num_players_group_round == 32:
             num_players_per_group = 4
-            for i in range(0, 32, num_players_per_group):
+        elif num_players_group_round == 24:
+            num_players_per_group = 3
+
+        for i in range(0, num_players_group_round, num_players_per_group):
                 self._create_group(i, group_round_players, num_players_per_group, 'G32')
 
     def _create_group(self, i, players, num_players_per_group, group_stage):
@@ -466,10 +473,10 @@ class Tournament(models.Model):
             even_match_number = group_match_count - 1
         else:
             even_match_number = group_match_count
-        num_players_per_group_divided_by_two = int(num_players_per_group/2)
+        num_players_per_group_divided_by_two = int(math.ceil(num_players_per_group/2))
         for i in range(group_match_count):
             group_match = group_matches[i].match
-            if i < int(group_match_count/2):
+            if i < int(math.ceil(group_match_count/2)):
                 group_match.number = odd_match_number
                 odd_match_number += num_players_per_group_divided_by_two
                 group_match.save()
