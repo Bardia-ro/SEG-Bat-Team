@@ -108,6 +108,9 @@
                                 <form action="{% url 'match_schedule' club_id=club.id tournament_id=tournament.id %}" method="get">
                                     <button class="btn btn-primary">Match Schedule</button>
                                 </form>
+                                <form action="{% url 'view_tournament_players' club_id=club.id tournament_id=tournament.id %}" method="get">
+                                    <button class="btn btn-primary"> View players</button>
+                                </form>
                             </div>
                           </div>
                         </div>

@@ -10,8 +10,8 @@
             <td>
               <img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle" >
             </td>
-            <td>{{ user.full_name }}</td>
-            <td><a href="{% url 'profile' club_id=club_id user_id=user.id %}">{{ user.email }}</a> </td>
+            <td><a href="{% url 'profile' club_id=club_id user_id=user.id %}">{{ user.full_name }}</a> </td>
+            <td>{{ user.bio }}</td>
           </tr>
         {% endfor %}
       </table>

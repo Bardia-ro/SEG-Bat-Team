@@ -1,5 +1,7 @@
+from datetime import tzinfo
 from django.core.management.base import BaseCommand, CommandError
 from django.db import models
+from django.utils import timezone
 from faker import Faker
 from clubs.models import Tournament, User, Club, Role
 import random
@@ -140,16 +142,16 @@ class Command(BaseCommand):
             the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=self.get_random_capacity(),
-                deadline=fake.future_datetime(),
+                deadline=fake.future_datetime(tzinfo=timezone.utc),
                 club=a_club,
                 organiser = Role.objects.filter(club=a_club, role=3).first().user)
-            for i in range(0,the_tournament.capacity):
+            for i in range(0,the_tournament.capacity+1):
                 the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
         else:
             the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=32,
-                deadline=fake.future_datetime("+24h"),
+                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org"))
             for i in range(0,the_tournament.capacity):
@@ -163,9 +165,9 @@ class Command(BaseCommand):
             the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=16,
-                deadline=fake.past_datetime(),
+                deadline=fake.past_datetime(tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org"))
             the_tournament.players.add(User.objects.get(email="jeb@example.org"))
-            for i in range(0,the_tournament.capacity-1):
+            for i in range(0,the_tournament.capacity):
                 the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))

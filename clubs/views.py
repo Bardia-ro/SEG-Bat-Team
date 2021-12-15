@@ -1,7 +1,8 @@
 
 """Views of the clubs app."""
+from contextlib import nullcontext
 from django.core.exceptions import ImproperlyConfigured
-from .models import EliminationMatch, GroupMatch, User, Role, Club, Tournament, Group, GroupPoints
+from .models import EliminationMatch, GroupMatch, User, Role, Club, Tournament, Group, GroupPoints, Elo_Rating
 from .forms import SignUpForm, LogInForm, EditProfileForm, ChangePasswordForm, ClubCreatorForm, TournamentForm
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
@@ -12,6 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
+from itertools import chain, count
 
 def request_toggle(request, user_id, club_id):
 
@@ -225,11 +227,36 @@ def profile(request, club_id, user_id):
 
     if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
         return redirect('profile', club_id=club_id, user_id=request.user.id)
-
+    elo_rating = Elo_Rating.objects.filter(user = user).filter(club_id = club_id)
+    club_elo_rating = Elo_Rating.objects.filter(club_id = club_id)
+    max_elo = 0
+    min_elo = 1000
+    for ratings in club_elo_rating:
+        if ratings.rating > max_elo:
+            max_elo = ratings.rating
+        if ratings.rating < min_elo:
+            min_elo = ratings.rating
+    matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
+    matchDrawn = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result__isnull = True)
+    matchLost = elo_rating.count() - (matchWon.count() + matchDrawn.count())
+    tournaments = Tournament.objects.filter(players = user).filter(club_id = club_id)
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
     club_list = request.user.get_clubs_user_is_a_member()
-    return render(request, 'profile.html', {'user': user, 'club_id': club_id, 'request_user_is_member': request_user_is_member, 'is_current_user': is_current_user, 'request_user_role': request_user_role_at_club, 'user_role': user_role_at_club, 'club_list': club_list})
+    return render(request, 'profile.html', {'user': user, 
+                           'club_id': club_id,
+                           'request_user_is_member': request_user_is_member, 
+                           'is_current_user': is_current_user, 
+                           'request_user_role': request_user_role_at_club, 
+                           'user_role': user_role_at_club, 
+                           'club_list': club_list,
+                           'elo_rating' : elo_rating,
+                           'tournaments' : tournaments,
+                           'matchLost' : matchLost,
+                           'matchWon' : matchWon,
+                           'max_elo' : max_elo,
+                           'min_elo' : min_elo,
+                           'matchDrawn' : matchDrawn})
 
 
 @login_required
@@ -300,8 +327,10 @@ def club_list(request, club_id):
 
 @login_required
 def pending_requests(request, club_id):
-    applicants = Role.objects.all().filter(role = 1).filter(club_id = club_id)
-    # need applicants for a particular club
+    applicant_id = Role.objects.all().filter(role = 1).filter(club_id = club_id).values_list("user", flat=True)
+    applicants = []
+    for item in applicant_id:
+        applicants.append(User.objects.get(id=item))
     club_list = request.user.get_clubs_user_is_a_member()
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants, 'club_list': club_list})
 
@@ -324,8 +353,47 @@ def match_schedule(request, club_id, tournament_id):
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
     g32_groups = Group.objects.filter(tournament=tournament)
-    elim_matches = EliminationMatch.objects.filter(tournament=tournament).order_by('match__number')
-    return render(request, 'match_schedule.html', {'club_id': club_id, 'club_list': club_list, 'tournament':tournament, 'elim_matches': elim_matches, 'g32_groups': g32_groups})
+
+    num_players_in_tournament = tournament.player_count()
+    if num_players_in_tournament > 16:
+        num_players_elim_rounds = 16
+    else:
+        num_players_elim_rounds = num_players_in_tournament 
+
+    round_of_16_matches = EliminationMatch.objects.filter(
+        tournament=tournament, 
+        match__number__lte = num_players_elim_rounds - 8,
+        match__number__gte = num_players_elim_rounds - 15,
+    ).order_by('match__number')
+    quarter_final_matches = EliminationMatch.objects.filter(
+        tournament=tournament,
+        match__number__lte = num_players_elim_rounds - 4,
+        match__number__gte = num_players_elim_rounds - 7,
+    ).order_by('match__number')
+    semi_final_matches = EliminationMatch.objects.filter(
+        tournament=tournament,
+        match__number__lte = num_players_elim_rounds - 2,
+        match__number__gte = num_players_elim_rounds - 3,
+    ).order_by('match__number')
+    final_match = EliminationMatch.objects.filter(
+        tournament=tournament, 
+        match__number = num_players_elim_rounds - 1
+    ).order_by('match__number')
+
+    return render(
+        request, 
+        'match_schedule.html', 
+        {
+            'club_id': club_id, 
+            'club_list': club_list, 
+            'tournament':tournament, 
+            'round_of_16_matches': round_of_16_matches,
+            'quarter_final_matches': quarter_final_matches, 
+            'semi_final_matches': semi_final_matches,
+            'final_match': final_match,
+            'g32_groups': g32_groups
+        }
+    )
 
 @login_required
 def generate_next_matches(request, club_id, tournament_id):
@@ -334,20 +402,6 @@ def generate_next_matches(request, club_id, tournament_id):
     if message:
         messages.add_message(request, messages.ERROR, message)
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
-
-#@login_required
-#def enter_match_results(request, club_id, tournament_id, match_id):
-#    tournament = Tournament.objects.get(id=tournament_id)
-    #match = EliminationMatch.objects.get(id=match_id)
-    #role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
-    #if request.method=="POST":
-    #    winner_id=request.POST['winner']
-    #    winner = User.objects.get(id=winner_id)
-    #    match.set_winner(winner)
-    #    match.save()
-    #    role.adjust_elo_rating(match,club_id,winner)
-    #return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
-
 
 @login_required
 def enter_match_results(request, club_id, tournament_id, match_id):
@@ -366,14 +420,37 @@ def enter_match_results(request, club_id, tournament_id, match_id):
 @login_required
 def enter_match_results_groups(request, club_id, tournament_id, match_id):
     tournament = Tournament.objects.get(id=tournament_id)
-    match = GroupMatch.objects.get(id=match_id)
+    group_match = GroupMatch.objects.get(id=match_id)
+    role = get_object_or_404(Role.objects.all(), club_id = club_id, user_id = request.user.id)
+    match = group_match.match
+    player_1 = match.player1
+    player_2 = match.player2
+    print(player_1)
+    print(player_2)
     if request.method=="POST":
         result=request.POST['result']
         if result == 'draw':
-            match.set_draw_points()
+            group_match.set_draw_points()
+            role.adjust_elo_rating(group_match,club_id,"Draw")
         elif result == 'player1':
-            match.player1_won_points()
+            group_match.player1_won_points()
+            role.adjust_elo_rating(group_match,club_id,player_1)
         else:
-            match.player2_won_points()
-        match.save()
+            group_match.player2_won_points()
+            role.adjust_elo_rating(group_match,club_id,player_2)
+        group_match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
+@login_required
+def view_tournament_players(request,club_id, tournament_id):
+    """View all the players in a tournament"""
+
+    tournament = Tournament.objects.get(id=tournament_id)
+    players = tournament.players.all()
+    return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})
+
+def remove_a_player(request,user_id,club_id,tournament_id):
+    """Removes a player from a tournament."""
+    tournament = Tournament.objects.get(id=tournament_id)
+    tournament.remove_player(user_id)
+    return redirect('view_tournament_players', club_id = club_id, tournament_id = tournament_id)

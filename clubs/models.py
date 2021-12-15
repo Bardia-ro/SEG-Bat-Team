@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator, MaxValueValidator, MinValueVa
 from django.db import models
 from django import forms
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.db.models.fields import BLANK_CHOICE_DASH, proxy
+from django.db.models.fields import BLANK_CHOICE_DASH, NullBooleanField, proxy
 from django.db.models.query import QuerySet
 from django.http import request
 from django.utils.translation import gettext_lazy as _
@@ -152,7 +152,7 @@ class Role(models.Model):
             return "Owner"
 
     def user_email(self):
-        return self.user.email
+        return self.user.first_name
 
     def approve_membership(self):
         self.role = Role.MEMBER
@@ -211,7 +211,36 @@ class Role(models.Model):
         p2.elo_rating = tup[1]
         p1.save()
         p2.save()
-
+        if (winner != "Draw"):
+            Elo_Rating.objects.create(
+                    result = winner,
+                    user = player_1,
+                    match = match.match,
+                    rating = tup[0],
+                    club_id = club_id
+                )
+            Elo_Rating.objects.create(
+                    result = winner,
+                    user = player_2,
+                    match = match.match,
+                    rating = tup[1],
+                    club_id = club_id
+                )
+        else:
+            Elo_Rating.objects.create(
+                    user = player_1,
+                    match = match.match,
+                    rating = tup[0],
+                    club_id = club_id
+                )
+            Elo_Rating.objects.create(
+                    user = player_2,
+                    match = match.match,
+                    rating = tup[1],
+                    club_id = club_id
+                )
+                   
+        
     def calculate_expected_scores(self, player_1, player_2, club_id,winner):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
@@ -232,9 +261,10 @@ class Role(models.Model):
         elif winner == player_2:
             res_A = 0
             res_B = 1
-        # elif winner == "Draw":
-        #     res_A = 0.5
-        #     res_B = 0.5
+        elif winner == "Draw":
+            print("called")
+            res_A = 0.5
+            res_B = 0.5
 
         new_elo_A = elo_A + 32 * (res_A - E_A)
         new_elo_B = elo_B + 32 * (res_B - E_B)
@@ -309,6 +339,11 @@ class Tournament(models.Model):
             else:
                 if self.is_space():
                         self.players.add(user)
+
+    def remove_player(self, user_id):
+        """Removes a player from a tournament"""
+        user = User.objects.get(id=user_id)
+        self.players.remove(user)
 
     def generate_next_matches(self):
         """Create the next matches that should be created in this tournament"""
@@ -529,6 +564,14 @@ class EliminationMatch(models.Model):
 
             self.winner_next_match.save()
 
+class Elo_Rating(models.Model):
+    result = models.ForeignKey(User, on_delete=models.CASCADE,null=True ,related_name='+')
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    rating = models.IntegerField(blank=False, default=1000)
+
+
 class Group(models.Model):
     """Model representing a group"""
 
@@ -589,7 +632,7 @@ class GroupMatch(models.Model):
         """Return GroupPoints object for player1 in the group that this group match is part of"""
 
         return GroupPoints.objects.get(
-            group=self.group, 
+            group=self.group,
             player=self.match.player1
         )
 
@@ -597,7 +640,7 @@ class GroupMatch(models.Model):
         """Return GroupPoints object for player2 in the group that this group match is part of"""
 
         return GroupPoints.objects.get(
-            group=self.group, 
+            group=self.group,
             player=self.match.player2
         )
 
@@ -614,7 +657,7 @@ class GroupMatch(models.Model):
         group_points_for_player2 = self._get_group_points_object_for_player2()
         group_points_for_player2.total_group_points += 1
         group_points_for_player2.save()
-    
+
     def _show_next_group_matches_in_match_schedule(self):
         """Set the display field of the next matches that should be displayed after the result of this group match has been submitted to True"""
 
