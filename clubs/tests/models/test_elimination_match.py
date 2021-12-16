@@ -31,15 +31,16 @@ class EliminationMatchModel(TestCase):
     #fixtures for tournament, match, user, elimination match
     fixtures = ['clubs/tests/fixtures/default_user.json',
                 'clubs/tests/fixtures/default_club.json',
-                'clubs/tests/fixtures/other_users.json']
+                'clubs/tests/fixtures/other_users.json',
+                'clubs/tests/fixtures/default_tournament.json']
 
     def setUp(self):
         super(TestCase, self).setUp()
-        self.tournament=Tournament.objects.get(id=0)
-        self.match=Match.objects.get(id=0)
+        self.tournament=Tournament.objects.get(id=1)
+        self.match=Match.objects.get(id=1)
         self.winner=User.objects.get(email='johndoe@example.org')
-        self.winner_next_match=Match.objects.get(id=1)
-        self.elimination_match=EliminationMatch.objects.get(id=0)
+        self.winner_next_match=Match.objects.get(id=2)
+        self.elimination_match=EliminationMatch.objects.get(id=1)
 
     #Testing field attributes
     def test_valid_elimination_match_model(self):

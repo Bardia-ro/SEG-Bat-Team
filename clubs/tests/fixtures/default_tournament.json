@@ -22,12 +22,22 @@
         }
     },
     {
+        "model": "clubs.Match",
+        "pk": 2,
+        "fields": {
+            "number": 2,
+            "player1": 3,
+            "player2": 4
+        }
+    },
+    {
         "model": "clubs.Group",
         "pk": 1,
         "fields": {
             "number": 1,
             "tournament": 1,
-            "players": [1,2,3,4]
+            "players": [1,2,3,4],
+            "group_stage": "G32"
         }
     },
     {
@@ -45,10 +55,10 @@
         "model": "clubs.EliminationMatch",
         "pk": 1,
         "fields": {
-            "tournament": 0,
-            "match": 0,
+            "tournament": 1,
+            "match": 1,
             "winner": 3,
-            "winner_next_match": 1
+            "winner_next_match": 2
         }
     }
  
