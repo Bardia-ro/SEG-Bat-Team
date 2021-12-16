@@ -10,6 +10,15 @@ def redirect_authenticated_user(func):
             return func(request)
     return wrapper
 
+def officer_owner_only(func):
+    def wrapper(request, club_id,**options):
+            if get_is_user_officer(club_id, request.user) or get_is_user_owner(club_id, request.user):
+                return func(request,club_id=club_id,**options)
+            else:
+                club_id = request.user.get_first_club_id_user_is_associated_with()
+                return redirect('profile', club_id=club_id, user_id=request.user.id)
+    return wrapper
+
 def get_is_user_member(club_id, user):
     if user.is_authenticated:
         try:

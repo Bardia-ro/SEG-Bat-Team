@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
+from .helpers import get_is_user_member, officer_owner_only,only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from itertools import chain, count
 
@@ -156,6 +156,7 @@ def club_creator(request, club_id, user_id):
     return render(request, 'club_creator.html', context={'form': form, 'club_id': club_id, 'user_id': user_id, 'club_list': club_list})
 
 @login_required
+@officer_owner_only
 def create_tournament(request, club_id, user_id):
 
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
@@ -278,8 +279,6 @@ def profile(request, club_id, user_id):
                            'average_point' : average_point,
                            'rate_of_change_elo' : rate_of_change_elo,
                            'rating_list' : rating_list })
-
-
 @login_required
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
@@ -344,7 +343,7 @@ def club_list(request, club_id):
     club_list = user.get_clubs_user_is_a_member()
     return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id, 'club_list': club_list})
 
-
+@officer_owner_only
 @login_required
 def pending_requests(request, club_id):
     applicant_id = Role.objects.all().filter(role = 1).filter(club_id = club_id).values_list("user", flat=True)
