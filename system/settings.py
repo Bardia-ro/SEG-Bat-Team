@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 from django.contrib.messages import constants as message_constants
 from django.urls.base import reverse
-import django_heroku
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -154,4 +154,8 @@ LOCATION_FIELD = {
 }
 
 #activate heroku
-django_heroku.settings(locals())
+
+
+if '/app' in os.environ['HOME']:
+    import django_heroku
+    django_heroku.settings(locals())

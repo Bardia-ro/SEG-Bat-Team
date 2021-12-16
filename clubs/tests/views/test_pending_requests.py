@@ -1,7 +1,7 @@
 """Tests for the view which diplays the pending request page"""
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User,Club,Role
+from clubs.models import User,Club,UserInClub
 
 
 class ProfileViewTestCase(TestCase):
@@ -15,7 +15,7 @@ class ProfileViewTestCase(TestCase):
     def setUp(self):
         self.user=User.objects.get(email='christinacastro@example.org')
         self.club=Club.objects.get(id=1)
-        self.applicants=Role.objects.filter(club=self.club,role=1)
+        self.applicants=UserInClub.objects.filter(club=self.club,role=1)
         self.url = reverse('pending_requests', kwargs={"club_id": 1})
 
     def test_pending_request_url(self):

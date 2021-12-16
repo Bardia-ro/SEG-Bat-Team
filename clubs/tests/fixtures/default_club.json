@@ -11,7 +11,7 @@
     },
 
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 0,
         "fields": {
             "club": 0,
@@ -21,7 +21,7 @@
     },
 
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 1,
         "fields": {
             "club": 0,
@@ -31,7 +31,7 @@
     },
 
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 2,
         "fields": {
             "club": 0,
@@ -40,7 +40,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 3,
         "fields": {
             "club": 0,
@@ -49,7 +49,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 4,
         "fields": {
             "club": 0,
@@ -58,7 +58,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 5,
         "fields": {
             "club": 0,
@@ -67,7 +67,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 6,
         "fields": {
             "club": 0,
@@ -76,7 +76,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 7,
         "fields": {
             "club": 0,
@@ -85,7 +85,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 15,
         "fields": {
             "club": 0,
@@ -94,7 +94,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 16,
         "fields": {
             "club": 0,
@@ -103,7 +103,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 17,
         "fields": {
             "club": 0,
@@ -112,7 +112,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 18,
         "fields": {
             "club": 0,
@@ -121,7 +121,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 19,
         "fields": {
             "club": 0,
@@ -130,7 +130,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 20,
         "fields": {
             "club": 0,
@@ -139,7 +139,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 21,
         "fields": {
             "club": 0,
@@ -148,7 +148,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 22,
         "fields": {
             "club": 0,
@@ -157,7 +157,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 23,
         "fields": {
             "club": 0,
@@ -166,7 +166,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 24,
         "fields": {
             "club": 0,
@@ -175,7 +175,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 25,
         "fields": {
             "club": 0,
@@ -184,7 +184,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 26,
         "fields": {
             "club": 0,
@@ -193,7 +193,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 27,
         "fields": {
             "club": 0,
@@ -202,7 +202,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 28,
         "fields": {
             "club": 0,
@@ -211,7 +211,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 29,
         "fields": {
             "club": 0,
@@ -220,7 +220,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 30,
         "fields": {
             "club": 0,
@@ -229,7 +229,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 31,
         "fields": {
             "club": 0,
@@ -238,7 +238,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 32,
         "fields": {
             "club": 0,
@@ -247,7 +247,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 33,
         "fields": {
             "club": 0,
@@ -256,7 +256,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 34,
         "fields": {
             "club": 0,
@@ -265,7 +265,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 35,
         "fields": {
             "club": 0,
@@ -274,7 +274,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 36,
         "fields": {
             "club": 0,
@@ -283,7 +283,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 37,
         "fields": {
             "club": 0,
@@ -292,7 +292,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 38,
         "fields": {
             "club": 0,
@@ -301,7 +301,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 39,
         "fields": {
             "club": 0,
@@ -310,7 +310,7 @@
         }
     },
     {
-        "model": "clubs.Role",
+        "model": "clubs.UserInClub",
         "pk": 40,
         "fields": {
             "club": 0,

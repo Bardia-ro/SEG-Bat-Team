@@ -1,7 +1,7 @@
 """Configuration of the admin interface for clubs."""
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Elo_Rating, Match, Tournament, User, Role, Club
+from .models import Elo_Rating, Match, Tournament, User, UserInClub, Club
 
 
 @admin.register(User)
@@ -12,7 +12,7 @@ class UserAdmin(admin.ModelAdmin):
         'first_name', 'last_name', 'email', 'is_active',
     ]
 
-@admin.register(Role)
+@admin.register(UserInClub)
 class RoleAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for roles."""
 
