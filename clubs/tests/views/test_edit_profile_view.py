@@ -8,8 +8,8 @@ class EditProfileViewTestCase(TestCase):
     """Tests for the edit_profile view"""
 
     fixtures = [
-        "clubs/tests/fixtures/default_user.json", 
-        "clubs/tests/fixtures/other_users.json", 
+        "clubs/tests/fixtures/default_user.json",
+        "clubs/tests/fixtures/other_users.json",
         "clubs/tests/fixtures/default_club.json",
         "clubs/tests/fixtures/other_clubs.json"
     ]
@@ -31,7 +31,7 @@ class EditProfileViewTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'edit_profile.html')
-        self.assertIsInstance(response.context['form'], EditProfileForm)   
+        self.assertIsInstance(response.context['form'], EditProfileForm)
         self.assertEqual(response.context['club_id'], 0)
         self.assertTrue(response.context['request_user_is_member'])
         user = User.objects.get(id=200)
@@ -50,7 +50,7 @@ class EditProfileViewTestCase(TestCase):
         self.assertEqual(response.context['club_id'], 0)
         self.assertFalse(response.context['request_user_is_member'])
         self.assertTrue(response.context['is_current_user'])
-        
+
     def test_redirect_user_gets_other_user_edit_profile_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
         url = reverse('edit_profile', kwargs={"club_id": 0,"user_id": 2})
@@ -60,7 +60,7 @@ class EditProfileViewTestCase(TestCase):
         user = User.objects.get(id=200)
         self.assertTemplateUsed(response, 'profile.html')
         self.assertEqual(response.context['user'], user)
-        self.assertEqual(response.context['club_id'], 0) 
+        self.assertEqual(response.context['club_id'], 0)
         self.assertFalse(response.context['request_user_is_member'])
         self.assertTrue(response.context['is_current_user'])
 
@@ -70,10 +70,10 @@ class EditProfileViewTestCase(TestCase):
         user = User.objects.get(email='johndoe@example.org')
         self.assertEqual(user.experience, 'class D')
         form_data = {
-            'first_name': 'John', 
-            'last_name': 'Doe', 
-            'bio': 'Hey guys!', 
-            'experience': 'class A', 
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'bio': 'Hey guys!',
+            'experience': 'class A',
             'personal_statement': 'Hi everyone. I love chess!'
         }
         response = self.client.post(self.url, form_data, follow=True)
@@ -89,15 +89,15 @@ class EditProfileViewTestCase(TestCase):
 
     def test_user_makes_post_request_with_invalid_data_to_own_edit_profile_page(self):
         self.client.login(email='johndoe@example.org', password='Password123')
-        form_data = {'first_name': '', 
-            'last_name': 'Doe', 
-            'bio': 'Hi, I am John and I am eighteen years old', 
-            'experience': 'class A', 
+        form_data = {'first_name': '',
+            'last_name': 'Doe',
+            'bio': 'Hi, I am John and I am eighteen years old',
+            'experience': 'class A',
             'personal_statement': 'I love chess'}
         response = self.client.post(self.url, form_data)
         self.assertTemplateUsed(response, 'edit_profile.html')
         self.assertIsInstance(response.context['form'], EditProfileForm)
-        self.assertEqual(response.context['club_id'], 0)  
+        self.assertEqual(response.context['club_id'], 0)
         self.assertTrue(response.context['request_user_is_member'])
         user = User.objects.get(id=200)
         self.assertQuerysetEqual(response.context['club_list'], user.get_clubs_user_is_a_member())
