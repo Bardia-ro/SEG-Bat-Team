@@ -1,4 +1,3 @@
-
 """Views of the clubs app."""
 from contextlib import nullcontext
 from django.core.exceptions import ImproperlyConfigured
@@ -11,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, officer_owner_only,only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
+from .helpers import get_is_user_member,tournament_organiser_only,officer_owner_only,only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from itertools import chain, count
 from django.contrib.auth.decorators import user_passes_test
@@ -159,9 +158,8 @@ def club_creator(request, club_id, user_id):
 @login_required
 @officer_owner_only
 def create_tournament(request, club_id, user_id):
-
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
-    if (role.role_name() == "Officer" and request.method == 'POST'):
+    if ((role.role_name() == "Officer" or role.role_name() == "Owner")  and request.method == 'POST'):
         organiser = User.objects.filter(id = request.user.id).first()
         club = Club.objects.filter(id = club_id).first()
         form = TournamentForm(request.POST)
@@ -230,9 +228,7 @@ def profile(request, club_id, user_id):
     elo_rating = Elo_Rating.objects.filter(user = user).filter(club_id = club_id)
     max_elo = 0
     min_elo = 1000
-    rating_list = []
     for ratings in elo_rating:
-        rating_list.append(ratings.rating)
         if ratings.rating > max_elo:
             max_elo = ratings.rating
         if ratings.rating < min_elo:
@@ -240,7 +236,6 @@ def profile(request, club_id, user_id):
     if elo_rating.count() == 0:
         max_elo = min_elo
         min_elo = min_elo
-    rating_list.insert(0,1000)
     matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
     matchDrawn = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result__isnull = True)
     matchLost = elo_rating.count() - (matchWon.count() + matchDrawn.count())
@@ -278,8 +273,9 @@ def profile(request, club_id, user_id):
                            'total_points' : total_points,
                            'current_elo' : current_elo,
                            'average_point' : average_point,
-                           'rate_of_change_elo' : rate_of_change_elo,
-                           'rating_list' : rating_list })
+                           'rate_of_change_elo' : rate_of_change_elo })
+
+
 @login_required
 def member_list(request, club_id):
     if not request.user.get_is_user_associated_with_club(club_id):
@@ -299,9 +295,11 @@ def member_list(request, club_id):
 
 @login_required
 def approve_member(request, club_id, applicant_id):
+    """ Owner and officers of a club can accept requests of applicants to join the club """
+
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = applicant_id)
     officer_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
-    if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
+    if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer" or officer_role.role_name() == "Owner"):
         role.approve_membership()
     return redirect('pending_requests', club_id=club_id)
 
@@ -309,12 +307,14 @@ def approve_member(request, club_id, applicant_id):
 def reject_member(request, club_id, applicant_id):
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = applicant_id)
     officer_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
-    if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer"):
+    if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer" or officer_role.role_name() == "Owner"):
         role.reject_membership()
     return redirect('pending_requests', club_id=club_id)
 
 @login_required
 def promote_member_to_officer(request, club_id, member_id):
+    """ Owner of a club can promote members of the same club to officers. """
+
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = member_id)
     owner_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Member" and owner_role.role_name() == "Owner"):
@@ -323,6 +323,8 @@ def promote_member_to_officer(request, club_id, member_id):
 
 @login_required
 def demote_officer_to_member(request, club_id, officer_id):
+    """ Owner of a club can demote officers of the same club to members. """
+
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = officer_id)
     owner_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Officer" and owner_role.role_name() == "Owner"):
@@ -331,6 +333,8 @@ def demote_officer_to_member(request, club_id, officer_id):
 
 @login_required
 def transfer_ownership(request, club_id, new_owner_id):
+    """ Owner of a club can transfer ownership to another officer of the same club. """
+
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = request.user.id)
     new_owner_role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = new_owner_id)
     if (role.role_name() == "Owner" and new_owner_role.role_name() == "Officer"):
@@ -339,13 +343,15 @@ def transfer_ownership(request, club_id, new_owner_id):
 
 @login_required
 def club_list(request, club_id):
+    """ List of all the creatd clubs. """
+
     user = User.objects.get(id=request.user.id)
     clubs = Club.objects.all()
     club_list = user.get_clubs_user_is_a_member()
     return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id, 'club_list': club_list})
 
-@officer_owner_only
 @login_required
+@officer_owner_only
 def pending_requests(request, club_id):
     applicant_id = Role.objects.all().filter(role = 1).filter(club_id = club_id).values_list("user", flat=True)
     applicants = []
@@ -471,14 +477,15 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
 @login_required
+@tournament_organiser_only
 def view_tournament_players(request,club_id, tournament_id):
     """View all the players in a tournament"""
-
     tournament = Tournament.objects.get(id=tournament_id)
     players = tournament.players.all()
     return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})
 
 @login_required
+@tournament_organiser_only
 def remove_a_player(request,user_id,club_id,tournament_id):
     """Removes a player from a tournament."""
     tournament = Tournament.objects.get(id=tournament_id)
