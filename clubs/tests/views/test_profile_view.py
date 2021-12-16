@@ -238,3 +238,34 @@ class ProfileViewTestCase(TestCase):
             self.assertContains(response, user.bio)
             self.assertContains(response, user.experience)
             self.assertContains(response, user.personal_statement)    
+
+    def test_owner_promotes_member_to_officer(self):
+        self.client.login(email='jessekim@example.org', password='Password123')
+        user = User.objects.get(id=10)
+        new_url = reverse('promote_member_to_officer', kwargs={"club_id": 1, "member_id": 10})
+        response=self.client.get(new_url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        role=user.get_role_as_text_at_club(1)
+        self.assertEqual(role, "Officer")
+
+    def test_demote_officer_to_member(self):
+        self.client.login(email='jessekim@example.org', password='Password123')
+        user = User.objects.get(id=12)
+        new_url = reverse('demote_officer_to_member', kwargs={"club_id": 1, "officer_id": 12})
+        response=self.client.get(new_url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        role=user.get_role_as_text_at_club(1)
+        self.assertEqual(role, "Member")
+
+    def test_transfer_ownership(self):
+        self.client.login(email='jessekim@example.org', password='Password123')
+        owner = User.objects.get(id=8)
+        user = User.objects.get(id=12)
+        new_url = reverse('transfer_ownership', kwargs={"club_id": 1, "new_owner_id": 12})
+        response=self.client.get(new_url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        role=user.get_role_as_text_at_club(1)
+        old_owner_role= owner.get_role_as_text_at_club(1)
+        self.assertEqual(role, "Owner")
+        self.assertEqual(old_owner_role, "Officer")
+        
