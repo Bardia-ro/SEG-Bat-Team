@@ -328,24 +328,29 @@ class Tournament(models.Model):
 
     def is_player(self,user_id):
         """Returns whether a user is a player in this tournament"""
+
         user = User.objects.get(id=user_id)
         return user in self.players.all()
 
     def player_count(self):
         """ Returns the number of players in this tournament"""
+
         return self.players.count()
 
     def is_space(self):
         """Returns whether this tournament has space for more players"""
+
         return  (self.players.count() < self.capacity)
 
     def is_time_left(self):
         """Returns whether there is time to apply to this tournament"""
+
         current_time = timezone.now()
         return (current_time < self.deadline)
 
     def toggle_apply(self, user_id):
         """ Toggles whether a user has applied to this tournament"""
+
         user = User.objects.get(id=user_id)
         if self.is_time_left():
             if self.is_player(user_id):
@@ -356,17 +361,22 @@ class Tournament(models.Model):
 
     def remove_player(self, user_id):
         """Removes a player from a tournament"""
+
         user = User.objects.get(id=user_id)
         self.players.remove(user)
 
     def valid_player_count(self):
         """Returns true if the current number of players sign up to a tournament is enough to play a game"""
+
         valid_numbers = [2,4,8,16,24,32,48,64]
         total_players = self.players.count()
         return(total_players in valid_numbers)
 
     def generate_next_matches(self):
         """Create the next matches that should be created in this tournament"""
+
+        if self.is_time_left():
+            return "You cannot generate matches before the tournament sign up deadline has passed"
 
         players = self.players.all()
         num_players = self.player_count()
