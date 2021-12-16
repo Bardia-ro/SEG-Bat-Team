@@ -5,15 +5,14 @@ from clubs.models import Club, User, Role, Tournament
 class TournamentTest(TestCase):
 
     fixtures = ['clubs/tests/fixtures/default_user.json',
-                "clubs/tests/fixtures/other_users.json",
                 'clubs/tests/fixtures/default_club.json',
-                'clubs/tests/fixtures/other_clubs.json']
+                'clubs/tests/fixtures/other_users.json',
+                'clubs/tests/fixtures/other_clubs.json',
+                'clubs/tests/fixtures/default_tournament.json']
 
     def setUp(self):
         super(TestCase, self).setUp()
         self.user=User.objects.get(email='johndoe@example.org')
-        self.club=Club.objects.get(name='Club A')
-        self.role=Role.objects.get(club=self.club, user__id=self.user.id)
         self.tournament=Tournament.objects.get(name='Tournament 1')
 
     def test_valid_club(self):

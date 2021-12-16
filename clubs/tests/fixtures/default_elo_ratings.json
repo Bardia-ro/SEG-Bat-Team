@@ -1,12 +1,12 @@
 [
     {
         "model": "clubs.elo_rating",
-        "pk": 0,
+        "pk": 1,
         "fields": {
             "result": 3,
             "club": 0,
             "user": 3,
-            "match": 0,
+            "match": 1,
             "rating": 1000
         }
     }
