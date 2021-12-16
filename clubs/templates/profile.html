@@ -205,27 +205,31 @@
                         <tr>
                             <th>Player 1</th>
                             <th>Player 2</th>
+                            <th>Elo rating before match</th>
                             <th>Elo rating after match</th>
                             <th>result</th>
                         </tr>
                             </thead>
                                 <tbody>
-                                    <tr>
-                                    {% for rating in elo_rating %}
-                        <td>{{ rating.match.player1.first_name }} {{ rating.match.player1.last_name }}</td>
-                        <td>{{ rating.match.player2.first_name }} {{ rating.match.player2.last_name }}</td>
-                        <td>{{ rating.rating }}</td>
-                        {% if rating.result == None %}
-                        <td> Draw </td>
-                        {% else %}
-                        <td> {{ rating.result.first_name }} {{ rating.result.last_name }} </td>
-                        {% endif %}
-                        </tr>
+                            <tr>
+                                {% for rating in elo_rating %}
+                            <td>{{ rating.match.player1.first_name }} {{ rating.match.player1.last_name }}</td>
+                            <td>{{ rating.match.player2.first_name }} {{ rating.match.player2.last_name }}</td>
+                            
+                            <td>{{ rating.rating_before }}</td>
+                            <td>{{ rating.rating }}</td>
+                            {% if rating.result == None %}
+                            <td> Draw </td>
+                            {% else %}
+                            <td> {{ rating.result.first_name }} {{ rating.result.last_name }} </td>
+                            {% endif %}
+                            </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
+
 
     {% if user_role == 1 and request_user_role >= 3 %}
     <div class="container row p-b-5">

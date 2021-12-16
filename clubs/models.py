@@ -207,6 +207,10 @@ class Role(models.Model):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
 
+
+        prev_elo1 = p1.elo_rating
+        prev_elo2 = p2.elo_rating
+
         tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
         p1.elo_rating = tup[0]
         p2.elo_rating = tup[1]
@@ -217,6 +221,7 @@ class Role(models.Model):
                     result = winner,
                     user = player_1,
                     match = match.match,
+                    rating_before = prev_elo1,
                     rating = tup[0],
                     club_id = club_id
                 )
@@ -224,6 +229,7 @@ class Role(models.Model):
                     result = winner,
                     user = player_2,
                     match = match.match,
+                    rating_before = prev_elo2,
                     rating = tup[1],
                     club_id = club_id
                 )
@@ -231,12 +237,14 @@ class Role(models.Model):
             Elo_Rating.objects.create(
                     user = player_1,
                     match = match.match,
+                    rating_before = prev_elo1,
                     rating = tup[0],
                     club_id = club_id
                 )
             Elo_Rating.objects.create(
                     user = player_2,
                     match = match.match,
+                    rating_before = prev_elo2,
                     rating = tup[1],
                     club_id = club_id
                 )
@@ -282,6 +290,7 @@ class Tournament(models.Model):
     SIXTEEN = 16
     TWENTY_FOUR = 24
     THIRTY_TWO = 32
+    FORTY_EIGHT = 48
     SIXTY_FOUR = 64
 
     CAPACITY_CHOICES = (
@@ -291,6 +300,7 @@ class Tournament(models.Model):
         (SIXTEEN, 'Sixteen'),
         (TWENTY_FOUR, 'Twenty_four'),
         (THIRTY_TWO, 'Thirty_Two'),
+        (FORTY_EIGHT, 'Forty_Eight'),
         (SIXTY_FOUR, 'Sixty_Four'),
     )
 
@@ -349,6 +359,12 @@ class Tournament(models.Model):
         user = User.objects.get(id=user_id)
         self.players.remove(user)
 
+    def valid_player_count(self):
+        """Returns true if the current number of players sign up to a tournament is enough to play a game"""
+        valid_numbers = [2,4,8,16,24,32,48,64]
+        total_players = self.players.count()
+        return(total_players in valid_numbers)
+
     def generate_next_matches(self):
         """Create the next matches that should be created in this tournament"""
 
@@ -383,10 +399,11 @@ class Tournament(models.Model):
         self.current_stage = 'G32'
         self.save()
 
-        if num_players == 64:
-            num_players_per_group = 4
-            for i in range(0, num_players, num_players_per_group):
-                self._create_group(i, players, num_players_per_group, 'G96')
+        if num_players == 48 or num_players == 64:
+            num_players_per_group = int(num_players/16)
+
+        for i in range(0, num_players, num_players_per_group):
+            self._create_group(i, players, num_players_per_group, 'G96')
 
     def _generate_group_stage_for_32_people_or_less(self, players, num_players):
         """Generate group stage if the number of players is between 17 and 32"""
@@ -477,11 +494,11 @@ class Tournament(models.Model):
             group_match = group_matches[i].match
             if i < int(math.ceil(group_match_count/2)):
                 group_match.number = odd_match_number
-                odd_match_number += num_players_per_group_divided_by_two
+                odd_match_number += 2
                 group_match.save()
             else:
                 group_match.number = even_match_number
-                even_match_number -= num_players_per_group_divided_by_two
+                even_match_number -= 2
                 group_match.save()
 
 
@@ -624,6 +641,7 @@ class Elo_Rating(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    rating_before = models.IntegerField(blank=False, default=1000)
     rating = models.IntegerField(blank=False, default=1000)
 
 

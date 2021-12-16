@@ -228,10 +228,11 @@ def profile(request, club_id, user_id):
     if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
         return redirect('profile', club_id=club_id, user_id=request.user.id)
     elo_rating = Elo_Rating.objects.filter(user = user).filter(club_id = club_id)
-    club_elo_rating = Elo_Rating.objects.filter(club_id = club_id)
     max_elo = 0
     min_elo = 1000
+    rating_list = []
     for ratings in elo_rating:
+        rating_list.append(ratings.rating)
         if ratings.rating > max_elo:
             max_elo = ratings.rating
         if ratings.rating < min_elo:
@@ -239,6 +240,7 @@ def profile(request, club_id, user_id):
     if elo_rating.count() == 0:
         max_elo = min_elo
         min_elo = min_elo
+    rating_list.insert(0,1000)
     matchWon = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result = user)
     matchDrawn = Elo_Rating.objects.filter(user = user).filter(club_id = club_id).filter(result__isnull = True)
     matchLost = elo_rating.count() - (matchWon.count() + matchDrawn.count())
@@ -252,12 +254,13 @@ def profile(request, club_id, user_id):
     user_role_at_club = user.get_role_at_club(club_id)
     club_list = request.user.get_clubs_user_is_a_member()
     total_points = matchWon.count() + matchDrawn.count() * 0.5
-    average_point = 0 
+    average_point = 0
     if elo_rating.count() > 0:
         average_point = total_points/elo_rating.count()
+        average_point =  "{:.2f}".format(average_point)
     rate_of_change_elo = ((current_elo - 1000)/1000)*100
 
-    return render(request, 'profile.html', {'user': user, 
+    return render(request, 'profile.html', {'user': user,
                            'club_id': club_id,
                            'request_user_is_member': request_user_is_member,
                            'is_current_user': is_current_user,
@@ -275,7 +278,8 @@ def profile(request, club_id, user_id):
                            'total_points' : total_points,
                            'current_elo' : current_elo,
                            'average_point' : average_point,
-                           'rate_of_change_elo' : rate_of_change_elo })
+                           'rate_of_change_elo' : rate_of_change_elo,
+                           'rating_list' : rating_list })
 
 
 @login_required
@@ -480,5 +484,8 @@ def view_tournament_players(request,club_id, tournament_id):
 def remove_a_player(request,user_id,club_id,tournament_id):
     """Removes a player from a tournament."""
     tournament = Tournament.objects.get(id=tournament_id)
-    tournament.remove_player(user_id)
+    if tournament.valid_player_count() == False:
+        tournament.remove_player(user_id)
+    else:
+        messages.add_message(request, messages.ERROR, "You cannot remove any more players")
     return redirect('view_tournament_players', club_id = club_id, tournament_id = tournament_id)
