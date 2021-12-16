@@ -19,6 +19,8 @@ from location_field.models.plain import PlainLocationField
 from libgravatar import Gravatar
 from django.utils import timezone, tree
 
+import math
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """User model used for authentication and creating clubs"""
@@ -205,6 +207,10 @@ class Role(models.Model):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
 
+
+        prev_elo1 = p1.elo_rating
+        prev_elo2 = p2.elo_rating
+
         tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
         p1.elo_rating = tup[0]
         p2.elo_rating = tup[1]
@@ -215,6 +221,7 @@ class Role(models.Model):
                     result = winner,
                     user = player_1,
                     match = match.match,
+                    rating_before = prev_elo1,
                     rating = tup[0],
                     club_id = club_id
                 )
@@ -222,6 +229,7 @@ class Role(models.Model):
                     result = winner,
                     user = player_2,
                     match = match.match,
+                    rating_before = prev_elo2,
                     rating = tup[1],
                     club_id = club_id
                 )
@@ -229,12 +237,14 @@ class Role(models.Model):
             Elo_Rating.objects.create(
                     user = player_1,
                     match = match.match,
+                    rating_before = prev_elo1,
                     rating = tup[0],
                     club_id = club_id
                 )
             Elo_Rating.objects.create(
                     user = player_2,
                     match = match.match,
+                    rating_before = prev_elo2,
                     rating = tup[1],
                     club_id = club_id
                 )
@@ -278,7 +288,9 @@ class Tournament(models.Model):
     FOUR = 4
     EIGHT = 8
     SIXTEEN = 16
+    TWENTY_FOUR = 24
     THIRTY_TWO = 32
+    FORTY_EIGHT = 48
     SIXTY_FOUR = 64
 
     CAPACITY_CHOICES = (
@@ -286,7 +298,9 @@ class Tournament(models.Model):
         (FOUR, 'Four'),
         (EIGHT, 'Eight'),
         (SIXTEEN, 'Sixteen'),
+        (TWENTY_FOUR, 'Twenty_four'),
         (THIRTY_TWO, 'Thirty_Two'),
+        (FORTY_EIGHT, 'Forty_Eight'),
         (SIXTY_FOUR, 'Sixty_Four'),
     )
 
@@ -385,10 +399,11 @@ class Tournament(models.Model):
         self.current_stage = 'G32'
         self.save()
 
-        if num_players == 64:
-            num_players_per_group = 4
-            for i in range(0, num_players, num_players_per_group):
-                self._create_group(i, players, num_players_per_group, 'G96')
+        if num_players == 48 or num_players == 64:
+            num_players_per_group = int(num_players/16)
+
+        for i in range(0, num_players, num_players_per_group):
+            self._create_group(i, players, num_players_per_group, 'G96')
 
     def _generate_group_stage_for_32_people_or_less(self, players, num_players):
         """Generate group stage if the number of players is between 17 and 32"""
@@ -424,7 +439,10 @@ class Tournament(models.Model):
 
         if num_players_group_round == 32:
             num_players_per_group = 4
-            for i in range(0, 32, num_players_per_group):
+        elif num_players_group_round == 24:
+            num_players_per_group = 3
+
+        for i in range(0, num_players_group_round, num_players_per_group):
                 self._create_group(i, group_round_players, num_players_per_group, 'G32')
 
     def _create_group(self, i, players, num_players_per_group, group_stage):
@@ -471,16 +489,16 @@ class Tournament(models.Model):
             even_match_number = group_match_count - 1
         else:
             even_match_number = group_match_count
-        num_players_per_group_divided_by_two = int(num_players_per_group/2)
+        num_players_per_group_divided_by_two = int(math.ceil(num_players_per_group/2))
         for i in range(group_match_count):
             group_match = group_matches[i].match
-            if i < int(group_match_count/2):
+            if i < int(math.ceil(group_match_count/2)):
                 group_match.number = odd_match_number
-                odd_match_number += num_players_per_group_divided_by_two
+                odd_match_number += 2
                 group_match.save()
             else:
                 group_match.number = even_match_number
-                even_match_number -= num_players_per_group_divided_by_two
+                even_match_number -= 2
                 group_match.save()
 
 
@@ -623,6 +641,7 @@ class Elo_Rating(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    rating_before = models.IntegerField(blank=False, default=1000)
     rating = models.IntegerField(blank=False, default=1000)
 
 

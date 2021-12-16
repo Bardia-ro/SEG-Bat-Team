@@ -83,46 +83,6 @@
             "user": 1,
             "role": 2
         }
-    },
-    {
-        "model": "clubs.Tournament",
-        "pk": 0,
-        "fields": {
-            "name": "Tournament 1",
-            "description": "This is the description",
-            "capacity": 4,
-            "deadline": "2021-01-12 14:12",
-            "club": 0,
-            "organiser": 5,
-            "players": [3,2,4,1]
-        }
-    },
-    {
-        "model": "clubs.Match",
-        "pk": 0,
-        "fields": {
-            "number": 1,
-            "player1": 3,
-            "player2": 2
-        }
-    },
-    {
-        "model": "clubs.Match",
-        "pk": 1,
-        "fields": {
-            "number": 2,
-            "player1": 3,
-            "player2": 4
-        }
-    },
-    {
-        "model": "clubs.EliminationMatch",
-        "pk": 0,
-        "fields": {
-            "tournament": 0,
-            "match": 0,
-            "winner": 3,
-            "winner_next_match": 1
-        }
     }
+    
 ]

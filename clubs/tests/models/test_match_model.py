@@ -6,14 +6,14 @@ class MatchModelTest(TestCase):
 
     fixtures = ['clubs/tests/fixtures/default_user.json',
                 'clubs/tests/fixtures/default_club.json',
-                'clubs/tests/fixtures/other_users.json']
+                'clubs/tests/fixtures/other_users.json',
+                'clubs/tests/fixtures/default_tournament.json']
 
     def setUp(self):
         super(TestCase, self).setUp()
         self.user=User.objects.get(email='johndoe@example.org')
-        self.club=Club.objects.get(name='Club A')
         self.tournament=Tournament.objects.get(name='Tournament 1')
-        self.match=Match.objects.get(id=0)
+        self.match=Match.objects.get(id=1)
     
     def test_valid_match_model(self):
         self.assert_match_is_valid()
