@@ -1,11 +1,22 @@
 {% extends 'base_content.html' %}
 {% block content %}
 
+<style>
+#outer
+{
+  width:100%;
+  text-align: center,
+}
+.inner{
+  display: inline-block;
+}
+</style>
+
+
 <div class="container">
     <div class="main-body">
-
-        <div class="row gutters-sm">
-            <div class="col-md-4 mb-3">
+        <div class="row g-4">
+            <div class="col-lg-4 mx-auto">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
@@ -14,14 +25,15 @@
                             <div class="mt-3">
                                 <h4>{{club.name}}</h4>
                                 <p class="text-muted font-size-sm">{{club.city}}</p>
+                                <p class="text-muted font-size-sm">Your status: {{ role_at_club }}</p>
                                 <form action="{% url 'request_toggle' user_id=user.id club_id=club.id%}" method="get">
                                     <span>
                                         {% if user_is_applicant %}
                                         <button class="btn btn-secondary">Cancel request</button>
                                         {% elif user_is_member or user_is_owner  or user_is_officer%}
-                                        <button class="btn btn-primary">Leave</button>
+                                        <button class="btn btn-primary">Leave club</button>
                                         {% else %}
-                                        <button class="btn btn-primary">Join</button>
+                                        <button class="btn btn-primary">Join club</button>
                                         {% endif %}
                                     </span>
                                 </form>
@@ -29,24 +41,23 @@
                         </div>
                     </div>
                 </div>
+
                 <p> </p>
 
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex flex-row align-items-center text-left ">
+                      <div class="d-flex flex-column align-items-center text-center">
                             <img src="{{ club.get_owner.mini_gravatar }}" alt="Gravatar" class="rounded-circle"
                                 style="padding-right: 15px;">
                             <div class="mt-3 flex-colomn">
-                                <h4>{{ club.get_owner.first_name }} {{ club.get_owner.last_name }}</h4>
-                                <p class="font-size-sm">Role: Owner</p>
+                                <h4>{{ club.get_owner.full_name}}</h4>
+                                <p class="font-size-sm">Owner</p>
+                                <p class="text-muted font-size-sm">Bio: {{club.get_owner.bio}}</p>
                             </div>
                         </div>
-                        <p class="text-muted font-size-sm">Bio: {{club.get_owner.bio}}</p>
                     </div>
                 </div>
-
             </div>
-
 
             <div class="col-md-8">
                 <div class="card mb-3">
@@ -56,7 +67,13 @@
                                 <h6 class="mb-0">About us:</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <p class="club-description">{{club.description}} </p>
+                                <p>{{club.description}} </p>
+                            </div>
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Total members:</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <p> {{club.get_total}} </p>
                             </div>
                         </div>
                     </div>
@@ -65,23 +82,7 @@
                 <div class="card mt-3">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0 text-secondary">Status: {{ role_at_club }}</h6>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="card mt-3">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">Total Members: {{club.get_total}}</h6>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="card mt-3">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">Tournaments</h6>
+                            <h4 class="mb-0">Tournaments</h4>
                         </li>
                         {% for tournament in club.get_tournaments %}
                         <div class="top-buffer">
@@ -111,12 +112,14 @@
                                 <form action="{% url 'view_tournament_players' club_id=club.id tournament_id=tournament.id %}" method="get">
                                     <button class="btn btn-primary"> View players</button>
                                 </form>
+                              </div>
                                 {% endif %}
                             </div>
                           </div>
-                        </div>
+
                         {% endfor %}
                     </ul>
+                      </div>
                 </div>
             </div>
         </div>

@@ -192,3 +192,21 @@ class Command(BaseCommand):
                     player_count += 1
                 if player_count == the_tournament.capacity:
                     break
+
+            the_tournament = Tournament.objects.create(
+                name='Tournament 4',
+                description= fake.paragraph(nb_sentences=5),
+                capacity=24,
+                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                club=Club.objects.get(name="Kerbal Chess Club"),
+                organiser = User.objects.get(email="val@example.org")
+            )
+            
+            user_roles=Role.objects.filter(club=a_club)
+            player_count = 0
+            for user_role in user_roles:
+                if user_role.user != the_tournament.organiser:
+                    the_tournament.players.add(user_role.user)
+                    player_count += 1
+                if player_count == the_tournament.capacity:
+                    break

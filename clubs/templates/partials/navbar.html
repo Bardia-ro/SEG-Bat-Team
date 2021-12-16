@@ -19,26 +19,30 @@
       {% if user.is_authenticated %}
       <ul class="navbar-nav mr-auto">
 
-        {% if club_id != None %}
+        {% if user_is_officer or user_is_owner %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'pending_requests' club_id=club_id %}"> Pending Requests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'create_tournament' club_id=club_id user_id=user.id %}"> Create Tournament</a>
+        </li>
+        {% endif %}
 
+        {% if club_id != None %}
             {% if role_at_club == "Member" or role_at_club == "Officer" or role_at_club == "Owner" %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'member_list' club_id=club_id %}">Members</a>
             </li>
-
             {% endif %}
-            {% endif %}
+          {% endif %}
 
-        {% if user_is_officer %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'pending_requests' club_id=club_id %}"> Pending Requests</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'club_list' club_id=club_id %}">Find Clubs</a>
+          </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'create_tournament' club_id=club_id user_id=user.id %}"> Create Tournament</a>
-        </li>
-
-        {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'club_creator' club_id=club_id user_id=user.id %}">Create Club</a>
+          </li>
 
         {% if club_list %}
         <li class="nav-item dropdown">
@@ -56,15 +60,13 @@
         </li>
         {% endif %}
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'club_list' club_id=club_id %}">Find Clubs</a>
-        </li>
+
 
       </ul>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'club_creator' club_id=club_id user_id=user.id %}">Create Club</a>
-      </li>
+
+
+
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="user-account-dropdown" role="button" data-bs-toggle="dropdown"
