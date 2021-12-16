@@ -182,21 +182,27 @@ class Role(models.Model):
         new_owner_role_instance.save()
 
     def is_owner(self):
+        """ return true if user is the owner of that particular club. """
         return self.role == 4
 
     def is_member(self):
+        """ return true if user is a member of that particular club. """
         return self.role == 2
 
     def is_applicant(self):
+        """ return true if user is an applicant of that particular club. """
         return self.role == 1
 
     def is_officer(self):
+        """ return true if user is an officer of that particular club. """
         return self.role == 3
 
     def is_user_member_or_above(self):
+        """ return true if user is owner or officer or member that particular club. """
         return self.role > 1
 
     def get_Officers(self):
+        """ return all the officers of the club. """
         officers = Role.objects.all().filter(role = 3)
         return officers
 
@@ -351,7 +357,7 @@ class Tournament(models.Model):
 
     def toggle_apply(self, user_id):
         """ Toggles whether a user has applied to this tournament"""
-        
+
         user = User.objects.get(id=user_id)
         if self.is_time_left():
             if self.is_player(user_id):
