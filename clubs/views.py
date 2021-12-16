@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, officer_owner_only,only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
+from .helpers import get_is_user_member,tournament_organiser_only,officer_owner_only,only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from itertools import chain, count
 
@@ -342,8 +342,8 @@ def club_list(request, club_id):
     club_list = user.get_clubs_user_is_a_member()
     return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id, 'club_list': club_list})
 
-@officer_owner_only
 @login_required
+@officer_owner_only
 def pending_requests(request, club_id):
     applicant_id = Role.objects.all().filter(role = 1).filter(club_id = club_id).values_list("user", flat=True)
     applicants = []
@@ -468,11 +468,10 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
         group_match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
-
+@tournament_organiser_only
 @login_required
 def view_tournament_players(request,club_id, tournament_id):
     """View all the players in a tournament"""
-
     tournament = Tournament.objects.get(id=tournament_id)
     players = tournament.players.all()
     return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})
