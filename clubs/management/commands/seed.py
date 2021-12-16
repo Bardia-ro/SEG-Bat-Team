@@ -151,7 +151,7 @@ class Command(BaseCommand):
             for i in range(0,the_tournament.capacity+1):
                 the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
         else:
-            the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
+            the_tournament = Tournament.objects.create(name=f'Tournament 0{fake.random_int()}',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=32,
                 deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
@@ -165,7 +165,7 @@ class Command(BaseCommand):
                     if (not_jeb!=jeb and not_jeb not in the_tournament.players.all()):
                         found=True
                 the_tournament.players.add(not_jeb)
-            the_tournament = Tournament.objects.create(name=f'Tournament {fake.random_int()}',
+            the_tournament = Tournament.objects.create(name=f'Tournament 0{fake.random_int()}',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=16,
                 deadline=fake.past_datetime(tzinfo=timezone.utc),
@@ -184,14 +184,7 @@ class Command(BaseCommand):
                 organiser = User.objects.get(email="val@example.org")
             )
             
-            user_roles=Role.objects.filter(club=a_club)
-            player_count = 0
-            for user_role in user_roles:
-                if user_role.user != the_tournament.organiser:
-                    the_tournament.players.add(user_role.user)
-                    player_count += 1
-                if player_count == the_tournament.capacity:
-                    break
+            self._add_players_to_tournament_not_randomly_up_to_tournament_capacity(a_club, the_tournament)
 
             the_tournament = Tournament.objects.create(
                 name='Tournament 4',
@@ -202,11 +195,69 @@ class Command(BaseCommand):
                 organiser = User.objects.get(email="val@example.org")
             )
             
-            user_roles=Role.objects.filter(club=a_club)
-            player_count = 0
-            for user_role in user_roles:
-                if user_role.user != the_tournament.organiser:
-                    the_tournament.players.add(user_role.user)
-                    player_count += 1
-                if player_count == the_tournament.capacity:
-                    break
+            self._add_players_to_tournament_not_randomly_up_to_tournament_capacity(a_club, the_tournament)
+
+            the_tournament = Tournament.objects.create(
+                name='Tournament 5',
+                description= fake.paragraph(nb_sentences=5),
+                capacity=16,
+                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                club=Club.objects.get(name="Kerbal Chess Club"),
+                organiser = User.objects.get(email="val@example.org")
+            )
+            
+            self._add_players_to_tournament_not_randomly_up_to_tournament_capacity(a_club, the_tournament)
+
+            the_tournament = Tournament.objects.create(
+                name='Tournament 6',
+                description= fake.paragraph(nb_sentences=5),
+                capacity=8,
+                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                club=Club.objects.get(name="Kerbal Chess Club"),
+                organiser = User.objects.get(email="val@example.org")
+            )
+            
+            self._add_players_to_tournament_not_randomly_up_to_tournament_capacity(a_club, the_tournament)
+
+            the_tournament = Tournament.objects.create(
+                name='Tournament 7',
+                description= fake.paragraph(nb_sentences=5),
+                capacity=4,
+                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                club=Club.objects.get(name="Kerbal Chess Club"),
+                organiser = User.objects.get(email="val@example.org")
+            )
+            
+            self._add_players_to_tournament_not_randomly_up_to_tournament_capacity(a_club, the_tournament)
+
+            the_tournament = Tournament.objects.create(
+                name='Tournament 8',
+                description= fake.paragraph(nb_sentences=5),
+                capacity=2,
+                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                club=Club.objects.get(name="Kerbal Chess Club"),
+                organiser = User.objects.get(email="val@example.org")
+            )
+            
+            self._add_players_to_tournament_not_randomly_up_to_tournament_capacity(a_club, the_tournament)
+
+            the_tournament = Tournament.objects.create(
+                name='Tournament 9',
+                description= fake.paragraph(nb_sentences=5),
+                capacity=48,
+                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                club=Club.objects.get(name="Kerbal Chess Club"),
+                organiser = User.objects.get(email="val@example.org")
+            )
+            
+            self._add_players_to_tournament_not_randomly_up_to_tournament_capacity(a_club, the_tournament)
+
+    def _add_players_to_tournament_not_randomly_up_to_tournament_capacity(self, a_club, the_tournament):
+        user_roles=Role.objects.filter(club=a_club)
+        player_count = 0
+        for user_role in user_roles:
+            if user_role.user != the_tournament.organiser:
+                the_tournament.players.add(user_role.user)
+                player_count += 1
+            if player_count == the_tournament.capacity:
+                break

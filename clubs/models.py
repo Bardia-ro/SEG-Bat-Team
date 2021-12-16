@@ -282,6 +282,7 @@ class Tournament(models.Model):
     SIXTEEN = 16
     TWENTY_FOUR = 24
     THIRTY_TWO = 32
+    FORTY_EIGHT = 48
     SIXTY_FOUR = 64
 
     CAPACITY_CHOICES = (
@@ -291,6 +292,7 @@ class Tournament(models.Model):
         (SIXTEEN, 'Sixteen'),
         (TWENTY_FOUR, 'Twenty_four'),
         (THIRTY_TWO, 'Thirty_Two'),
+        (FORTY_EIGHT, 'Forty_Eight'),
         (SIXTY_FOUR, 'Sixty_Four'),
     )
 
@@ -382,11 +384,12 @@ class Tournament(models.Model):
 
         self.current_stage = 'G32'
         self.save()
+        
+        if num_players == 48 or num_players == 64:
+            num_players_per_group = int(num_players/16)
 
-        if num_players == 64:
-            num_players_per_group = 4
-            for i in range(0, num_players, num_players_per_group):
-                self._create_group(i, players, num_players_per_group, 'G96')
+        for i in range(0, num_players, num_players_per_group):
+            self._create_group(i, players, num_players_per_group, 'G96')
 
     def _generate_group_stage_for_32_people_or_less(self, players, num_players):
         """Generate group stage if the number of players is between 17 and 32"""
@@ -477,11 +480,11 @@ class Tournament(models.Model):
             group_match = group_matches[i].match
             if i < int(math.ceil(group_match_count/2)):
                 group_match.number = odd_match_number
-                odd_match_number += num_players_per_group_divided_by_two
+                odd_match_number += 2
                 group_match.save()
             else:
                 group_match.number = even_match_number
-                even_match_number -= num_players_per_group_divided_by_two
+                even_match_number -= 2
                 group_match.save()
 
 
