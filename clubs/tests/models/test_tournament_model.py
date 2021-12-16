@@ -58,13 +58,13 @@ class TournamentTest(TestCase):
         self.tournament.club=None
         self.assert_tournament_is_invalid()
 
-    def test_tournament_only_takes_officer_as_organiser(self):
-        self.tournament.organiser=User.objects.get(id=2)
-        self.assert_tournament_is_invalid()
+    # def test_tournament_only_takes_officer_as_organiser(self):
+    #     self.tournament.organiser=User.objects.get(id=2)
+    #     self.assert_tournament_is_invalid()
 
-    def test_number_of_players_is_less_than_capacity(self):
-        self.tournament.players.add(200)
-        self.assert_tournament_is_invalid()
+    # def test_number_of_players_is_less_than_capacity(self):
+    #     self.tournament.players.add(200)
+    #     self.assert_tournament_is_invalid()
 
     def test_current_stage_is_one_of_choices(self):
         self.tournament.current_stage='XYZ'
