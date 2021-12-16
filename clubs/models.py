@@ -182,25 +182,34 @@ class Role(models.Model):
         new_owner_role_instance.save()
 
     def is_owner(self):
+        """ return true if user is the owner of that particular club. """
         return self.role == 4
 
     def is_member(self):
+        """ return true if user is a member of that particular club. """
         return self.role == 2
 
     def is_applicant(self):
+        """ return true if user is an applicant of that particular club. """
         return self.role == 1
 
     def is_officer(self):
+        """ return true if user is an officer of that particular club. """
         return self.role == 3
 
     def is_user_member_or_above(self):
+        """ return true if user is owner or officer or member that particular club. """
         return self.role > 1
 
     def get_Officers(self):
+        """ return all the officers of the club. """
         officers = Role.objects.all().filter(role = 3)
         return officers
 
     def adjust_elo_rating(self, match, club_id, winner):
+        """ set the elo rating of the players after the match.
+            create elo rating object for each players with corresponding elo rating.
+        """
         player_1 = match.match.player1
         player_2 = match.match.player2
 
@@ -251,6 +260,8 @@ class Role(models.Model):
 
 
     def calculate_expected_scores(self, player_1, player_2, club_id,winner):
+        """ calculate the elo rating with regards to opponents rating.  """
+
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
         elo_A = p1.elo_rating
@@ -283,7 +294,7 @@ class Role(models.Model):
 
 
 class Tournament(models.Model):
-
+    """ Tournament model for competitions in each club. """
     TWO = 2
     FOUR = 4
     EIGHT = 8
@@ -667,6 +678,7 @@ class EliminationMatch(models.Model):
 
     def set_winner(self, player):
         """Sets the winner for this match"""
+
         self.winner = player
         self.save()
         self.set_winner_as_player_in_winner_next_match()
@@ -683,6 +695,8 @@ class EliminationMatch(models.Model):
             self.winner_next_match.save()
 
 class Elo_Rating(models.Model):
+    """Model representing the Elo rating for users of a club."""
+
     result = models.ForeignKey(User, on_delete=models.CASCADE,null=True ,related_name='+')
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
