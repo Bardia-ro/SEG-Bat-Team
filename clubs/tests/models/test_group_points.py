@@ -1,8 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from clubs.models import Club, User, Tournament, Match, Group
+from clubs.models import Club, User, Tournament, Match, Group, GroupPoints
 
-class GroupModelTest(TestCase):
+class GroupPointsModelTest(TestCase):
 
     fixtures = ['clubs/tests/fixtures/default_user.json',
                 'clubs/tests/fixtures/other_users.json',
@@ -15,24 +15,25 @@ class GroupModelTest(TestCase):
         self.tournament=Tournament.objects.get(name='Tournament 2')
         self.match=Match.objects.get(id=1)
         self.group=Group.objects.get(id=1)
+        self.group_points=GroupPoints.objects.get(id=1)
     
     def test_valid_match_model(self):
-        self.assert_group_model_is_valid()
+        self.assert_group_points_model_is_valid()
     
-    def test_number_cannot_be_blank(self):
-        self.group.number=''
-        self.assert_group_model_is_invalid()
+    def test_group_cannot_be_blank(self):
+        self.group_points.group=None
+        self.assert_group_points_model_is_invalid()
 
-    def test_tournaments_cannot_be_blank(self):
-        self.group.tournament=None
-        self.assert_group_model_is_invalid()
+    def test_player_cannot_be_blank(self):
+        self.group_points.player=None
+        self.assert_group_points_model_is_invalid()
 
-    def assert_group_model_is_valid(self):
+    def assert_group_points_model_is_valid(self):
         try:
-            self.group.full_clean()
+            self.group_points.full_clean()
         except (ValidationError):
-            self.fail('Elo_rating should be valid')
+            self.fail('Group Point should be valid')
 
-    def assert_group_model_is_invalid(self):
+    def assert_group_points_model_is_invalid(self):
         with self.assertRaises(ValidationError):
-            self.group.full_clean()
+            self.group_points.full_clean()

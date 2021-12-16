@@ -12,7 +12,7 @@ class GroupMatchModelTest(TestCase):
     def setUp(self):
         super(TestCase, self).setUp()
         self.user=User.objects.get(email='johndoe@example.org')
-        self.tournament=Tournament.objects.get(name='Tournament 1')
+        self.tournament=Tournament.objects.get(name='Tournament 2')
         self.match=Match.objects.get(id=1)
         self.group=Group.objects.get(id=1)
         self.group_match=GroupMatch.objects.get(id=1)

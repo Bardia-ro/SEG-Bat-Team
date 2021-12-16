@@ -83,6 +83,240 @@
             "user": 1,
             "role": 2
         }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 15,
+        "fields": {
+            "club": 0,
+            "user": 15,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 16,
+        "fields": {
+            "club": 0,
+            "user": 16,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 17,
+        "fields": {
+            "club": 0,
+            "user": 17,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 18,
+        "fields": {
+            "club": 0,
+            "user": 18,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 19,
+        "fields": {
+            "club": 0,
+            "user": 19,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 20,
+        "fields": {
+            "club": 0,
+            "user": 20,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 21,
+        "fields": {
+            "club": 0,
+            "user": 21,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 22,
+        "fields": {
+            "club": 0,
+            "user": 22,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 23,
+        "fields": {
+            "club": 0,
+            "user": 23,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 24,
+        "fields": {
+            "club": 0,
+            "user": 24,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 25,
+        "fields": {
+            "club": 0,
+            "user": 25,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 26,
+        "fields": {
+            "club": 0,
+            "user": 26,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 27,
+        "fields": {
+            "club": 0,
+            "user": 27,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 28,
+        "fields": {
+            "club": 0,
+            "user": 28,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 29,
+        "fields": {
+            "club": 0,
+            "user": 29,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 30,
+        "fields": {
+            "club": 0,
+            "user": 30,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 31,
+        "fields": {
+            "club": 0,
+            "user": 31,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 32,
+        "fields": {
+            "club": 0,
+            "user": 32,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 33,
+        "fields": {
+            "club": 0,
+            "user": 33,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 34,
+        "fields": {
+            "club": 0,
+            "user": 34,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 35,
+        "fields": {
+            "club": 0,
+            "user": 35,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 36,
+        "fields": {
+            "club": 0,
+            "user": 36,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 37,
+        "fields": {
+            "club": 0,
+            "user": 37,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 38,
+        "fields": {
+            "club": 0,
+            "user": 38,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 39,
+        "fields": {
+            "club": 0,
+            "user": 39,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.Role",
+        "pk": 40,
+        "fields": {
+            "club": 0,
+            "user": 40,
+            "role": 2
+        }
     }
     
 ]
