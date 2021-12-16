@@ -107,8 +107,6 @@ class UserModelTestCase(TestCase):
         self.user.experience = 'class Z'
         self.assert_user_is_valid()
 
-
-
     def test_personal_statement_must_not_be_blank(self):
         self.user.personal_statement = ''
         self.assert_user_is_invalid()
@@ -125,7 +123,6 @@ class UserModelTestCase(TestCase):
         second_user = User.objects.get(username='@janedoe')
         self.user.bio = second_user.bio
         self.assert_user_is_valid()
-
 
     def assert_user_is_valid(self):
         try:
