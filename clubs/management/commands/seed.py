@@ -179,7 +179,7 @@ class Command(BaseCommand):
                 name='Tournament 3',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=64,
-                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                deadline=fake.past_datetime(tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org")
             )
@@ -189,8 +189,8 @@ class Command(BaseCommand):
             the_tournament = Tournament.objects.create(
                 name='Tournament 4',
                 description= fake.paragraph(nb_sentences=5),
-                capacity=24,
-                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                capacity=48,
+                deadline=fake.past_datetime(tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org")
             )
@@ -200,8 +200,8 @@ class Command(BaseCommand):
             the_tournament = Tournament.objects.create(
                 name='Tournament 5',
                 description= fake.paragraph(nb_sentences=5),
-                capacity=16,
-                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                capacity=32,
+                deadline=fake.past_datetime(tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org")
             )
@@ -211,8 +211,8 @@ class Command(BaseCommand):
             the_tournament = Tournament.objects.create(
                 name='Tournament 6',
                 description= fake.paragraph(nb_sentences=5),
-                capacity=8,
-                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                capacity=24,
+                deadline=fake.past_datetime(tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org")
             )
@@ -222,8 +222,8 @@ class Command(BaseCommand):
             the_tournament = Tournament.objects.create(
                 name='Tournament 7',
                 description= fake.paragraph(nb_sentences=5),
-                capacity=4,
-                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                capacity=16,
+                deadline=fake.past_datetime(tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org")
             )
@@ -233,8 +233,8 @@ class Command(BaseCommand):
             the_tournament = Tournament.objects.create(
                 name='Tournament 8',
                 description= fake.paragraph(nb_sentences=5),
-                capacity=2,
-                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                capacity=8,
+                deadline=fake.past_datetime(tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org")
             )
@@ -244,8 +244,19 @@ class Command(BaseCommand):
             the_tournament = Tournament.objects.create(
                 name='Tournament 9',
                 description= fake.paragraph(nb_sentences=5),
-                capacity=48,
-                deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
+                capacity=4,
+                deadline=fake.past_datetime(tzinfo=timezone.utc),
+                club=Club.objects.get(name="Kerbal Chess Club"),
+                organiser = User.objects.get(email="val@example.org")
+            )
+            
+            self._add_players_to_tournament_not_randomly_up_to_tournament_capacity(a_club, the_tournament)
+
+            the_tournament = Tournament.objects.create(
+                name='Tournament 10',
+                description= fake.paragraph(nb_sentences=5),
+                capacity=2,
+                deadline=fake.past_datetime(tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org")
             )
