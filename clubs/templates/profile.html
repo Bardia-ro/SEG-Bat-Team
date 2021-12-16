@@ -128,74 +128,114 @@
         </div>
     </div>
 
-        <div class="container">
-            <div class="container">
-                <h1 class="title-club">Statistics</h1>
-                    <table id="example" class="table table-striped table-bordered" style="width:100%">
-                                <tbody>
-                                    <tr>
-                                    <td> Tournaments </td>
-                                    <td>{{ total_tournaments }}</td> 
-                                    </tr>
-                                    
-                                    <tr>
-                                    <td> Matches played </td>
-                                    <td>{{ elo_rating.count }}</td> 
-                                    </tr>
-                                    
-                                    <tr>
-                                    <td> Matches won </td>
-                                    <td>{{ matchWon.count }}</td> 
-                                    </tr>
+    {% if user_role == 1 and request_user_role >= 3 %}
+    <div class="container row p-b-5">
+        <div class="col-sm-12 col-md-8 offset-md-2">
+            <a href={% url 'approve_member' club_id=club_id applicant_id=user.id %}>
+                <button type="button" class="btn btn-success">Approve membership</button>
+            </a>
+        </div>
+    </div>
+    {% endif %}
 
-                                    <tr>
-                                    <td> Matches Lost </td>
-                                    <td>{{ matchLost }}</td> 
-                                    </tr>   
-                                    
-                                    <tr>
-                                    <td> Draw </td>
-                                    <td>{{ matchDrawn.count }}</td> 
-                                    </tr> 
 
-                                    <tr>
-                                    <td> Total points earned in all matches </td>
-                                    <td>{{ total_points }}</td> 
-                                    </tr> 
-
-                                    <tr>
-                                    <td> Current elo rating </td>
-                                    <td>{{ current_elo }}</td> 
-                                    </tr>
-
-                                    <tr>
-                                    <td> Highest elo rating </td>
-                                    <td>{{ max_elo }}</td> 
-                                    </tr>
-
-                                    <tr>
-                                    <td> Lowest elo rating </td>
-                                    <td>{{ min_elo }}</td> 
-                                    </tr>
-
-                                    <tr>
-                                    <td> Average points earned in each match </td>
-                                    <td>{{ average_point }}</td> 
-                                    </tr>
-
-                                    <tr>
-                                    <td> Elo rating progression </td>
-                                    <td>{{ rate_of_change_elo }}%</td> 
-                                    </tr>
-                        </tbody>
-                    </table>
-                </div>
+    {% if user_role == 2 %}
+        {% if request_user_role == 4 %}
+        <div class="container row p-b-5">
+            <div class="col-sm-12 col-md-8 offset-md-2">
+                <a href={% url 'promote_member_to_officer' club_id=club_id member_id=user.id %}>
+                    <button type="button" class="btn btn-primary">Promote to officer</button>
+                </a>
             </div>
-        
+        </div>
+        {% endif %}
+    {% endif %}
 
 
+    {% if user_role == 3 %}
+        {% if request_user_role == 4 %}
+        <div class="container row p-b-5">
+            <div class="col-sm-12 col-md-8 offset-md-2">
+                <a href={% url 'demote_officer_to_member' club_id=club_id officer_id=user.id %}>
+                    <button type="button" class="btn btn-primary">Demote to member</button>
+                </a>
+            </div>
+        </div>
 
 
+        <div class="container row p-b-5">
+            <div class="col-sm-12 col-md-8 offset-md-2">
+                <a href={% url 'transfer_ownership' club_id=club_id new_owner_id=user.id %}>
+                    <button type="button" class="btn btn-primary">Transfer ownership</button>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    <div class="container">
+        <div class="container">
+            <h1 class="title-club">Statistics</h1>
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                            <tbody>
+                                <tr>
+                                <td> Tournaments </td>
+                                <td>{{ total_tournaments }}</td> 
+                                </tr>
+                                
+                                <tr>
+                                <td> Matches played </td>
+                                <td>{{ elo_rating.count }}</td> 
+                                </tr>
+                                
+                                <tr>
+                                <td> Matches won </td>
+                                <td>{{ matchWon.count }}</td> 
+                                </tr>
+
+                                <tr>
+                                <td> Matches Lost </td>
+                                <td>{{ matchLost }}</td> 
+                                </tr>   
+                                
+                                <tr>
+                                <td> Draw </td>
+                                <td>{{ matchDrawn.count }}</td> 
+                                </tr> 
+
+                                <tr>
+                                <td> Total points earned in all matches </td>
+                                <td>{{ total_points }}</td> 
+                                </tr> 
+
+                                <tr>
+                                <td> Current elo rating </td>
+                                <td>{{ current_elo }}</td> 
+                                </tr>
+
+                                <tr>
+                                <td> Highest elo rating </td>
+                                <td>{{ max_elo }}</td> 
+                                </tr>
+
+                                <tr>
+                                <td> Lowest elo rating </td>
+                                <td>{{ min_elo }}</td> 
+                                </tr>
+
+                                <tr>
+                                <td> Average points earned in each match </td>
+                                <td>{{ average_point }}</td> 
+                                </tr>
+
+                                <tr>
+                                <td> Elo rating progression </td>
+                                <td>{{ rate_of_change_elo }}%</td> 
+                                </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <div class="container">
             <div class="container">
@@ -229,50 +269,4 @@
                 </table>
             </div>
         </div>
-
-
-    {% if user_role == 1 and request_user_role >= 3 %}
-    <div class="container row p-b-5">
-        <div>
-            <a href={% url 'approve_member' club_id=club_id applicant_id=user.id %}>
-                <button type="button" class="btn btn-success">Approve membership</button>
-            </a>
-        </div>
-    </div>
-    {% endif %}
-
-
-    {% if user_role == 2 %}
-        {% if request_user_role == 4 %}
-        <div class="container row p-b-5">
-            <div>
-                <a href={% url 'promote_member_to_officer' club_id=club_id member_id=user.id %}>
-                    <button type="button" class="btn btn-primary">Promote to officer</button>
-                </a>
-            </div>
-        </div>
-        {% endif %}
-    {% endif %}
-
-
-    {% if user_role == 3 %}
-        {% if request_user_role == 4 %}
-        <div class="container row p-b-5">
-            <div class="col-sm-12 col-md-8 offset-md-2">
-                <a href={% url 'demote_officer_to_member' club_id=club_id officer_id=user.id %}>
-                    <button type="button" class="btn btn-primary">Demote to member</button>
-                </a>
-            </div>
-        </div>
-
-
-        <div class="container row p-b-5">
-            <div class="col-sm-12 col-md-8 offset-md-2">
-                <a href={% url 'transfer_ownership' club_id=club_id new_owner_id=user.id %}>
-                    <button type="button" class="btn btn-primary">Transfer ownership</button>
-                </a>
-            </div>
-        </div>
-        {% endif %}
-    {% endif %}
 {% endblock %}

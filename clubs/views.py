@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .helpers import get_is_user_member, only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
+from .helpers import get_is_user_member,tournament_organiser_only,officer_owner_only,only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from itertools import chain, count
 
@@ -155,10 +155,10 @@ def club_creator(request, club_id, user_id):
     return render(request, 'club_creator.html', context={'form': form, 'club_id': club_id, 'user_id': user_id, 'club_list': club_list})
 
 @login_required
+@officer_owner_only
 def create_tournament(request, club_id, user_id):
-
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
-    if (role.role_name() == "Officer" and request.method == 'POST'):
+    if ((role.role_name() == "Officer" or role.role_name() == "Owner")  and request.method == 'POST'):
         organiser = User.objects.filter(id = request.user.id).first()
         club = Club.objects.filter(id = club_id).first()
         form = TournamentForm(request.POST)
@@ -349,8 +349,8 @@ def club_list(request, club_id):
     club_list = user.get_clubs_user_is_a_member()
     return render(request, 'club_list.html', {'clubs': clubs, 'club_id': club_id, 'club_list': club_list})
 
-
 @login_required
+@officer_owner_only
 def pending_requests(request, club_id):
     applicant_id = Role.objects.all().filter(role = 1).filter(club_id = club_id).values_list("user", flat=True)
     applicants = []
@@ -476,14 +476,15 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
 @login_required
+@tournament_organiser_only
 def view_tournament_players(request,club_id, tournament_id):
     """View all the players in a tournament"""
-
     tournament = Tournament.objects.get(id=tournament_id)
     players = tournament.players.all()
     return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})
 
 @login_required
+@tournament_organiser_only
 def remove_a_player(request,user_id,club_id,tournament_id):
     """Removes a player from a tournament."""
     tournament = Tournament.objects.get(id=tournament_id)
