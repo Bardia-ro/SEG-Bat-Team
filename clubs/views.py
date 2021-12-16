@@ -468,8 +468,8 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
         group_match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
-@tournament_organiser_only
 @login_required
+@tournament_organiser_only
 def view_tournament_players(request,club_id, tournament_id):
     """View all the players in a tournament"""
     tournament = Tournament.objects.get(id=tournament_id)
@@ -477,6 +477,7 @@ def view_tournament_players(request,club_id, tournament_id):
     return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})
 
 @login_required
+@tournament_organiser_only
 def remove_a_player(request,user_id,club_id,tournament_id):
     """Removes a player from a tournament."""
     tournament = Tournament.objects.get(id=tournament_id)
