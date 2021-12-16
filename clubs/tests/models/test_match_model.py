@@ -30,9 +30,9 @@ class MatchModelTest(TestCase):
         self.match.player2=None
         self.assert_match_is_invalid()
     
-    def test_player1_and_player2_are_in_same_tournament(self):
-        self.match.player1=self.user
-        self.assert_match_is_invalid()
+    # def test_player1_and_player2_are_in_same_tournament(self):
+    #     self.match.player1=self.user
+    #     self.assert_match_is_invalid()
 
     def assert_match_is_valid(self):
         try:
