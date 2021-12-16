@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import models
 from django.utils import timezone
 from faker import Faker
-from clubs.models import Tournament, User, Club, Role
+from clubs.models import Tournament, User, Club, UserInClub
 import random
 
 
@@ -87,30 +87,30 @@ class Command(BaseCommand):
             if a_club.name =="Kerbal Chess Club":
                 for user in User.objects.all()[0:97]:
                     if(user.email[:5]!="admin"):
-                        Role.objects.create(club=a_club, user=user, role=2)
-                Role.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=4)
-                Role.objects.create(club=a_club, user=User.objects.get(email="val@example.org"), role=3)
-                Role.objects.create(club=a_club, user=User.objects.get(email="jeb@example.org"), role=2)
+                        UserInClub.objects.create(club=a_club, user=user, role=2)
+                UserInClub.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=4)
+                UserInClub.objects.create(club=a_club, user=User.objects.get(email="val@example.org"), role=3)
+                UserInClub.objects.create(club=a_club, user=User.objects.get(email="jeb@example.org"), role=2)
             else:
                 if counter==1:
-                    Role.objects.create(club=a_club, user=User.objects.get(email="jeb@example.org"), role=3)
-                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=4)
+                    UserInClub.objects.create(club=a_club, user=User.objects.get(email="jeb@example.org"), role=3)
+                    UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=4)
                 elif counter==2:
-                    Role.objects.create(club=a_club, user=User.objects.get(email="val@example.org"), role=4)
-                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
+                    UserInClub.objects.create(club=a_club, user=User.objects.get(email="val@example.org"), role=4)
+                    UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
                 else:
-                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=4)
-                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
+                    UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=4)
+                    UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
 
-                Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
+                UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=3)
 
                 if counter ==3:
-                    Role.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=2)
+                    UserInClub.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=2)
                 
                 for i in range(35):
-                        Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=2)
+                        UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=2)
                 for i in range(3):
-                    Role.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
+                    UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
             counter=counter+1
             self.create_tournaments(a_club,fake)
             
@@ -121,7 +121,7 @@ class Command(BaseCommand):
         while(found==False):
             a_user=random.choice(users)
             try:
-                Role.objects.get(club=club, user=a_user)
+                UserInClub.objects.get(club=club, user=a_user)
             except:
                 if(a_user.email[:5]!="admin"):
                     found=True
@@ -134,7 +134,7 @@ class Command(BaseCommand):
     def get_tournament_players(self,club,organiser):
         found=False
         a_user = ""
-        users=Role.objects.filter(club=club)
+        users=UserInClub.objects.filter(club=club)
         while(found==False):
             a_user=random.choice(users)
             if a_user!=organiser:
@@ -147,7 +147,7 @@ class Command(BaseCommand):
                 capacity=self.get_random_capacity(),
                 deadline=fake.future_datetime(tzinfo=timezone.utc),
                 club=a_club,
-                organiser = Role.objects.filter(club=a_club, role=3).first().user)
+                organiser = UserInClub.objects.filter(club=a_club, role=3).first().user)
             for i in range(0,the_tournament.capacity+1):
                 the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
         else:
@@ -253,7 +253,7 @@ class Command(BaseCommand):
             self._add_players_to_tournament_not_randomly_up_to_tournament_capacity(a_club, the_tournament)
 
     def _add_players_to_tournament_not_randomly_up_to_tournament_capacity(self, a_club, the_tournament):
-        user_roles=Role.objects.filter(club=a_club)
+        user_roles=UserInClub.objects.filter(club=a_club)
         player_count = 0
         for user_role in user_roles:
             if user_role.user != the_tournament.organiser:

@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from clubs.models import Club, User, Role
+from clubs.models import Club, User, UserInClub
 
 class ClubTest(TestCase):
 
@@ -13,7 +13,7 @@ class ClubTest(TestCase):
         super(TestCase, self).setUp()
         self.user=User.objects.get(email='johndoe@example.org')
         self.club=Club.objects.get(name='Club A')
-        self.role=Role.objects.get(club=self.club, user__id=self.user.id)
+        self.role=UserInClub.objects.get(club=self.club, user__id=self.user.id)
 
     def test_valid_club(self):
         self.assert_club_is_valid()

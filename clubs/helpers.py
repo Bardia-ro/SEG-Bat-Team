@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from clubs.models import Role, Tournament
+from clubs.models import UserInClub, Tournament
 
 def redirect_authenticated_user(func):
     def wrapper(request):
@@ -43,7 +43,7 @@ def get_is_user_member(club_id, user):
     """Returns whether a user is a member of this club"""
     if user.is_authenticated:
         try:
-            return Role.objects.get(club__id=club_id, user__id=user.id).role >= 2
+            return UserInClub.objects.get(club__id=club_id, user__id=user.id).role >= 2
         except:
             return False
     return False
@@ -62,7 +62,7 @@ def get_is_user_owner(club_id, user):
     """Returns whether a user is an owner of this club"""
     if user.is_authenticated:
         try:
-            return Role.objects.get(club__id=club_id, user__id=user.id).role == 4
+            return UserInClub.objects.get(club__id=club_id, user__id=user.id).role == 4
         except:
             return False
     return False
@@ -71,7 +71,7 @@ def get_is_user_officer(club_id, user):
     """Returns whether a user is an officer of this club"""
     if user.is_authenticated:
         try:
-            return Role.objects.get(club__id=club_id, user__id=user.id).role == 3
+            return UserInClub.objects.get(club__id=club_id, user__id=user.id).role == 3
         except:
             return False
     return False
@@ -80,7 +80,7 @@ def get_is_user_applicant(club_id, user):
     """Returns whether a user is an applicant of this club"""
     if user.is_authenticated:
         try:
-            return Role.objects.get(club__id=club_id, user__id=user.id).role == 1
+            return UserInClub.objects.get(club__id=club_id, user__id=user.id).role == 1
         except:
             return False
     return False

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, Role
+from clubs.models import User, UserInClub
 from clubs.tests.helpers import reverse_with_next
 
 class MemberListTest(TestCase):
@@ -12,9 +12,9 @@ class MemberListTest(TestCase):
     def setUp(self):
         self.url = reverse('member_list', kwargs={'club_id': 0})
         self.user = User.objects.get(email='johndoe@example.org')
-        self.members = Role.objects.filter(club__id=0, role=2)
-        self.owner = Role.objects.filter(club__id=0, role=4)
-        self.officers = Role.objects.filter(club__id=0, role=3)
+        self.members = UserInClub.objects.filter(club__id=0, role=2)
+        self.owner = UserInClub.objects.filter(club__id=0, role=4)
+        self.officers = UserInClub.objects.filter(club__id=0, role=3)
 
     def test_member_list_url(self):
         self.assertEqual(self.url,'/member_list/0/')

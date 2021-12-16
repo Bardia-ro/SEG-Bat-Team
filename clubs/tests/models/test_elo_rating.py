@@ -2,7 +2,7 @@ from contextlib import nullcontext
 from django.core.exceptions import ValidationError
 from django.forms.fields import NullBooleanField
 from django.test import TestCase
-from clubs.models import Club, User, Role, Elo_Rating, Match
+from clubs.models import Club, User, UserInClub, Elo_Rating, Match
 
 class EloRating(TestCase):
 
