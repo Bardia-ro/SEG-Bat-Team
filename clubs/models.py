@@ -421,27 +421,16 @@ class Tournament(models.Model):
 
         if num_players <= 32:
             group_round_players = players
-        elif num_players > 32:#check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        elif num_players > 32:
             groups = Group.objects.filter(
                 tournament = self,
                 group_stage = 'G96'
             )
 
-            for group in groups:
-                group_matches = GroupMatch.objects.filter(group=group)
-                for group_match in group_matches:
-                    if group_match.player1_points == 0 and group_match.player2_points == 0:
-                        return 'All group match results must be submitted before generating next group stage matches'
-
-            group_round_players = list(players[0: 32])
-            for group in groups:
-                group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
-                if group.number % 2 == 1:
-                    group_round_players[group.number-1] = group_points_objects[0].player
-                    group_round_players[group.number+16-1] = group_points_objects[1].player
-                elif group.number % 2 == 0:
-                    group_round_players[group.number-1] = group_points_objects[1].player
-                    group_round_players[group.number+16-1] = group_points_objects[0].player
+            if not self._check_all_group_stage_match_results_have_been_submitted(groups):
+                return 'All group match results must be submitted before generating next group stage matches'
+            
+            group_round_players = self._get_players_for_next_round(players, groups, 32)
 
         num_players_group_round = len(group_round_players)
 
@@ -455,6 +444,34 @@ class Tournament(models.Model):
 
         for i in range(0, num_players_group_round, num_players_per_group):
                 self._create_group(i, group_round_players, num_players_per_group, 'G32')
+
+    def _check_all_group_stage_match_results_have_been_submitted(self, groups):
+        """Return True if all group stage match results have been submitted otherwise return False"""
+
+        for group in groups:
+            group_matches = GroupMatch.objects.filter(group=group)
+            for group_match in group_matches:
+                if group_match.player1_points == 0 and group_match.player2_points == 0:
+                    return False
+        
+        return True
+
+    def _get_players_for_next_round(self, players, groups, num_next_round_players):
+        """Return the players going into the next round
+        ordered so that players who have met each other in a group won't meet until as late as possible in the next round
+        """
+
+        next_round_players = list(players[0: num_next_round_players])
+        for group in groups:
+            group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
+            if group.number % 2 == 1:
+                next_round_players[group.number-1] = group_points_objects[0].player
+                next_round_players[group.number + int(num_next_round_players/2) - 1] = group_points_objects[1].player
+            elif group.number % 2 == 0:
+                next_round_players[group.number-1] = group_points_objects[1].player
+                next_round_players[group.number + int(num_next_round_players/2) - 1] = group_points_objects[0].player
+
+        return next_round_players
 
     def _create_group(self, i, players, num_players_per_group, group_stage):
         """Create a group for a group stage"""
@@ -481,6 +498,18 @@ class Tournament(models.Model):
         )
 
     def _generate_group_matches(self, group, group_players, num_players_per_group):
+        """Generate matches for a group"""
+
+        self._create_matches_without_numbers_and_group_matches_for_group(group, group_players, num_players_per_group)
+
+        group_matches = GroupMatch.objects.filter(group=group)
+        self._assign_group_match_numbers(group_matches)
+
+        self._set_group_matches_next_matches(group, group_matches, num_players_per_group) 
+
+    def _create_matches_without_numbers_and_group_matches_for_group(self, group, group_players, num_players_per_group):
+        """Create matches without the number field set and group matches for a group"""
+
         for i in range(num_players_per_group-1):
             for j in range(i+1, num_players_per_group):
                 match = Match.objects.create(
@@ -493,14 +522,15 @@ class Tournament(models.Model):
                     group = group,
                 )
 
-        group_matches = GroupMatch.objects.filter(group=group)
+    def _assign_group_match_numbers(self, group_matches):
+        """Assign numbers to the matches in a group"""
+
         group_match_count = group_matches.count()
         odd_match_number = 1
         if group_match_count % 2 == 1:
             even_match_number = group_match_count - 1
         else:
             even_match_number = group_match_count
-        num_players_per_group_divided_by_two = int(math.ceil(num_players_per_group/2))
         for i in range(group_match_count):
             group_match = group_matches[i].match
             if i < int(math.ceil(group_match_count/2)):
@@ -512,13 +542,15 @@ class Tournament(models.Model):
                 even_match_number -= 2
                 group_match.save()
 
+    def _set_group_matches_next_matches(self, group, group_matches, num_players_per_group):
+        """Set the next_matches field for group matches in a group"""
 
+        num_players_per_group_divided_by_two = int(math.ceil(num_players_per_group/2))
         for group_match in group_matches:
             match_number = group_match.match.number
 
             if match_number <= num_players_per_group_divided_by_two:
-                group_match.display = True
-                group_match.save()
+                group_match._display()
 
             if match_number % 2 == 1:
                 adjusted_for_oddness_match_number = match_number + 1
@@ -537,29 +569,20 @@ class Tournament(models.Model):
             group_match_next_matches_instance.next_matches.set(next_matches)
 
     def _create_elimination_matches(self, players, num_players):
+        """Create elimination rounds matches"""
+
         if num_players <= 16:
             elim_rounds_players = players
-        elif num_players > 16:#check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        elif num_players > 16:
             groups = Group.objects.filter(
                 tournament = self,
                 group_stage = 'G32'
             )
+            
+            if not self._check_all_group_stage_match_results_have_been_submitted(groups):
+                return 'All group match results must be submitted before generating elimination rounds matches'
 
-            for group in groups:
-                group_matches = GroupMatch.objects.filter(group=group)
-                for group_match in group_matches:
-                    if group_match.player1_points == 0 and group_match.player2_points == 0:
-                        return 'All group match results must be submitted before generating elimination rounds matches'
-
-            elim_rounds_players = list(players[0: 16])
-            for group in groups:
-                group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
-                if group.number % 2 == 1:
-                    elim_rounds_players[group.number-1] = group_points_objects[0].player
-                    elim_rounds_players[group.number+8-1] = group_points_objects[1].player
-                elif group.number % 2 == 0:
-                    elim_rounds_players[group.number-1] = group_points_objects[1].player
-                    elim_rounds_players[group.number+8-1] = group_points_objects[0].player
+            elim_rounds_players = self._get_players_for_next_round(players, groups, 16)
 
         num_players_elim = len(elim_rounds_players)
 
@@ -589,6 +612,8 @@ class Tournament(models.Model):
                 self._create_elimination_match_with_non_null_winner_next_match_field(n, match, num_players_elim)
 
     def _create_elimination_matches_for_two_players(self, elim_rounds_players):
+        """Create elimination rounds matches when there are only two players"""
+
         match = Match.objects.create(
             number = 1,
             player1 = elim_rounds_players[0],
@@ -601,6 +626,8 @@ class Tournament(models.Model):
         )
 
     def _create_elimination_match_with_non_null_winner_next_match_field(self, n, match, num_players_elim):
+        """Create elimination match object with a non null winner_next_match field"""
+
         if n % 2 == 1:
             adjusted_for_oddness_n = n + 1
         else:
@@ -754,8 +781,12 @@ class GroupMatch(models.Model):
 
         group_match_next_matches_object = GroupMatchNextMatches.objects.get(group_match=self)
         for group_match in group_match_next_matches_object.next_matches.all():
-            group_match.display = True
-            group_match.save()
+            group_match._display()
+
+    def _display(self):
+        """Set display field to True"""
+        self.display = True
+        self.save()
 
 class GroupMatchNextMatches(models.Model):
     """Model to hold the next group matches that should be displayed after the result for a group match has been submitted"""
