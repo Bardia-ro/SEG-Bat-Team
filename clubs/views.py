@@ -480,6 +480,7 @@ def view_tournament_players(request,club_id, tournament_id):
 @login_required
 def remove_a_player(request,user_id,club_id,tournament_id):
     """Removes a player from a tournament."""
+    
     tournament = Tournament.objects.get(id=tournament_id)
     if tournament.valid_player_count() == False:
         tournament.remove_player(user_id)

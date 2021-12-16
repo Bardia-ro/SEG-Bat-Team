@@ -371,6 +371,10 @@ class Tournament(models.Model):
         players = self.players.all()
         num_players = self.player_count()
 
+        message = self._tournament_has_valid_number_of_players(num_players)
+        if message:
+            return message
+
         if self.current_stage == 'S':
             self._set_current_stage_to_first_stage(num_players)
 
@@ -380,6 +384,13 @@ class Tournament(models.Model):
             return self._generate_group_stage_for_32_people_or_less(players, num_players)
         elif self.current_stage == 'E':
             return self._create_elimination_matches(players, num_players)
+
+    def _tournament_has_valid_number_of_players(self, num_players):
+        """Check that a tournament has a valid number of players"""
+
+        valid_tournament_player_numbers = [2, 4, 8, 16, 24, 32, 48, 64]
+        if num_players not in valid_tournament_player_numbers:
+            return "To generate tournament matches there must be 2, 4, 8, 16, 24, 32, 48 or 64 players in the tournament"
 
     def _set_current_stage_to_first_stage(self, num_players):
         """Set this tournament's current_stage field to the first stage for this tournament"""
