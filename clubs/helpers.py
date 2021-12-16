@@ -20,6 +20,16 @@ def officer_owner_only(func):
                 return redirect('profile', club_id=club_id, user_id=request.user.id)
     return wrapper
 
+def only_current_user(func):
+    def wrapper(request, club_id, user_id):
+        current_user_id = request.user.id
+        if current_user_id == user_id:
+            return func(request, club_id, user_id)
+        else:
+            return redirect('profile', club_id=club_id, user_id=user_id)
+    return wrapper
+
+
 def get_is_user_member(club_id, user):
     """Returns whether a user is a member of this club"""
     if user.is_authenticated:
@@ -55,13 +65,3 @@ def get_is_user_applicant(club_id, user):
         except: #add error
             return False
     return False
-
-def only_current_user(func):
-    def wrapper(request, club_id, user_id):
-        current_user_id = request.user.id
-        if current_user_id == user_id:
-            return func(request, club_id, user_id)
-        else:
-            return redirect('profile', club_id=club_id, user_id=user_id)
-
-    return wrapper
