@@ -207,6 +207,10 @@ class Role(models.Model):
         p1 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(Role.objects.all(), club_id=club_id, user_id = player_2.id)
 
+      
+        prev_elo1 = p1.elo_rating
+        prev_elo2 = p2.elo_rating
+
         tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
         p1.elo_rating = tup[0]
         p2.elo_rating = tup[1]
@@ -217,6 +221,7 @@ class Role(models.Model):
                     result = winner,
                     user = player_1,
                     match = match.match,
+                    rating_before = prev_elo1,
                     rating = tup[0],
                     club_id = club_id
                 )
@@ -224,6 +229,7 @@ class Role(models.Model):
                     result = winner,
                     user = player_2,
                     match = match.match,
+                    rating_before = prev_elo2,
                     rating = tup[1],
                     club_id = club_id
                 )
@@ -231,12 +237,14 @@ class Role(models.Model):
             Elo_Rating.objects.create(
                     user = player_1,
                     match = match.match,
+                    rating_before = prev_elo1,
                     rating = tup[0],
                     club_id = club_id
                 )
             Elo_Rating.objects.create(
                     user = player_2,
                     match = match.match,
+                    rating_before = prev_elo2,
                     rating = tup[1],
                     club_id = club_id
                 )
@@ -627,6 +635,7 @@ class Elo_Rating(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    rating_before = models.IntegerField(blank=False, default=1000)
     rating = models.IntegerField(blank=False, default=1000)
 
 

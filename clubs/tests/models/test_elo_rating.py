@@ -9,11 +9,12 @@ class EloRating(TestCase):
     fixtures = ['clubs/tests/fixtures/default_user.json',
                 'clubs/tests/fixtures/default_club.json',
                 'clubs/tests/fixtures/other_users.json',
+                'clubs/tests/fixtures/default_tournament.json',
                 'clubs/tests/fixtures/default_elo_ratings.json']
 
     def setUp(self):
         self.user= User.objects.get(email='johndoe@example.org')
-        self.elo_rating = Elo_Rating.objects.get(id=0)
+        self.elo_rating = Elo_Rating.objects.get(id=1)
 
     def test_valid_elo_rating(self):
         self.assert_elo_rating_is_valid()
