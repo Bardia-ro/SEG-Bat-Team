@@ -228,7 +228,6 @@ def profile(request, club_id, user_id):
     if (request_user_role_at_club == 1 or request_user_role_at_club == 2) and not is_current_user:
         return redirect('profile', club_id=club_id, user_id=request.user.id)
     elo_rating = Elo_Rating.objects.filter(user = user).filter(club_id = club_id)
-    club_elo_rating = Elo_Rating.objects.filter(club_id = club_id)
     max_elo = 0
     min_elo = 1000
     rating_list = []
@@ -258,6 +257,7 @@ def profile(request, club_id, user_id):
     average_point = 0 
     if elo_rating.count() > 0:
         average_point = total_points/elo_rating.count()
+        average_point =  "{:.2f}".format(average_point)
     rate_of_change_elo = ((current_elo - 1000)/1000)*100
     
     return render(request, 'profile.html', {'user': user, 

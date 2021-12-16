@@ -230,9 +230,6 @@
             </div>
         </div>
 
-        {% for r in elo_rating %}
-        {{ r.rating_before }}
-        {% endfor %}
 
     {% if user_role == 1 and request_user_role >= 3 %}
     <div class="container row p-b-5">
