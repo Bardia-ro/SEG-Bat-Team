@@ -450,7 +450,8 @@ def generate_next_matches(request, club_id, tournament_id):
 @login_required
 @tournament_organiser_only
 def enter_match_results(request, club_id, tournament_id, match_id):
-    tournament = Tournament.objects.get(id=tournament_id)
+    """Enter match results for a normal elimination round"""
+
     match = EliminationMatch.objects.get(id=match_id)
     role = get_object_or_404(UserInClub.objects.all(), club_id = club_id, user_id = request.user.id)
     if request.method=="POST":
@@ -464,14 +465,14 @@ def enter_match_results(request, club_id, tournament_id, match_id):
 @login_required
 @tournament_organiser_only
 def enter_match_results_groups(request, club_id, tournament_id, match_id):
-    tournament = Tournament.objects.get(id=tournament_id)
+    """Enter match results for group rounds. Adjusts the elo rating of the players"""
+
     group_match = GroupMatch.objects.get(id=match_id)
     role = get_object_or_404(UserInClub.objects.all(), club_id = club_id, user_id = request.user.id)
     match = group_match.match
     player_1 = match.player1
     player_2 = match.player2
-    print(player_1)
-    print(player_2)
+
     if request.method=="POST":
         result=request.POST['result']
         if result == 'draw':

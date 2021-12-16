@@ -392,7 +392,7 @@ class Tournament(models.Model):
         players = self.players.all()
         num_players = self.player_count()
 
-        if not self._tournament_has_valid_number_of_players(num_players):
+        if not self.valid_player_count:
             return "To generate tournament matches there must be 2, 4, 8, 16, 24, 32, 48 or 64 players in the tournament"
 
         if self.current_stage == 'S':
@@ -405,11 +405,11 @@ class Tournament(models.Model):
         elif self.current_stage == 'E':
             return self._create_elimination_matches(players, num_players)
 
-    def _tournament_has_valid_number_of_players(self, num_players):
-        """Check whether a tournament has a valid number of players or not"""
+    #def _tournament_has_valid_number_of_players(self, num_players):
+    #    """Check whether a tournament has a valid number of players or not"""
 
-        valid_tournament_player_numbers = [2, 4, 8, 16, 24, 32, 48, 64]
-        return num_players in valid_tournament_player_numbers
+    #    valid_tournament_player_numbers = [2, 4, 8, 16, 24, 32, 48, 64]
+        #return num_players in valid_tournament_player_numbers
 
     def _set_current_stage_to_first_stage(self, num_players):
         """Set this tournament's current_stage field to the first stage for this tournament"""
@@ -448,7 +448,7 @@ class Tournament(models.Model):
 
             if not self._check_all_group_stage_match_results_have_been_submitted(groups):
                 return 'All group match results must be submitted before generating next group stage matches'
-            
+
             group_round_players = self._get_players_for_next_round(players, groups, 32)
 
         num_players_group_round = len(group_round_players)
@@ -472,7 +472,7 @@ class Tournament(models.Model):
             for group_match in group_matches:
                 if group_match.player1_points == 0 and group_match.player2_points == 0:
                     return False
-        
+
         return True
 
     def _get_players_for_next_round(self, players, groups, num_next_round_players):
@@ -524,7 +524,7 @@ class Tournament(models.Model):
         group_matches = GroupMatch.objects.filter(group=group)
         self._assign_group_match_numbers(group_matches)
 
-        self._set_group_matches_next_matches(group, group_matches, num_players_per_group) 
+        self._set_group_matches_next_matches(group, group_matches, num_players_per_group)
 
     def _create_matches_without_numbers_and_group_matches_for_group(self, group, group_players, num_players_per_group):
         """Create matches without the number field set and group matches for a group"""
@@ -597,7 +597,7 @@ class Tournament(models.Model):
                 tournament = self,
                 group_stage = 'G32'
             )
-            
+
             if not self._check_all_group_stage_match_results_have_been_submitted(groups):
                 return 'All group match results must be submitted before generating elimination rounds matches'
 
