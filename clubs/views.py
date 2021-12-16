@@ -158,9 +158,8 @@ def club_creator(request, club_id, user_id):
 @login_required
 @officer_owner_only
 def create_tournament(request, club_id, user_id):
-
     role = get_object_or_404(Role.objects.all(), club_id=club_id, user_id=request.user.id)
-    if (role.role_name() == "Officer" and request.method == 'POST'):
+    if ((role.role_name() == "Officer" or role.role_name() == "Owner")  and request.method == 'POST'):
         organiser = User.objects.filter(id = request.user.id).first()
         club = Club.objects.filter(id = club_id).first()
         form = TournamentForm(request.POST)
@@ -468,6 +467,7 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
             role.adjust_elo_rating(group_match,club_id,player_2)
         group_match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
+
 
 @login_required
 def view_tournament_players(request,club_id, tournament_id):
