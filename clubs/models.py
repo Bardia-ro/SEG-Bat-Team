@@ -345,6 +345,11 @@ class Tournament(models.Model):
         user = User.objects.get(id=user_id)
         self.players.remove(user)
 
+    def valid_player_count(self):
+        valid_numbers = [2,4,8,16,24,32,48,64,80,96]
+        capacity = self.players.count()
+        return(capacity in valid_numbers)
+
     def generate_next_matches(self):
         """Create the next matches that should be created in this tournament"""
 

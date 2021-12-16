@@ -252,12 +252,12 @@ def profile(request, club_id, user_id):
     user_role_at_club = user.get_role_at_club(club_id)
     club_list = request.user.get_clubs_user_is_a_member()
     total_points = matchWon.count() + matchDrawn.count() * 0.5
-    average_point = 0 
+    average_point = 0
     if elo_rating.count() > 0:
         average_point = total_points/elo_rating.count()
     rate_of_change_elo = ((current_elo - 1000)/1000)*100
 
-    return render(request, 'profile.html', {'user': user, 
+    return render(request, 'profile.html', {'user': user,
                            'club_id': club_id,
                            'request_user_is_member': request_user_is_member,
                            'is_current_user': is_current_user,
@@ -480,5 +480,8 @@ def view_tournament_players(request,club_id, tournament_id):
 def remove_a_player(request,user_id,club_id,tournament_id):
     """Removes a player from a tournament."""
     tournament = Tournament.objects.get(id=tournament_id)
-    tournament.remove_player(user_id)
+    if tournament.valid_player_count() == False:
+        tournament.remove_player(user_id)
+    else:
+        messages.add_message(request, messages.ERROR, "You cannot remove any more players")
     return redirect('view_tournament_players', club_id = club_id, tournament_id = tournament_id)
