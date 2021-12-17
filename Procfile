@@ -1,1 +1,1 @@
-web: gunicorn SEG-BAT-TEAM.wsgi
+web: gunicorn system.wsgi
