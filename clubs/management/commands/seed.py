@@ -85,7 +85,7 @@ class Command(BaseCommand):
         counter = 0
         for a_club in clubs:
             if a_club.name =="Kerbal Chess Club":
-                for user in User.objects.all()[0:97]:
+                for user in User.objects.all()[0:75]:
                     if(user.email[:5]!="admin"):
                         UserInClub.objects.create(club=a_club, user=user, role=2)
                 UserInClub.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=4)
@@ -109,8 +109,8 @@ class Command(BaseCommand):
                 
                 for i in range(35):
                         UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=2)
-                for i in range(3):
-                    UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
+            for i in range(3):
+                UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
             counter=counter+1
             self.create_tournaments(a_club,fake)
             
@@ -133,11 +133,11 @@ class Command(BaseCommand):
 
     def get_tournament_players(self,club,organiser):
         found=False
-        a_user = ""
         users=UserInClub.objects.filter(club=club)
         while(found==False):
             a_user=random.choice(users)
-            if a_user!=organiser:
+            if a_user.user!=organiser:
+                found=True
                 return a_user.user
 
     def create_tournaments(self,a_club, fake):
@@ -151,7 +151,7 @@ class Command(BaseCommand):
             for i in range(0,the_tournament.capacity+1):
                 the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
         else:
-            the_tournament = Tournament.objects.create(name=f'Tournament 0{fake.random_int()}',
+            the_tournament = Tournament.objects.create(name=f'Tournament 1',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=32,
                 deadline=fake.future_datetime("+24h",tzinfo=timezone.utc),
@@ -162,17 +162,16 @@ class Command(BaseCommand):
                 found = False
                 while(not found):
                     not_jeb = self.get_tournament_players(a_club, the_tournament.organiser)
-                    if (not_jeb!=jeb and not_jeb not in the_tournament.players.all()):
-                        found=True
+                    found=True
                 the_tournament.players.add(not_jeb)
-            the_tournament = Tournament.objects.create(name=f'Tournament 0{fake.random_int()}',
+            the_tournament = Tournament.objects.create(name=f'Tournament 2',
                 description= fake.paragraph(nb_sentences=5),
                 capacity=16,
                 deadline=fake.past_datetime(tzinfo=timezone.utc),
                 club=Club.objects.get(name="Kerbal Chess Club"),
                 organiser = User.objects.get(email="val@example.org"))
             the_tournament.players.add(User.objects.get(email="jeb@example.org"))
-            for i in range(0,the_tournament.capacity):
+            for i in range(0,the_tournament.capacity-1):
                 the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
 
             the_tournament = Tournament.objects.create(
