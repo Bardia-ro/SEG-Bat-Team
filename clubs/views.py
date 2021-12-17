@@ -16,7 +16,7 @@ from itertools import chain, count
 from django.contrib.auth.decorators import user_passes_test
 
 def request_toggle(request, user_id, club_id):
-    """Toggles whether a user has applied to a club or left it."""
+    """ Toggles whether a user has applied to a club or left it. """
 
     currentUser = User.objects.get(id=user_id)
     club = Club.objects.get(id=club_id)
@@ -36,7 +36,7 @@ def request_toggle(request, user_id, club_id):
 
 @login_required
 def club_page(request, club_id):
-    """View that shows relevant information of a club to a user depending on their role"""
+    """ View that shows relevant information of a club to a user depending on their role. """
 
     club_list = request.user.get_clubs_user_is_a_member()
     club = Club.objects.get(id=club_id)
@@ -62,12 +62,12 @@ def club_page(request, club_id):
 
 
 class LoginProhibitedMixin:
-    """Mixin redirects when a user is logged in """
+    """ Mixin redirects when a user is logged in. """
 
     redirect_when_logged_in_url = None
 
     def dispatch(self, *args, **kwargs):
-        """Refirect when logged in, or dispatch as normal otherwise."""
+        """ Refirect when logged in, or dispatch as normal otherwise. """
         if self.request.user.is_authenticated:
             url = self.redirect_when_logged_in_url()
             club_id = self.request.user.get_first_club_id_user_is_associated_with()
@@ -76,7 +76,8 @@ class LoginProhibitedMixin:
         return super().dispatch(*args, **kwargs)
 
     def redirect_when_logged_in_url(self):
-        """Returns the url to redirect to when not logged in"""
+        """ Returns the url to redirect to when not logged in. """ 
+
         if self.redirect_when_logged_in_url is None:
             raise ImproperlyConfigured(
             "LoginProhibitedMixin requires either a value for "
@@ -88,7 +89,7 @@ class LoginProhibitedMixin:
 
 
 class LogInView(LoginProhibitedMixin, View):
-    """View that handles log in."""
+    """ View that handles log in. """
 
     http_method_names = ['get', 'post']
 
@@ -118,15 +119,18 @@ class LogInView(LoginProhibitedMixin, View):
 
 
 def log_out(request):
+    """ View that logs out user. """
     logout(request)
     return redirect('home')
 
 @redirect_authenticated_user
 def home(request):
+    """ View for home page. """
     return render(request, 'home.html')
 
 @redirect_authenticated_user
 def sign_up(request):
+    """ View that signs up user. """
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -141,6 +145,7 @@ def sign_up(request):
 
 @login_required
 def club_creator(request, club_id, user_id):
+    """ View for creating clubs. """
     if (request.user.is_authenticated != True):
         club_id = request.user.get_first_club_id_user_is_associated_with()
         return redirect('profile', club_id=club_id, user_id=request.user.id)
@@ -159,6 +164,8 @@ def club_creator(request, club_id, user_id):
 @login_required
 @officer_owner_only
 def create_tournament(request, club_id, user_id):
+    """ View for creating tournament. """
+
     role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id=request.user.id)
     if ((role.role_name() == "Officer" or role.role_name() == "Owner")  and request.method == 'POST'):
         organiser = User.objects.filter(id = request.user.id).first()
@@ -176,6 +183,7 @@ def create_tournament(request, club_id, user_id):
 @login_required
 @only_current_user
 def edit_profile(request, club_id, user_id):
+    """ View that edits user's profile. """
     user = User.objects.get(id=user_id)
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=user)
@@ -191,6 +199,7 @@ def edit_profile(request, club_id, user_id):
 @login_required
 @only_current_user
 def change_password(request, club_id, user_id):
+    """ View that changes user's password. """
     user = User.objects.get(id=user_id)
     if request.method == 'POST':
         form = ChangePasswordForm(request.POST, instance=user)
@@ -206,6 +215,7 @@ def change_password(request, club_id, user_id):
 
 @login_required
 def profile(request, club_id, user_id):
+    """ View for profile page. """
     if club_id == 0:
         club_id = request.user.get_first_club_id_user_is_associated_with()
         if request.user.id == user_id:
@@ -249,7 +259,6 @@ def profile(request, club_id, user_id):
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
     club_list = user.get_clubs_user_is_a_member()
-    #club_list = UserInClub.objects.filter(role=2, user=user)
     total_points = matchWon.count() + matchDrawn.count() * 0.5
     average_point = 0
     if elo_rating.count() > 0:
@@ -303,7 +312,7 @@ def member_list(request, club_id):
 
 @login_required
 def approve_member(request, club_id, applicant_id):
-    """ Owner and officers of a club can accept requests of applicants to join the club """
+    """ Owner and officers of a club can accept requests of applicants to join the club. """
 
     role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = applicant_id)
     officer_role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = request.user.id)
@@ -313,7 +322,8 @@ def approve_member(request, club_id, applicant_id):
 
 @login_required
 def reject_member(request, club_id, applicant_id):
-    """ Owner and officers of a club can reject requests of applicants to join the club """
+    """ Owner and officers of a club can reject requests of applicants to join the club. """
+
     role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = applicant_id)
     officer_role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer" or officer_role.role_name() == "Owner"):
