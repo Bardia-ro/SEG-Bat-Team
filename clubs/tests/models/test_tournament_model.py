@@ -14,6 +14,7 @@ class TournamentTest(TestCase):
         super(TestCase, self).setUp()
         self.user=User.objects.get(email='johndoe@example.org')
         self.tournament=Tournament.objects.get(name='Tournament 1')
+        self.tournaments=Tournament.objects.all()
 
     def test_valid_club(self):
         self.assert_tournament_is_valid()
@@ -79,3 +80,42 @@ class TournamentTest(TestCase):
     def assert_tournament_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.tournament.full_clean()
+
+    #_tournament_has_valid_number_of_players
+    #_set_current_stage_to_first_stage
+    #_generate_group_stage_for_96_people_or_less
+    #_generate_group_stage_for_32_people_or_less
+    #_check_all_group_stage_match_results_have_been_submitted
+    #_get_players_for_next_round
+
+    #def test_tournament_has_valid_number_of_players(self):
+    #    for tournament in tournaments:
+    #        self.assertLessEqual(tournament.players.count(), tournament.capacity)
+
+    #def test_set_current_stage_to_first_stage(self):
+    #    tournament._set_current_stage_to_first_stage(tournament.capacity)
+    #    if tournament.capacity <= 96 and tournament.capacity > 32:
+    #        self.assertEqual(tournament.current_stage, 'G96')
+    #    if tournament.capacity <= 32 and tournament.capacity > 16:
+    #        self.assertEqual(tournament.current_stage, 'G32')
+    #    else:
+    #        self.assertEqual(tournament.current_stage, 'E')
+
+    #def test_generate_group_stage_for_96_people_or_less(self):
+    #    num_players = tournament.players.count()
+    #    tournament._generate_group_stage_for_96_people_or_less(tournament.players, num_players)
+    #    if num_players == 48:
+    #        player_group_number = Group.objects.filter(tournament_id=tournament.id).count()
+    #        self.assertEqual(player_group_number, 3)
+    #    else if num_players == 64:
+    #        player_group_number = Group.objects.filter(tournament_id=tournament.id).count()
+    #        self.assertEqual(player_group_number, 4)
+
+    #def test_generate_group_stage_for_32_people_or_less(self):
+    #    num_players = tournament.players.count()
+    #    tournament._generate_group_stage_for_32_people_or_less(tournament.players, num_players)
+
+    #def test_check_all_group_stage_match_results_have_been_submitted(self):
+
+    #def test_get_players_for_next_round(self):
+
