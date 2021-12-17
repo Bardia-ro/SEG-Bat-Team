@@ -1,6 +1,22 @@
 {% extends 'base_content.html' %}
 {% block content %}
-<div class="container">
+
+<style>
+table,th,td{
+  border:1px solid black;
+}
+</style>
+
+{% if final_match %}
+  {% for match in final_match %}
+    {% if match.winner%}
+    <div>
+      <h3>Tournament winner: {{ match.winner.first_name }} {{ match.winner.last_name }}</h3>
+    </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
   {% if round_of_16_matches or quarter_final_matches or semi_final_matches or final_match %}
     <h2>Elimination Rounds</h2>
     <div class="row">
@@ -63,16 +79,4 @@
         </form>
     {% endif %}
   {% endif %}
-
-     {% if final_match %}
-       {% for match in final_match %}
-         {% if match.winner%}
-         <div>
-           <h3>Tournament winner: {{ match.winner.first_name }} {{ match.winner.last_name }}</h3>
-         </div>
-         {% endif %}
-       {% endfor %}
-     {% endif %}
-
-   </div>
 {% endblock %}
