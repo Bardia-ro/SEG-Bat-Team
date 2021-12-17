@@ -68,16 +68,6 @@ def get_is_user_organiser(tournament_id, user):
             return False
     return False
 
-def get_is_user_organiser(tournament_id, user):
-    """Returns whether a user is an organiser of this tournament"""
-    if user.is_authenticated:
-        try:
-            tournament = Tournament.objects.get(id=tournament_id)
-            return (user == tournament.organiser)
-        except:
-            return False
-    return False
-
 def get_is_user_owner(club_id, user):
     """Returns whether a user is an owner of this club"""
     if user.is_authenticated:
