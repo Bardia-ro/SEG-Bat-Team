@@ -473,7 +473,6 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
     """Enter match results for group rounds. Adjusts the elo rating of the players"""
 
     group_match = GroupMatch.objects.get(id=match_id)
-    role = get_object_or_404(UserInClub.objects.all(), club_id = club_id, user_id = request.user.id)
     match = group_match.match
     player_1 = match.player1
     player_2 = match.player2
@@ -482,13 +481,13 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
         result=request.POST['result']
         if result == 'draw':
             group_match.set_draw_points()
-            role.adjust_elo_rating(group_match,club_id,"Draw")
+            UserInClub.adjust_elo_rating(group_match,club_id,"Draw")
         elif result == 'player1':
             group_match.player1_won_points()
-            role.adjust_elo_rating(group_match,club_id,player_1)
+            UserInClub.adjust_elo_rating(group_match,club_id,player_1)
         else:
             group_match.player2_won_points()
-            role.adjust_elo_rating(group_match,club_id,player_2)
+            UserInClub.adjust_elo_rating(group_match,club_id,player_2)
         group_match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
@@ -496,6 +495,7 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
 @tournament_organiser_only
 def view_tournament_players(request,club_id, tournament_id):
     """View all the players in a tournament"""
+    
     tournament = Tournament.objects.get(id=tournament_id)
     players = tournament.players.all()
     return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})
