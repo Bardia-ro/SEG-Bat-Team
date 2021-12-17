@@ -258,7 +258,8 @@ def profile(request, club_id, user_id):
     total_tournaments = Tournament.objects.filter(players = user).count()
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
-    club_list = user.get_clubs_user_is_a_member()
+    club_list = request.user.get_clubs_user_is_a_member()
+    club_list_of_profile = user.get_clubs_user_is_a_member()
     total_points = matchWon.count() + matchDrawn.count() * 0.5
     average_point = 0
     if elo_rating.count() > 0:
@@ -273,6 +274,7 @@ def profile(request, club_id, user_id):
                            'request_user_role': request_user_role_at_club,
                            'user_role': user_role_at_club,
                            'club_list': club_list,
+                           'club_list_profile': club_list_of_profile,
                            'elo_rating' : elo_rating,
                            'tournaments' : tournaments,
                            'matchLost' : matchLost,
