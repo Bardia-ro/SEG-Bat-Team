@@ -13,6 +13,7 @@ from django.contrib import messages
 from .helpers import get_is_user_member,member_only,tournament_organiser_only,officer_owner_only,only_current_user, redirect_authenticated_user, get_is_user_applicant, get_is_user_owner, get_is_user_officer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from itertools import chain, count
+from django.contrib.auth.decorators import user_passes_test
 
 def request_toggle(request, user_id, club_id):
     """Toggles whether a user has applied to a club or left it."""
@@ -292,8 +293,13 @@ def member_list(request, club_id):
     members = User.objects.filter(club__id = club_id, userinclub__role=2)
     officers = User.objects.filter(club__id = club_id, userinclub__role=3)
     users = User.objects.filter(club__id= club_id, userinclub__role=4).union(members, officers)
+    club = Club.objects.get(id=club_id)
     club_list = request.user.get_clubs_user_is_a_member()
-    return render(request, 'member_list.html', {'users': users, 'request_user_is_member': True, 'club_id': club_id, 'club_list': club_list})
+    return render(request, 'member_list.html', {'users': users,
+    'request_user_is_member': True,
+    'club_id': club_id,
+    'club_list': club_list,
+    'club': club})
 
 @login_required
 def approve_member(request, club_id, applicant_id):
@@ -371,7 +377,7 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
     """View for toggling whether a member has applied to a tournament"""
 
     tournament = Tournament.objects.get(id=tournament_id)
-    
+
     if tournament.is_time_left() == False:
         messages.add_message(request, messages.ERROR, "The deadline has passed.")
 
