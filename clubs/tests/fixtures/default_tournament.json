@@ -6,7 +6,7 @@
             "name": "Tournament 1",
             "description": "This is the description",
             "capacity": 4,
-            "deadline": "2021-01-12 14:12",
+            "deadline": "2021-01-12T14:12+00:00",
             "club": 0,
             "organiser": 5,
             "players": [3,2,4,1]
