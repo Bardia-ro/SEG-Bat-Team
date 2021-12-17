@@ -38,9 +38,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
+        """ Return email of the user instance. """
         return self.email
 
     def full_name(self):
+        """ Return full name of a user. """
         return f'{self.first_name} {self.last_name}'
 
     def gravatar(self, size=120):
@@ -55,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.gravatar(size=60)
 
     def get_first_club_id_user_is_associated_with(self):
+        """ Returns the id of the first club a user is associated with. """
         club = Club.objects.filter(users__id = self.id).first()
         if club == None:
             return 0
@@ -62,9 +65,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             return club.id
 
     def get_role_at_club(self, club_id):
+        """ Returns the club role of a user as a number. """
         return UserInClub.objects.get(club__id=club_id, user__id=self.id).role
 
     def get_role_as_text_at_club(self, club_id):
+        """ Returns the role of the user as a string. """
+
         try:
             role = UserInClub.objects.get(club_id=club_id, user=self).role
         except:
@@ -80,6 +86,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
     def get_is_user_associated_with_club(self, club_id):
+        """ Returns true if a user is associated with the passed in club"""
         try:
             UserInClub.objects.get(club__id=club_id, user__id=self.id)
             return True
@@ -87,12 +94,14 @@ class User(AbstractBaseUser, PermissionsMixin):
             return False
 
     def get_clubs_user_is_a_member(self):
+        """ Ruturns the list of clubs which the user is participating in. """
         as_member = UserInClub.objects.filter(role=2, user=self)
         as_officer = UserInClub.objects.filter(role=3, user=self)
         as_owner = UserInClub.objects.filter(role=4, user=self)
         return as_member.union(as_officer,as_owner)
 
 class Club(models.Model):
+    """ Clubs model for creating multiple clubs in the application. """
     name = models.CharField(max_length=50, blank=False, unique=True)
     city = models.CharField(max_length =255)
     location = PlainLocationField(based_fields = ['city'], zoom = 7)
@@ -100,28 +109,34 @@ class Club(models.Model):
     users = models.ManyToManyField(User, through='UserInClub')
 
     def __str__(self):
+        """ Returns the name of the club. """
         return self.name
 
     def get_total(self):
+        """ Returns all the roles(except applicant) exists in the club. """
         the_members = UserInClub.objects.filter(club=self, role=2)
         the_officers = UserInClub.objects.filter (club=self, role=3)
         the_owner = UserInClub.objects.filter(club=self, role=4)
         return the_officers.union(the_members,the_owner).count()
 
     def get_owner(self):
+        """ Returns the the owner of the club. """
         return UserInClub.objects.get(club=self, role=4).user
 
     def get_officers(self):
+        """ Returns the officers of the club. """
         return UserInClub.objects.filter(club=self, role=3)
 
     def get_members(self):
+        """ Returns the members of the club. """
         return UserInClub.objects.filter(club=self, role=2)
 
     def get_tournaments(self):
+        """ Returns the tournaments associated with the club. """
         return Tournament.objects.filter(club=self)
 
 class UserInClub(models.Model):
-    """Model that stores the role of a user in a club."""
+    """Model that stores the role and current elo rating of a user in a club."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
@@ -145,6 +160,8 @@ class UserInClub(models.Model):
         blank=False, default=APPlICANT, choices=ROLE_CHOICES)
 
     def role_name(self):
+        """ Returns role name of a user as a string. """
+
         if self.role == UserInClub.APPlICANT:
            return "Applicant"
         elif self.role == UserInClub.MEMBER:
@@ -155,28 +172,35 @@ class UserInClub(models.Model):
             return "Owner"
 
     def user_email(self):
-        return self.user.first_name
+        """ Returns email of the user. """
+        return self.user.email
 
     def approve_membership(self):
+        """ Switches the role of a user from applicant to member. """
         self.role = UserInClub.MEMBER
         self.save()
 
     def reject_membership(self):
+        """ Rejects the application of a user to a club. """
         self.delete()
 
     def promote_member_to_officer(self):
+        """ Switches the role of a member to officer. """
         self.role = UserInClub.OFFICER
         self.save()
 
     def demote_officer_to_member(self):
+        """ Switches the role of an officer to a member.  """
         self.role = UserInClub.MEMBER
         self.save()
 
     def demote_member_to_applicant(self):
+        """ Switches the role of a member to applicant. """
         self.role = UserInClub.APPlICANT
         self.save()
 
     def change_owner(self, club_id, new_owner_id):
+        """ Transfers the ownership of a club from the owner to an officer. """
         self.role = UserInClub.OFFICER
         self.save()
         new_owner_role_instance = UserInClub.objects.get(club_id=club_id, user_id=new_owner_id)
@@ -204,7 +228,7 @@ class UserInClub(models.Model):
         return self.role > 1
 
     def get_Officers(self):
-        """Return all the officers of the club. """
+        """ Return all the officers of the club. """
         officers = UserInClub.objects.all().filter(role = 3)
         return officers
 
@@ -280,7 +304,7 @@ class UserInClub(models.Model):
 
 
     def calculate_expected_scores(player_1, player_2, club_id):
-        """ calculate the expected scores with regard to opponents rating.  """
+        """ calculate the expected scores with regard to opponents rating. """
 
         p1 = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = player_2.id)
@@ -300,6 +324,7 @@ class UserInClub(models.Model):
 
 class Tournament(models.Model):
     """ Tournament model for competitions in each club. """
+
     TWO = 2
     FOUR = 4
     EIGHT = 8
@@ -343,29 +368,29 @@ class Tournament(models.Model):
         return self.name
 
     def is_player(self,user_id):
-        """Returns whether a user is a player in this tournament"""
+        """ Returns whether a user is a player in this tournament """
 
         user = User.objects.get(id=user_id)
         return user in self.players.all()
 
     def player_count(self):
-        """ Returns the number of players in this tournament"""
+        """ Returns the number of players in this tournament """
 
         return self.players.count()
 
     def is_space(self):
-        """Returns whether this tournament has space for more players"""
+        """ Returns whether this tournament has space for more players """
 
         return  (self.players.count() < self.capacity)
 
     def is_time_left(self):
-        """Returns whether there is time to apply to this tournament"""
+        """ Returns whether there is time to apply to this tournament """
 
         current_time = timezone.now()
         return (current_time < self.deadline)
 
     def toggle_apply(self, user_id):
-        """ Toggles whether a user has applied to this tournament"""
+        """ Toggles whether a user has applied to this tournament """
 
         user = User.objects.get(id=user_id)
         if self.is_time_left():
@@ -376,13 +401,13 @@ class Tournament(models.Model):
                         self.players.add(user)
 
     def remove_player(self, user_id):
-        """Removes a player from a tournament"""
+        """ Removes a player from a tournament """
 
         user = User.objects.get(id=user_id)
         self.players.remove(user)
 
     def valid_player_count(self):
-        """Returns true if the current number of players sign up to a tournament is enough to play a game"""
+        """ Returns true if the current number of players sign up to a tournament is enough to play a game """
 
         valid_numbers = [2,4,8,16,24,32,48,64]
         total_players = self.players.count()
@@ -411,13 +436,13 @@ class Tournament(models.Model):
             return self._create_elimination_matches(players, num_players)
 
     def _tournament_has_valid_number_of_players(self, num_players):
-        """Check whether a tournament has a valid number of players or not"""
+        """ Check whether a tournament has a valid number of players or not """
 
         valid_tournament_player_numbers = [2, 4, 8, 16, 24, 32, 48, 64]
         return num_players in valid_tournament_player_numbers
 
     def _set_current_stage_to_first_stage(self, num_players):
-        """Set this tournament's current_stage field to the first stage for this tournament"""
+        """ Set this tournament's current_stage field to the first stage for this tournament """
 
         if num_players > 32 and num_players <= 96:
             self.current_stage = 'G96'
@@ -429,7 +454,7 @@ class Tournament(models.Model):
         self.save()
 
     def _generate_group_stage_for_96_people_or_less(self, players, num_players):
-        """Generate group stage if the number of players is between 17 and 32"""
+        """ Generate group stage if the number of players is between 17 and 32 """
 
         self.current_stage = 'G32'
         self.save()
@@ -441,7 +466,7 @@ class Tournament(models.Model):
             self._create_group(i, players, num_players_per_group, 'G96')
 
     def _generate_group_stage_for_32_people_or_less(self, players, num_players):
-        """Generate group stage if the number of players is between 17 and 32"""
+        """ Generate group stage if the number of players is between 17 and 32 """
 
         if num_players <= 32:
             group_round_players = players
@@ -470,7 +495,7 @@ class Tournament(models.Model):
                 self._create_group(i, group_round_players, num_players_per_group, 'G32')
 
     def _check_all_group_stage_match_results_have_been_submitted(self, groups):
-        """Return True if all group stage match results have been submitted otherwise return False"""
+        """ Return True if all group stage match results have been submitted otherwise return False. """
 
         for group in groups:
             group_matches = GroupMatch.objects.filter(group=group)
@@ -481,7 +506,7 @@ class Tournament(models.Model):
         return True
 
     def _get_players_for_next_round(self, players, groups, num_next_round_players):
-        """Return the players going into the next round
+        """ Return the players going into the next round
         ordered so that players who have met each other in a group won't meet until as late as possible in the next round
         """
 
@@ -498,7 +523,7 @@ class Tournament(models.Model):
         return next_round_players
 
     def _create_group(self, i, players, num_players_per_group, group_stage):
-        """Create a group for a group stage"""
+        """ Create a group for a group stage """
 
         group_players = players[i: i+num_players_per_group]
         group = Group.objects.create(
@@ -514,7 +539,7 @@ class Tournament(models.Model):
         self._generate_group_matches(group, group_players, num_players_per_group)
 
     def _set_group_player_points(self, group, player):
-        """Create a GroupPoint instance for a player in a group"""
+        """ Create a GroupPoint instance for a player in a group """
 
         GroupPoints.objects.create(
             group = group,
@@ -522,7 +547,7 @@ class Tournament(models.Model):
         )
 
     def _generate_group_matches(self, group, group_players, num_players_per_group):
-        """Generate matches for a group"""
+        """ Generate matches for a group """
 
         self._create_matches_without_numbers_and_group_matches_for_group(group, group_players, num_players_per_group)
 
@@ -532,7 +557,7 @@ class Tournament(models.Model):
         self._set_group_matches_next_matches(group, group_matches, num_players_per_group)
 
     def _create_matches_without_numbers_and_group_matches_for_group(self, group, group_players, num_players_per_group):
-        """Create matches without the number field set and group matches for a group"""
+        """ Create matches without the number field set and group matches for a group """
 
         for i in range(num_players_per_group-1):
             for j in range(i+1, num_players_per_group):
@@ -547,7 +572,7 @@ class Tournament(models.Model):
                 )
 
     def _assign_group_match_numbers(self, group_matches):
-        """Assign numbers to the matches in a group"""
+        """ Assign numbers to the matches in a group """
 
         group_match_count = group_matches.count()
         odd_match_number = 1
@@ -567,7 +592,7 @@ class Tournament(models.Model):
                 group_match.save()
 
     def _set_group_matches_next_matches(self, group, group_matches, num_players_per_group):
-        """Set the next_matches field for group matches in a group"""
+        """ Set the next_matches field for group matches in a group """
 
         num_players_per_group_divided_by_two = int(math.ceil(num_players_per_group/2))
         for group_match in group_matches:
@@ -593,7 +618,7 @@ class Tournament(models.Model):
             group_match_next_matches_instance.next_matches.set(next_matches)
 
     def _create_elimination_matches(self, players, num_players):
-        """Create elimination rounds matches"""
+        """ Create elimination rounds matches """
 
         if num_players <= 16:
             elim_rounds_players = players
@@ -636,7 +661,7 @@ class Tournament(models.Model):
                 self._create_elimination_match_with_non_null_winner_next_match_field(n, match, num_players_elim)
 
     def _create_elimination_matches_for_two_players(self, elim_rounds_players):
-        """Create elimination rounds matches when there are only two players"""
+        """ Create elimination rounds matches when there are only two players. """
 
         match = Match.objects.create(
             number = 1,
@@ -650,7 +675,7 @@ class Tournament(models.Model):
         )
 
     def _create_elimination_match_with_non_null_winner_next_match_field(self, n, match, num_players_elim):
-        """Create elimination match object with a non null winner_next_match field"""
+        """ Create elimination match object with a non null winner_next_match field. """
 
         if n % 2 == 1:
             adjusted_for_oddness_n = n + 1
@@ -745,6 +770,7 @@ class GroupMatch(models.Model):
 
     def player1_won_points(self):
         """Set the score of player 1"""
+
         self.player1_points += 1
         self.save()
 
@@ -753,7 +779,8 @@ class GroupMatch(models.Model):
         self._show_next_group_matches_in_match_schedule()
 
     def player2_won_points(self):
-        """Set the score of player 2"""
+        """ Set the score of player 2 """
+
         self.player2_points += 1
         self.save()
 
@@ -762,7 +789,8 @@ class GroupMatch(models.Model):
         self._show_next_group_matches_in_match_schedule()
 
     def set_draw_points(self):
-        """Updates the score if the match is a draw"""
+        """ Updates the score if the match is a draw. """
+
         self.player1_points += 0.5
         self.player2_points += 0.5
         self.save()
@@ -774,7 +802,7 @@ class GroupMatch(models.Model):
         self._show_next_group_matches_in_match_schedule()
 
     def _get_group_points_object_for_player1(self):
-        """Return GroupPoints object for player1 in the group that this group match is part of"""
+        """ Return GroupPoints object for player1 in the group that this group match is part of. """
 
         return GroupPoints.objects.get(
             group=self.group,
@@ -782,7 +810,7 @@ class GroupMatch(models.Model):
         )
 
     def _get_group_points_object_for_player2(self):
-        """Return GroupPoints object for player2 in the group that this group match is part of"""
+        """ Return GroupPoints object for player2 in the group that this group match is part of. """
 
         return GroupPoints.objects.get(
             group=self.group,
@@ -790,39 +818,40 @@ class GroupMatch(models.Model):
         )
 
     def _update_player1_total_group_points(self, points):
-        """Update player1 total group points"""
+        """ Update player1 total group points. """
 
         group_points_for_player1 = self._get_group_points_object_for_player1()
         group_points_for_player1.total_group_points += points
         group_points_for_player1.save()
 
     def _update_player2_total_group_points(self, points):
-        """Update player2 total group points"""
+        """ Update player2 total group points. """
 
         group_points_for_player2 = self._get_group_points_object_for_player2()
         group_points_for_player2.total_group_points += points
         group_points_for_player2.save()
 
     def _show_next_group_matches_in_match_schedule(self):
-        """Set the display field of the next matches that should be displayed after the result of this group match has been submitted to True"""
+        """ Set the display field of the next matches that should be displayed after the result of this group match has been submitted to True. """
 
         group_match_next_matches_object = GroupMatchNextMatches.objects.get(group_match=self)
         for group_match in group_match_next_matches_object.next_matches.all():
             group_match._display()
 
     def _display(self):
-        """Set display field to True"""
+        """ Set display field to True. """
+
         self.display = True
         self.save()
 
 class GroupMatchNextMatches(models.Model):
-    """Model to hold the next group matches that should be displayed after the result for a group match has been submitted"""
+    """ Model to hold the next group matches that should be displayed after the result for a group match has been submitted. """
 
     group_match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)
     next_matches = models.ManyToManyField(GroupMatch, related_name='+')
 
 class GroupPoints(models.Model):
-    """Model to hold the total points a player has in a group in a group stage"""
+    """ Model to hold the total points a player has in a group in a group stage. """
 
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     player = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='winner')

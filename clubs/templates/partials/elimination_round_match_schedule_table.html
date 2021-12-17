@@ -1,16 +1,11 @@
-<div class = "row">
-<table class ="table table-striped table-light table-bordered">
-  <thead>
+<table>
     <tr>
       <th>Match Number</th>
       <th> Player One </th>
       <th> Player Two </th>
       <th> Results </th>
     </tr>
-  </thead>
-
     {% for match in elim_round_matches %}
-    <tbody>
     <tr>
       {% if match.match.player1 or match.match.player2 %}
         <td>{{ match.match.number }}</td>
@@ -33,8 +28,5 @@
         {% endif%}
       {% endif %}
     </tr>
-  </tbody>
     {% endfor %}
   </table>
-</div>
-</div>
