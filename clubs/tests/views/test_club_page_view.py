@@ -8,7 +8,7 @@ from clubs.models import Tournament, User, Club
 from clubs.tests.helpers import LogInTester, reverse_with_next
 
 class ClubPageTestCase(TestCase, LogInTester):
-    """Tests of the log in view."""
+    """Tests of the club list view."""
 
     fixtures = ['clubs/tests/fixtures/default_user.json',
                 'clubs/tests/fixtures/other_users.json',
