@@ -1,23 +1,22 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, Club
+from clubs.models import User, Club, Tournament
 from clubs.tests.helpers import reverse_with_next
 
 class ClubListTest(TestCase):
 
     fixtures = ['clubs/tests/fixtures/default_user.json',
-                'clubs/tests/fixtures/other_clubs.json',
-                'clubs/tests/fixtures/default_club.json',
-                'clubs/tests/fixtures/default_tournament.json']
+                'clubs/tests/fixtures/other_club.json',
+                'clubs/tests/fixtures/default_club.json']
 
     def setUp(self):
-        self.url = reverse('club_list', kwargs={'club_id': 0})
+        self.url = reverse('view_tournament_players', kwargs={'club_id': 0, 'tournament_id': 0})
         self.user = User.objects.get(email='johndoe@example.org')
 
     def test_member_list_url(self):
-        self.assertEqual(self.url,'/club_list/0/')
+        self.assertEqual(self.url,'/view_tournament_players/0/0/')
 
-    def test_get_member_list(self):
+    def test_view_tournament_players(self):
         self.client.login(email=self.user.email, password='Password123')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
