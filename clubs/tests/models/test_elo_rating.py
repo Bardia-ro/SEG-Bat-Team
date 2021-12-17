@@ -1,8 +1,9 @@
 from contextlib import nullcontext
 from django.core.exceptions import ValidationError
 from django.forms.fields import NullBooleanField
+from django.shortcuts import get_object_or_404
 from django.test import TestCase
-from clubs.models import Club, User, UserInClub, Elo_Rating, Match
+from clubs.models import Club, EliminationMatch, Tournament, User, UserInClub, Elo_Rating, Match
 
 class EloRating(TestCase):
 
@@ -14,7 +15,9 @@ class EloRating(TestCase):
 
     def setUp(self):
         self.user= User.objects.get(email='johndoe@example.org')
+        self.club=Club.objects.get(id = 0)
         self.elo_rating = Elo_Rating.objects.get(id=1)
+      
 
     def test_valid_elo_rating(self):
         self.assert_elo_rating_is_valid()
@@ -39,6 +42,12 @@ class EloRating(TestCase):
         self.elo_rating.match=None
         self.assert_elo_rating_is_invalid()
 
+    def test_elo_rating_calculate_expected_scores(self):
+        second_user = User.objects.get(email='janedoe@example.org')
+        second_user.club = Club.objects.get(name='Club A')
+        tup = UserInClub.calculate_expected_scores(self.user, second_user, self.club)
+        self.assertEqual(tup[0], tup[1])
+        
     def assert_elo_rating_is_valid(self):
         try:
             self.elo_rating.full_clean()
@@ -48,3 +57,4 @@ class EloRating(TestCase):
     def assert_elo_rating_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.elo_rating.full_clean()
+
