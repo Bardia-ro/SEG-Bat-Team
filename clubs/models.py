@@ -206,7 +206,7 @@ class UserInClub(models.Model):
         officers = UserInClub.objects.all().filter(role = 3)
         return officers
 
-    def adjust_elo_rating(self, match, club_id, winner):
+    def adjust_elo_rating(match, club_id, winner):
         """ calculate elo rating of the players participated in a match.
             set the elo rating of the players after the match.
             create elo rating objects for each players.
@@ -221,7 +221,7 @@ class UserInClub(models.Model):
         prev_elo1 = p1.elo_rating
         prev_elo2 = p2.elo_rating
 
-        tup = self.calculate_expected_scores(player_1, player_2, club_id)
+        tup = UserInClub.calculate_expected_scores(player_1, player_2, club_id)
 
         res_A = 1
         res_B = 1
@@ -277,7 +277,7 @@ class UserInClub(models.Model):
                 )
 
 
-    def calculate_expected_scores(self, player_1, player_2, club_id):
+    def calculate_expected_scores(player_1, player_2, club_id):
         """ calculate the expected scores with regard to opponents rating.  """
 
         p1 = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = player_1.id)
