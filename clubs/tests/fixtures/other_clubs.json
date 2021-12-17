@@ -79,13 +79,39 @@
         "model": "clubs.Tournament",
         "pk": 2,
         "fields": {
-            "name": "Tournament 2",
+            "name": "Tournament Z",
             "description": "This is the description",
             "capacity": 4,
-            "deadline": "2021-01-12 14:12",
+            "deadline": "2022-01-12T14:12+00:00",
             "club": 1,
             "organiser": 12,
             "players": [9,10,11]
+        }
+    },
+    {
+        "model": "clubs.Tournament",
+        "pk": 5,
+        "fields": {
+            "name": "Tournament Y",
+            "description": "This is the description",
+            "capacity": 4,
+            "deadline": "2009-01-12T14:12+00:00",
+            "club": 1,
+            "organiser": 12,
+            "players": [9,10,11]
+        }
+    },
+    {
+        "model": "clubs.Tournament",
+        "pk": 6,
+        "fields": {
+            "name": "Tournament X",
+            "description": "This is the description",
+            "capacity": 4,
+            "deadline": "2022-01-12T14:12+00:00",
+            "club": 1,
+            "organiser": 12,
+            "players": [9,10,11,8]
         }
     },
     {
