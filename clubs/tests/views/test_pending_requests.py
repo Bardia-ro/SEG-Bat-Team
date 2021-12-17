@@ -38,14 +38,14 @@ class ProfileViewTestCase(TestCase):
             user_url = reverse('profile', kwargs={'club_id': 1 ,'user_id': user.id})
             self.assertContains(response, user_url)
 
-    def test_redirect_if_not_officer_of_owner_of_club(self):
+    def test_redirect_if_not_officer_or_owner_of_club(self):
         self.client.login(email=self.user.email, password='Password123')
         url = reverse('pending_requests', kwargs={"club_id": 9})
         self.assertNotEqual(self.user.get_role_as_text_at_club(9), "Officer")
         self.assertNotEqual(self.user.get_role_as_text_at_club(9), "Owner")
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
-        user = User.objects.get(id=8)
+        user = User.objects.get(id=12)
         self.assertTemplateUsed(response, 'profile.html')
         self.assertEqual(response.context['user'], user)
     

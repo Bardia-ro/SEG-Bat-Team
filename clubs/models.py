@@ -18,12 +18,12 @@ from django.utils.safestring import mark_safe
 from location_field.models.plain import PlainLocationField
 from libgravatar import Gravatar
 from django.utils import timezone, tree
-
 import math
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    """User model used for authentication and creating clubs"""
+    """User model used for authentication and creating clubs and tournaments"""
+
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
@@ -121,6 +121,8 @@ class Club(models.Model):
         return Tournament.objects.filter(club=self)
 
 class UserInClub(models.Model):
+    """Model that stores the role of a user in a club."""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     elo_rating = models.IntegerField(blank=False, default=1000)
@@ -182,27 +184,27 @@ class UserInClub(models.Model):
         new_owner_role_instance.save()
 
     def is_owner(self):
-        """ return true if user is the owner of that particular club. """
+        """Return true if user is the owner of that particular club. """
         return self.role == 4
 
     def is_member(self):
-        """ return true if user is a member of that particular club. """
+        """Return true if user is a member of that particular club. """
         return self.role == 2
 
     def is_applicant(self):
-        """ return true if user is an applicant of that particular club. """
+        """Return true if user is an applicant of that particular club. """
         return self.role == 1
 
     def is_officer(self):
-        """ return true if user is an officer of that particular club. """
+        """Return true if user is an officer of that particular club. """
         return self.role == 3
 
     def is_user_member_or_above(self):
-        """ return true if user is owner or officer or member that particular club. """
+        """Return true if user is owner or officer or member that particular club. """
         return self.role > 1
 
     def get_Officers(self):
-        """ return all the officers of the club. """
+        """Return all the officers of the club. """
         officers = UserInClub.objects.all().filter(role = 3)
         return officers
 
@@ -395,7 +397,7 @@ class Tournament(models.Model):
         players = self.players.all()
         num_players = self.player_count()
 
-        if not self.valid_player_count:
+        if not self._tournament_has_valid_number_of_players(num_players):
             return "To generate tournament matches there must be 2, 4, 8, 16, 24, 32, 48 or 64 players in the tournament"
 
         if self.current_stage == 'S':
@@ -408,11 +410,11 @@ class Tournament(models.Model):
         elif self.current_stage == 'E':
             return self._create_elimination_matches(players, num_players)
 
-    #def _tournament_has_valid_number_of_players(self, num_players):
-    #    """Check whether a tournament has a valid number of players or not"""
+    def _tournament_has_valid_number_of_players(self, num_players):
+        """Check whether a tournament has a valid number of players or not"""
 
-    #    valid_tournament_player_numbers = [2, 4, 8, 16, 24, 32, 48, 64]
-        #return num_players in valid_tournament_player_numbers
+        valid_tournament_player_numbers = [2, 4, 8, 16, 24, 32, 48, 64]
+        return num_players in valid_tournament_player_numbers
 
     def _set_current_stage_to_first_stage(self, num_players):
         """Set this tournament's current_stage field to the first stage for this tournament"""

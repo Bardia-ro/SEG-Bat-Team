@@ -1,43 +1,29 @@
 {% extends 'base_content.html' %}
 {% block content %}
-
-  <style>
-  table,th,td{
-    border: 1px solid black;
-  }
-  </style>
-
-  {% if final_match %}
-    {% for match in final_match %}
-      {% if match.winner != None %}
-        <h3>Tournament winner: {{ match.winner.first_name }} {{ match.winner.last_name }}</h3>
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-
+<div class="container">
   {% if round_of_16_matches or quarter_final_matches or semi_final_matches or final_match %}
-    <h3>Elimination Rounds</h3>
+    <h2>Elimination Rounds</h2>
     <div class="row">
       {% if round_of_16_matches %}
         <div class="col">
-          <h5>Round-of-16</h5>
+          <h4>Round-of-16</h4>
           {% include 'partials/elimination_round_match_schedule_table.html' with elim_round_matches=round_of_16_matches %}
         </div>
       {% endif %}
       {% if quarter_final_matches %}
         <div class="col">
-          <h5>Quarter-final</h5>
+          <h4>Quarter-finals</h4>
           {% include 'partials/elimination_round_match_schedule_table.html' with elim_round_matches=quarter_final_matches %}
         </div>
       {% endif %}
       {% if semi_final_matches %}
         <div class="col">
-          <h5>Semi-final</h5>
+          <h4>Semi-finals</h4>
           {% include 'partials/elimination_round_match_schedule_table.html' with elim_round_matches=semi_final_matches %}
         </div>
       {% endif %}
       <div class="col">
-        <h5>Final</h5>
+        <h4>Final Round</h4>
         {% include 'partials/elimination_round_match_schedule_table.html' with elim_round_matches=final_match %}
       </div>
     </div>
@@ -77,4 +63,16 @@
         </form>
     {% endif %}
   {% endif %}
+
+     {% if final_match %}
+       {% for match in final_match %}
+         {% if match.winner%}
+         <div>
+           <h3>Tournament winner: {{ match.winner.first_name }} {{ match.winner.last_name }}</h3>
+         </div>
+         {% endif %}
+       {% endfor %}
+     {% endif %}
+
+   </div>
 {% endblock %}
