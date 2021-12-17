@@ -207,8 +207,9 @@ class UserInClub(models.Model):
         return officers
 
     def adjust_elo_rating(self, match, club_id, winner):
-        """ set the elo rating of the players after the match.
-            create elo rating object for each players with corresponding elo rating.
+        """ calculate elo rating of the players participated in a match.
+            set the elo rating of the players after the match.
+            create elo rating objects for each players.
         """
         player_1 = match.match.player1
         player_2 = match.match.player2
@@ -220,9 +221,26 @@ class UserInClub(models.Model):
         prev_elo1 = p1.elo_rating
         prev_elo2 = p2.elo_rating
 
-        tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
-        p1.elo_rating = tup[0]
-        p2.elo_rating = tup[1]
+        tup = self.calculate_expected_scores(player_1, player_2, club_id)
+
+        res_A = 1
+        res_B = 1
+
+        if winner == player_1:
+            res_A = 1
+            res_B = 0
+        elif winner == player_2:
+            res_A = 0
+            res_B = 1
+        elif winner == "Draw":
+            res_A = 0.5
+            res_B = 0.5
+
+        new_elo_A = p1.elo_rating + 32 * (res_A - tup[0])
+        new_elo_B = p2.elo_rating + 32 * (res_B - tup[1])
+
+        p1.elo_rating = new_elo_A
+        p2.elo_rating = new_elo_B
         p1.save()
         p2.save()
         if (winner != "Draw"):
@@ -231,7 +249,7 @@ class UserInClub(models.Model):
                     user = player_1,
                     match = match.match,
                     rating_before = prev_elo1,
-                    rating = tup[0],
+                    rating = new_elo_A,
                     club_id = club_id
                 )
             Elo_Rating.objects.create(
@@ -239,7 +257,7 @@ class UserInClub(models.Model):
                     user = player_2,
                     match = match.match,
                     rating_before = prev_elo2,
-                    rating = tup[1],
+                    rating = new_elo_B,
                     club_id = club_id
                 )
         else:
@@ -247,27 +265,25 @@ class UserInClub(models.Model):
                     user = player_1,
                     match = match.match,
                     rating_before = prev_elo1,
-                    rating = tup[0],
+                    rating = new_elo_A,
                     club_id = club_id
                 )
             Elo_Rating.objects.create(
                     user = player_2,
                     match = match.match,
                     rating_before = prev_elo2,
-                    rating = tup[1],
+                    rating = new_elo_B,
                     club_id = club_id
                 )
 
 
-    def calculate_expected_scores(self, player_1, player_2, club_id,winner):
-        """ calculate the elo rating with regards to opponents rating.  """
+    def calculate_expected_scores(self, player_1, player_2, club_id):
+        """ calculate the expected scores with regard to opponents rating.  """
 
         p1 = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = player_2.id)
         elo_A = p1.elo_rating
         elo_B = p2.elo_rating
-        res_A = 1
-        res_B = 1
         divA = (elo_B - elo_A)/400
         divA_ = (10**divA) + 1
         E_A = 1/divA_
@@ -275,21 +291,8 @@ class UserInClub(models.Model):
         divB = (elo_A - elo_B)/400
         divB_ = (10**divB) + 1
         E_B = 1/divB_
-        if winner == player_1:
-            res_A = 1
-            res_B = 0
-        elif winner == player_2:
-            res_A = 0
-            res_B = 1
-        elif winner == "Draw":
-            print("called")
-            res_A = 0.5
-            res_B = 0.5
 
-        new_elo_A = elo_A + 32 * (res_A - E_A)
-        new_elo_B = elo_B + 32 * (res_B - E_B)
-
-        return new_elo_A , new_elo_B
+        return E_A , E_B
 
 
 
