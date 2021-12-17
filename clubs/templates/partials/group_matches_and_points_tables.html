@@ -1,6 +1,6 @@
-<div class="row">
-    <div class="col">
-      <table>
+<div class = "row">
+  <div class="col">
+<table>
         <h5>Group {{group.number}} Matches</h5>
         <tr>
           <th>Match Number</th>
@@ -19,12 +19,12 @@
                 <form action="{% url 'enter_match_results_groups' club_id=club_id tournament_id=tournament.id match_id=group_match.id %}" method="post">
                   {% csrf_token %}
                   {% include 'partials/bootstrap_form.html' with form=form %}
-                  <select name='result'>
+                  <select name='result'=>
                     <option value="player1">{{ group_match.match.player1.first_name }} {{ group_match.match.player1.last_name }}</option>
                     <option value="player2">{{ group_match.match.player2.first_name }} {{ group_match.match.player2.last_name }}</option>
                     <option value='draw'>Draw</option>
                   </select>
-                  <input type= "submit" value="Submit Results"/>
+                  <input type= "submit" value="Submit Results"class="btn btn-primary"/>
                 </form>
               </td>
               {%elif group_match.player1_points == 1 %}
@@ -40,8 +40,8 @@
       </table>
       <br></br>
     </div>
-    <div class="col">
-      <table>
+      <div class ="col">
+        <table>
         <h5>Group {{group.number}} Points Table</h5>
         <tr>
           <th> Player </th>
@@ -56,4 +56,4 @@
       </table>
       <br></br>
     </div>
-  </div>
+</div>

@@ -291,8 +291,13 @@ def member_list(request, club_id):
     members = User.objects.filter(club__id = club_id, userinclub__role=2)
     officers = User.objects.filter(club__id = club_id, userinclub__role=3)
     users = User.objects.filter(club__id= club_id, userinclub__role=4).union(members, officers)
+    club = Club.objects.get(id=club_id)
     club_list = request.user.get_clubs_user_is_a_member()
-    return render(request, 'member_list.html', {'users': users, 'request_user_is_member': True, 'club_id': club_id, 'club_list': club_list})
+    return render(request, 'member_list.html', {'users': users,
+    'request_user_is_member': True,
+    'club_id': club_id,
+    'club_list': club_list,
+    'club': club})
 
 @login_required
 def approve_member(request, club_id, applicant_id):
@@ -369,7 +374,6 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
     """View for toggling whether a member has applied to a tournament"""
 
     tournament = Tournament.objects.get(id=tournament_id)
-    tournament.toggle_apply(user_id)
 
     if tournament.is_time_left() == False:
         messages.add_message(request, messages.ERROR, "The deadline has passed.")
@@ -377,6 +381,7 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
     if tournament.is_player(user_id) == False:
         if tournament.is_space() == False:
             messages.add_message(request, messages.ERROR, "This tournament is full.")
+    tournament.toggle_apply(user_id)
 
     return redirect('club_page', club_id=club_id)
 
@@ -468,7 +473,6 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
     """Enter match results for group rounds. Adjusts the elo rating of the players"""
 
     group_match = GroupMatch.objects.get(id=match_id)
-    role = get_object_or_404(UserInClub.objects.all(), club_id = club_id, user_id = request.user.id)
     match = group_match.match
     player_1 = match.player1
     player_2 = match.player2
@@ -477,13 +481,13 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
         result=request.POST['result']
         if result == 'draw':
             group_match.set_draw_points()
-            role.adjust_elo_rating(group_match,club_id,"Draw")
+            UserInClub.adjust_elo_rating(group_match,club_id,"Draw")
         elif result == 'player1':
             group_match.player1_won_points()
-            role.adjust_elo_rating(group_match,club_id,player_1)
+            UserInClub.adjust_elo_rating(group_match,club_id,player_1)
         else:
             group_match.player2_won_points()
-            role.adjust_elo_rating(group_match,club_id,player_2)
+            UserInClub.adjust_elo_rating(group_match,club_id,player_2)
         group_match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
@@ -491,6 +495,7 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
 @tournament_organiser_only
 def view_tournament_players(request,club_id, tournament_id):
     """View all the players in a tournament"""
+    
     tournament = Tournament.objects.get(id=tournament_id)
     players = tournament.players.all()
     return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})

@@ -162,7 +162,8 @@ class Command(BaseCommand):
                 found = False
                 while(not found):
                     not_jeb = self.get_tournament_players(a_club, the_tournament.organiser)
-                    found=True
+                    if (not_jeb!=jeb and not_jeb not in the_tournament.players.all()):
+                        found=True
                 the_tournament.players.add(not_jeb)
 
             the_tournament = Tournament.objects.create(name=f'Tournament 2',
