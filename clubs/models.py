@@ -207,8 +207,9 @@ class UserInClub(models.Model):
         return officers
 
     def adjust_elo_rating(self, match, club_id, winner):
-        """ set the elo rating of the players after the match.
-            create elo rating object for each players with corresponding elo rating.
+        """ calculate elo rating of the players participated in a match.
+            set the elo rating of the players after the match.
+            create elo rating objects for each players.
         """
         player_1 = match.match.player1
         player_2 = match.match.player2
@@ -220,9 +221,26 @@ class UserInClub(models.Model):
         prev_elo1 = p1.elo_rating
         prev_elo2 = p2.elo_rating
 
-        tup = self.calculate_expected_scores(player_1, player_2, club_id, winner)
-        p1.elo_rating = tup[0]
-        p2.elo_rating = tup[1]
+        tup = self.calculate_expected_scores(player_1, player_2, club_id)
+
+        res_A = 1
+        res_B = 1
+
+        if winner == player_1:
+            res_A = 1
+            res_B = 0
+        elif winner == player_2:
+            res_A = 0
+            res_B = 1
+        elif winner == "Draw":
+            res_A = 0.5
+            res_B = 0.5
+
+        new_elo_A = p1.elo_rating + 32 * (res_A - tup[0])
+        new_elo_B = p2.elo_rating + 32 * (res_B - tup[1])
+
+        p1.elo_rating = new_elo_A
+        p2.elo_rating = new_elo_B
         p1.save()
         p2.save()
         if (winner != "Draw"):
@@ -231,7 +249,7 @@ class UserInClub(models.Model):
                     user = player_1,
                     match = match.match,
                     rating_before = prev_elo1,
-                    rating = tup[0],
+                    rating = new_elo_A,
                     club_id = club_id
                 )
             Elo_Rating.objects.create(
@@ -239,7 +257,7 @@ class UserInClub(models.Model):
                     user = player_2,
                     match = match.match,
                     rating_before = prev_elo2,
-                    rating = tup[1],
+                    rating = new_elo_B,
                     club_id = club_id
                 )
         else:
@@ -247,27 +265,25 @@ class UserInClub(models.Model):
                     user = player_1,
                     match = match.match,
                     rating_before = prev_elo1,
-                    rating = tup[0],
+                    rating = new_elo_A,
                     club_id = club_id
                 )
             Elo_Rating.objects.create(
                     user = player_2,
                     match = match.match,
                     rating_before = prev_elo2,
-                    rating = tup[1],
+                    rating = new_elo_B,
                     club_id = club_id
                 )
 
 
-    def calculate_expected_scores(self, player_1, player_2, club_id,winner):
-        """ calculate the elo rating with regards to opponents rating.  """
+    def calculate_expected_scores(self, player_1, player_2, club_id):
+        """ calculate the expected scores with regard to opponents rating.  """
 
         p1 = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = player_2.id)
         elo_A = p1.elo_rating
         elo_B = p2.elo_rating
-        res_A = 1
-        res_B = 1
         divA = (elo_B - elo_A)/400
         divA_ = (10**divA) + 1
         E_A = 1/divA_
@@ -275,21 +291,8 @@ class UserInClub(models.Model):
         divB = (elo_A - elo_B)/400
         divB_ = (10**divB) + 1
         E_B = 1/divB_
-        if winner == player_1:
-            res_A = 1
-            res_B = 0
-        elif winner == player_2:
-            res_A = 0
-            res_B = 1
-        elif winner == "Draw":
-            print("called")
-            res_A = 0.5
-            res_B = 0.5
 
-        new_elo_A = elo_A + 32 * (res_A - E_A)
-        new_elo_B = elo_B + 32 * (res_B - E_B)
-
-        return new_elo_A , new_elo_B
+        return E_A , E_B
 
 
 
@@ -392,7 +395,7 @@ class Tournament(models.Model):
         players = self.players.all()
         num_players = self.player_count()
 
-        if not self._tournament_has_valid_number_of_players(num_players):
+        if not self.valid_player_count:
             return "To generate tournament matches there must be 2, 4, 8, 16, 24, 32, 48 or 64 players in the tournament"
 
         if self.current_stage == 'S':
@@ -405,11 +408,11 @@ class Tournament(models.Model):
         elif self.current_stage == 'E':
             return self._create_elimination_matches(players, num_players)
 
-    def _tournament_has_valid_number_of_players(self, num_players):
-        """Check whether a tournament has a valid number of players or not"""
+    #def _tournament_has_valid_number_of_players(self, num_players):
+    #    """Check whether a tournament has a valid number of players or not"""
 
-        valid_tournament_player_numbers = [2, 4, 8, 16, 24, 32, 48, 64]
-        return num_players in valid_tournament_player_numbers
+    #    valid_tournament_player_numbers = [2, 4, 8, 16, 24, 32, 48, 64]
+        #return num_players in valid_tournament_player_numbers
 
     def _set_current_stage_to_first_stage(self, num_players):
         """Set this tournament's current_stage field to the first stage for this tournament"""
@@ -448,7 +451,7 @@ class Tournament(models.Model):
 
             if not self._check_all_group_stage_match_results_have_been_submitted(groups):
                 return 'All group match results must be submitted before generating next group stage matches'
-            
+
             group_round_players = self._get_players_for_next_round(players, groups, 32)
 
         num_players_group_round = len(group_round_players)
@@ -472,7 +475,7 @@ class Tournament(models.Model):
             for group_match in group_matches:
                 if group_match.player1_points == 0 and group_match.player2_points == 0:
                     return False
-        
+
         return True
 
     def _get_players_for_next_round(self, players, groups, num_next_round_players):
@@ -524,7 +527,7 @@ class Tournament(models.Model):
         group_matches = GroupMatch.objects.filter(group=group)
         self._assign_group_match_numbers(group_matches)
 
-        self._set_group_matches_next_matches(group, group_matches, num_players_per_group) 
+        self._set_group_matches_next_matches(group, group_matches, num_players_per_group)
 
     def _create_matches_without_numbers_and_group_matches_for_group(self, group, group_players, num_players_per_group):
         """Create matches without the number field set and group matches for a group"""
@@ -597,7 +600,7 @@ class Tournament(models.Model):
                 tournament = self,
                 group_stage = 'G32'
             )
-            
+
             if not self._check_all_group_stage_match_results_have_been_submitted(groups):
                 return 'All group match results must be submitted before generating elimination rounds matches'
 

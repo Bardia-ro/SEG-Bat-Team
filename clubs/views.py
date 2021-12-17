@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from itertools import chain, count
 
 def request_toggle(request, user_id, club_id):
+    """Toggles whether a user has applied to a club or left it."""
 
     currentUser = User.objects.get(id=user_id)
     club = Club.objects.get(id=club_id)
@@ -34,13 +35,13 @@ def request_toggle(request, user_id, club_id):
 
 @login_required
 def club_page(request, club_id):
+    """View that shows relevant information of a club to a user depending on their role"""
 
     club_list = request.user.get_clubs_user_is_a_member()
     club = Club.objects.get(id=club_id)
     club_members = UserInClub.objects.filter(club=club, role=2)
     role_at_club = request.user.get_role_as_text_at_club(club_id)
 
-    #following neesd to be refactored:
     user_is_member = get_is_user_member(club_id, request.user)
     user_is_applicant = get_is_user_applicant(club_id, request.user)
     user_is_officer = get_is_user_officer(club_id, request. user)
@@ -274,9 +275,10 @@ def profile(request, club_id, user_id):
                            'average_point' : average_point,
                            'rate_of_change_elo' : rate_of_change_elo })
 
-
 @login_required
 def member_list(request, club_id):
+    """ List of all the members, officers and the owner in a given club. """
+
     if not request.user.get_is_user_associated_with_club(club_id):
         club_id = request.user.get_first_club_id_user_is_associated_with()
         return redirect('profile', club_id=club_id, user_id=request.user.id)
@@ -342,7 +344,7 @@ def transfer_ownership(request, club_id, new_owner_id):
 
 @login_required
 def club_list(request, club_id):
-    """ List of all the creatd clubs. """
+    """ List of all the created clubs. """
 
     user = User.objects.get(id=request.user.id)
     clubs = Club.objects.all()
@@ -352,6 +354,8 @@ def club_list(request, club_id):
 @login_required
 @officer_owner_only
 def pending_requests(request, club_id):
+    """View all of the applicants to this club """
+
     applicant_id = UserInClub.objects.all().filter(role = 1).filter(club_id = club_id).values_list("user", flat=True)
     applicants = []
     for item in applicant_id:
@@ -360,7 +364,10 @@ def pending_requests(request, club_id):
     return render(request, 'pending_requests.html', { 'club_id':club_id,'applicants' : applicants, 'club_list': club_list})
 
 @login_required
+@member_only
 def apply_tournament_toggle(request, user_id, club_id, tournament_id):
+    """View for toggling whether a member has applied to a tournament"""
+
     tournament = Tournament.objects.get(id=tournament_id)
     tournament.toggle_apply(user_id)
 
@@ -432,6 +439,7 @@ def match_schedule(request, club_id, tournament_id):
     )
 
 @login_required
+@tournament_organiser_only
 def generate_next_matches(request, club_id, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     message = tournament.generate_next_matches()
@@ -440,8 +448,10 @@ def generate_next_matches(request, club_id, tournament_id):
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
 @login_required
+@tournament_organiser_only
 def enter_match_results(request, club_id, tournament_id, match_id):
-    tournament = Tournament.objects.get(id=tournament_id)
+    """Enter match results for a normal elimination round"""
+
     match = EliminationMatch.objects.get(id=match_id)
     role = get_object_or_404(UserInClub.objects.all(), club_id = club_id, user_id = request.user.id)
     if request.method=="POST":
@@ -453,15 +463,16 @@ def enter_match_results(request, club_id, tournament_id, match_id):
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
 @login_required
+@tournament_organiser_only
 def enter_match_results_groups(request, club_id, tournament_id, match_id):
-    tournament = Tournament.objects.get(id=tournament_id)
+    """Enter match results for group rounds. Adjusts the elo rating of the players"""
+
     group_match = GroupMatch.objects.get(id=match_id)
     role = get_object_or_404(UserInClub.objects.all(), club_id = club_id, user_id = request.user.id)
     match = group_match.match
     player_1 = match.player1
     player_2 = match.player2
-    print(player_1)
-    print(player_2)
+
     if request.method=="POST":
         result=request.POST['result']
         if result == 'draw':
@@ -488,7 +499,7 @@ def view_tournament_players(request,club_id, tournament_id):
 @tournament_organiser_only
 def remove_a_player(request,user_id,club_id,tournament_id):
     """Removes a player from a tournament."""
-    
+
     tournament = Tournament.objects.get(id=tournament_id)
     if tournament.valid_player_count() == False:
         tournament.remove_player(user_id)

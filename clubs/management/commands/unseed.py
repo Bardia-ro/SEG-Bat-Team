@@ -6,16 +6,10 @@ class Command(BaseCommand):
         super().__init__()
 
     def handle(self, *args, **options):
-        User.objects.exclude(email="admin@example.org").delete()
+        m = 0
+        for i in range(User.objects.all().count()):
+            if not User.objects.all()[m].is_superuser:
+                User.objects.all()[m].delete()
+            else:
+                m = m+1
         Club.objects.all().delete()
-        UserInClub.objects.all().delete()
-        Tournament.objects.all().delete()
-        Match.objects.all().delete()
-        EliminationMatch.objects.all().delete()
-        Elo_Rating.objects.all().delete()
-        Group.objects.all().delete()
-        GroupMatch.objects.all().delete()
-        GroupMatchNextMatches.objects.all().delete()
-        GroupPoints.objects.all().delete()
-
-
