@@ -369,14 +369,14 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
     """View for toggling whether a member has applied to a tournament"""
 
     tournament = Tournament.objects.get(id=tournament_id)
-    tournament.toggle_apply(user_id)
-
+    
     if tournament.is_time_left() == False:
         messages.add_message(request, messages.ERROR, "The deadline has passed.")
 
     if tournament.is_player(user_id) == False:
         if tournament.is_space() == False:
             messages.add_message(request, messages.ERROR, "This tournament is full.")
+    tournament.toggle_apply(user_id)
 
     return redirect('club_page', club_id=club_id)
 
