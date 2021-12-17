@@ -62,7 +62,6 @@
             padding-bottom: 5px !important
         }
 
-
         .m-b-10 {
             margin-bottom: 10px
         }
@@ -72,9 +71,21 @@
         }
 
         .table-striped{
-            margin-left: 0px;
+            margin-left: 15px;
             padding-right: 145px;
-            margin-bottom: 145px;
+            margin-bottom: 30px;
+        }
+
+        .title-club{
+            margin-top: 20px;
+        }
+
+        .col-sm-12{
+            margin-left: 33ch;
+        }
+
+        .padd{
+            margin-left: 18ch;
         }
 
     </style>
@@ -118,6 +129,13 @@
                                             <h5 class="m-b-10 f-w-600">Personal Statement:</h5>
                                             <p class="text-muted">{{user.personal_statement}}</p>
                                         </div>
+                                        <div>
+                                            <h5 class="m-b-10 f-w-600">Clubs participating: </h5>
+                                            
+                                            
+                                            <p class="text-muted">  {% for club in club_list %} {{ club.club.name }} {% endfor %}</p>
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -128,50 +146,6 @@
         </div>
     </div>
 
-    {% if user_role == 1 and request_user_role >= 3 %}
-    <div class="container row p-b-5">
-        <div class="col-sm-12 col-md-8 offset-md-2">
-            <a href={% url 'approve_member' club_id=club_id applicant_id=user.id %}>
-                <button type="button" class="btn btn-success">Approve membership</button>
-            </a>
-        </div>
-    </div>
-    {% endif %}
-
-
-    {% if user_role == 2 %}
-        {% if request_user_role == 4 %}
-        <div class="container row p-b-5">
-            <div class="col-sm-12 col-md-8 offset-md-2">
-                <a href={% url 'promote_member_to_officer' club_id=club_id member_id=user.id %}>
-                    <button type="button" class="btn btn-primary">Promote to officer</button>
-                </a>
-            </div>
-        </div>
-        {% endif %}
-    {% endif %}
-
-
-    {% if user_role == 3 %}
-        {% if request_user_role == 4 %}
-        <div class="container row p-b-5">
-            <div class="col-sm-12 col-md-8 offset-md-2">
-                <a href={% url 'demote_officer_to_member' club_id=club_id officer_id=user.id %}>
-                    <button type="button" class="btn btn-primary">Demote to member</button>
-                </a>
-            </div>
-        </div>
-
-
-        <div class="container row p-b-5">
-            <div class="col-sm-12 col-md-8 offset-md-2">
-                <a href={% url 'transfer_ownership' club_id=club_id new_owner_id=user.id %}>
-                    <button type="button" class="btn btn-primary">Transfer ownership</button>
-                </a>
-            </div>
-        </div>
-        {% endif %}
-    {% endif %}
 
     <div class="container">
         <div class="container">
@@ -234,6 +208,7 @@
                                 <td> Elo rating progression </td>
                                 <td>{{ rate_of_change_elo }}%</td>
                                 </tr>
+                                    
                     </tbody>
                 </table>
               </div>
@@ -277,4 +252,55 @@
           </div>
         </div>
         </div>
+
+        {% if user_role == 1 and request_user_role >= 3 %}
+    <div class="container row p-b-5">
+        <div class="col-sm-12 col-md-8 offset-md-2">
+            <strong>This user is an applicant</strong>
+            <a href={% url 'approve_member' club_id=club_id applicant_id=user.id %}>
+                <button type="button" class="btn btn-success">Approve membership</button>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% if user_role == 2 %}
+        {% if request_user_role == 4 %}
+        <div class="container row p-b-5">
+            <div class="col-sm-12 col-md-8 offset-md-2">
+                <strong>This user is a member</strong>
+                <a href={% url 'promote_member_to_officer' club_id=club_id member_id=user.id %}>
+                    <button type="button" class="btn btn-primary">Promote to officer</button>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+
+    {% if user_role == 3 %}
+        {% if request_user_role == 4 %}
+        <div class="container row p-b-5">
+            <div class="col-sm-12 col-md-8 offset-md-2">
+                <strong>This user is an officer</strong>
+                <a href={% url 'demote_officer_to_member' club_id=club_id officer_id=user.id %}>
+                    <button type="button" class="btn btn-primary">Demote to member</button>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="container row p-b-5">
+            <div class="col-sm-12 col-md-8 offset-md-2">
+                
+                <a href={% url 'transfer_ownership' club_id=club_id new_owner_id=user.id %}>
+                    <div class="padd"><button type="button" class="btn btn-primary">Transfer ownership</button></div>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+
 {% endblock %}

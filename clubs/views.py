@@ -247,7 +247,8 @@ def profile(request, club_id, user_id):
     total_tournaments = Tournament.objects.filter(players = user).count()
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
-    club_list = request.user.get_clubs_user_is_a_member()
+    club_list = user.get_clubs_user_is_a_member()
+    #club_list = UserInClub.objects.filter(role=2, user=user)
     total_points = matchWon.count() + matchDrawn.count() * 0.5
     average_point = 0
     if elo_rating.count() > 0:
@@ -306,6 +307,7 @@ def approve_member(request, club_id, applicant_id):
 
 @login_required
 def reject_member(request, club_id, applicant_id):
+    """ Owner and officers of a club can reject requests of applicants to join the club """
     role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = applicant_id)
     officer_role = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = request.user.id)
     if (role.role_name() == "Applicant" and officer_role.role_name() == "Officer" or officer_role.role_name() == "Owner"):
@@ -453,12 +455,11 @@ def enter_match_results(request, club_id, tournament_id, match_id):
     """Enter match results for a normal elimination round"""
 
     match = EliminationMatch.objects.get(id=match_id)
-    role = get_object_or_404(UserInClub.objects.all(), club_id = club_id, user_id = request.user.id)
     if request.method=="POST":
         winner_id=request.POST['winner']
         winner = User.objects.get(id=winner_id)
         match.set_winner(winner)
-        role.adjust_elo_rating(match,club_id,winner)
+        UserInClub.adjust_elo_rating(match,club_id,winner)
         match.save()
     return redirect('match_schedule', club_id = club_id, tournament_id = tournament_id)
 
@@ -490,7 +491,7 @@ def enter_match_results_groups(request, club_id, tournament_id, match_id):
 @tournament_organiser_only
 def view_tournament_players(request,club_id, tournament_id):
     """View all the players in a tournament"""
-    
+
     tournament = Tournament.objects.get(id=tournament_id)
     players = tournament.players.all()
     return render(request, 'contender_in_tournaments.html', {'players' : players, 'club_id': club_id, 'tournament_id': tournament_id, 'tournament': tournament})
