@@ -16,7 +16,7 @@ The project is called `system`. It currently consists of a single app `clubs`.
 
 ## Deployed version of the application
 
-The deployed version of the application can be found at [URL]().
+The deployed version of the application can be found at [URL]( https://still-tor-16826.herokuapp.com/ ).
 
 ## Installation instructions
 
