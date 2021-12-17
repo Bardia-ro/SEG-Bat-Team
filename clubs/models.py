@@ -194,10 +194,6 @@ class UserInClub(models.Model):
         self.role = UserInClub.MEMBER
         self.save()
 
-    def demote_member_to_applicant(self):
-        """ Switches the role of a member to applicant. """
-        self.role = UserInClub.APPlICANT
-        self.save()
 
     def change_owner(self, club_id, new_owner_id):
         """ Transfers the ownership of a club from the owner to an officer. """
