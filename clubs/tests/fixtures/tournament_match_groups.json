@@ -1,0 +1,938 @@
+[
+    {
+        "model": "clubs.group",
+        "pk": 65,
+        "fields": {
+            "number": 1,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                104,
+                105,
+                106,
+                107
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 66,
+        "fields": {
+            "number": 2,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                108,
+                109,
+                110,
+                111
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 67,
+        "fields": {
+            "number": 3,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                112,
+                113,
+                114,
+                115
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 68,
+        "fields": {
+            "number": 4,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                116,
+                117,
+                118,
+                119
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 69,
+        "fields": {
+            "number": 5,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                120,
+                121,
+                122,
+                123
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 70,
+        "fields": {
+            "number": 6,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                124,
+                125,
+                126,
+                127
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 71,
+        "fields": {
+            "number": 7,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                128,
+                129,
+                130,
+                131
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 72,
+        "fields": {
+            "number": 8,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                132,
+                133,
+                134,
+                135
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 73,
+        "fields": {
+            "number": 9,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                136,
+                137,
+                138,
+                139
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 74,
+        "fields": {
+            "number": 10,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                140,
+                141,
+                142,
+                143
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 75,
+        "fields": {
+            "number": 11,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                144,
+                145,
+                146,
+                147
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 76,
+        "fields": {
+            "number": 12,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                148,
+                149,
+                150,
+                151
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 77,
+        "fields": {
+            "number": 13,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                152,
+                153,
+                154,
+                155
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 78,
+        "fields": {
+            "number": 14,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                156,
+                157,
+                158,
+                159
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 79,
+        "fields": {
+            "number": 15,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                160,
+                161,
+                162,
+                163
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 80,
+        "fields": {
+            "number": 16,
+            "tournament": 28,
+            "group_stage": "G96",
+            "players": [
+                164,
+                165,
+                166,
+                167
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 81,
+        "fields": {
+            "number": 1,
+            "tournament": 28,
+            "group_stage": "G32",
+            "players": [
+                106,
+                110,
+                112,
+                116
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 82,
+        "fields": {
+            "number": 2,
+            "tournament": 28,
+            "group_stage": "G32",
+            "players": [
+                120,
+                125,
+                129,
+                134
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 83,
+        "fields": {
+            "number": 3,
+            "tournament": 28,
+            "group_stage": "G32",
+            "players": [
+                137,
+                142,
+                144,
+                150
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 84,
+        "fields": {
+            "number": 4,
+            "tournament": 28,
+            "group_stage": "G32",
+            "players": [
+                152,
+                159,
+                161,
+                166
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 85,
+        "fields": {
+            "number": 5,
+            "tournament": 28,
+            "group_stage": "G32",
+            "players": [
+                107,
+                108,
+                114,
+                117
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 86,
+        "fields": {
+            "number": 6,
+            "tournament": 28,
+            "group_stage": "G32",
+            "players": [
+                121,
+                124,
+                131,
+                132
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 87,
+        "fields": {
+            "number": 7,
+            "tournament": 28,
+            "group_stage": "G32",
+            "players": [
+                136,
+                141,
+                145,
+                148
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 88,
+        "fields": {
+            "number": 8,
+            "tournament": 28,
+            "group_stage": "G32",
+            "players": [
+                153,
+                157,
+                163,
+                165
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 89,
+        "fields": {
+            "number": 1,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                104,
+                105,
+                106
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 90,
+        "fields": {
+            "number": 2,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                107,
+                108,
+                109
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 91,
+        "fields": {
+            "number": 3,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                110,
+                111,
+                112
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 92,
+        "fields": {
+            "number": 4,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                113,
+                114,
+                115
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 93,
+        "fields": {
+            "number": 5,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                116,
+                117,
+                118
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 94,
+        "fields": {
+            "number": 6,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                119,
+                120,
+                121
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 95,
+        "fields": {
+            "number": 7,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                122,
+                123,
+                124
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 96,
+        "fields": {
+            "number": 8,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                125,
+                126,
+                127
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 97,
+        "fields": {
+            "number": 9,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                128,
+                129,
+                130
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 98,
+        "fields": {
+            "number": 10,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                131,
+                132,
+                133
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 99,
+        "fields": {
+            "number": 11,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                134,
+                135,
+                136
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 100,
+        "fields": {
+            "number": 12,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                137,
+                138,
+                139
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 101,
+        "fields": {
+            "number": 13,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                140,
+                141,
+                142
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 102,
+        "fields": {
+            "number": 14,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                143,
+                144,
+                145
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 103,
+        "fields": {
+            "number": 15,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                146,
+                147,
+                148
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 104,
+        "fields": {
+            "number": 16,
+            "tournament": 29,
+            "group_stage": "G96",
+            "players": [
+                149,
+                150,
+                151
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 105,
+        "fields": {
+            "number": 1,
+            "tournament": 29,
+            "group_stage": "G32",
+            "players": [
+                105,
+                108,
+                110,
+                115
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 106,
+        "fields": {
+            "number": 2,
+            "tournament": 29,
+            "group_stage": "G32",
+            "players": [
+                117,
+                119,
+                122,
+                127
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 107,
+        "fields": {
+            "number": 3,
+            "tournament": 29,
+            "group_stage": "G32",
+            "players": [
+                128,
+                133,
+                134,
+                138
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 108,
+        "fields": {
+            "number": 4,
+            "tournament": 29,
+            "group_stage": "G32",
+            "players": [
+                141,
+                144,
+                148,
+                151
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 109,
+        "fields": {
+            "number": 5,
+            "tournament": 29,
+            "group_stage": "G32",
+            "players": [
+                104,
+                107,
+                111,
+                114
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 110,
+        "fields": {
+            "number": 6,
+            "tournament": 29,
+            "group_stage": "G32",
+            "players": [
+                118,
+                120,
+                123,
+                125
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 111,
+        "fields": {
+            "number": 7,
+            "tournament": 29,
+            "group_stage": "G32",
+            "players": [
+                129,
+                132,
+                135,
+                137
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 112,
+        "fields": {
+            "number": 8,
+            "tournament": 29,
+            "group_stage": "G32",
+            "players": [
+                140,
+                143,
+                146,
+                149
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 113,
+        "fields": {
+            "number": 1,
+            "tournament": 30,
+            "group_stage": "G32",
+            "players": [
+                104,
+                105,
+                106,
+                107
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 114,
+        "fields": {
+            "number": 2,
+            "tournament": 30,
+            "group_stage": "G32",
+            "players": [
+                108,
+                109,
+                110,
+                111
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 115,
+        "fields": {
+            "number": 3,
+            "tournament": 30,
+            "group_stage": "G32",
+            "players": [
+                112,
+                113,
+                114,
+                115
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 116,
+        "fields": {
+            "number": 4,
+            "tournament": 30,
+            "group_stage": "G32",
+            "players": [
+                116,
+                117,
+                118,
+                119
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 117,
+        "fields": {
+            "number": 5,
+            "tournament": 30,
+            "group_stage": "G32",
+            "players": [
+                120,
+                121,
+                122,
+                123
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 118,
+        "fields": {
+            "number": 6,
+            "tournament": 30,
+            "group_stage": "G32",
+            "players": [
+                124,
+                125,
+                126,
+                127
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 119,
+        "fields": {
+            "number": 7,
+            "tournament": 30,
+            "group_stage": "G32",
+            "players": [
+                128,
+                129,
+                130,
+                131
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 120,
+        "fields": {
+            "number": 8,
+            "tournament": 30,
+            "group_stage": "G32",
+            "players": [
+                132,
+                133,
+                134,
+                135
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 121,
+        "fields": {
+            "number": 1,
+            "tournament": 31,
+            "group_stage": "G32",
+            "players": [
+                104,
+                105,
+                106
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 122,
+        "fields": {
+            "number": 2,
+            "tournament": 31,
+            "group_stage": "G32",
+            "players": [
+                107,
+                108,
+                109
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 123,
+        "fields": {
+            "number": 3,
+            "tournament": 31,
+            "group_stage": "G32",
+            "players": [
+                110,
+                111,
+                112
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 124,
+        "fields": {
+            "number": 4,
+            "tournament": 31,
+            "group_stage": "G32",
+            "players": [
+                113,
+                114,
+                115
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 125,
+        "fields": {
+            "number": 5,
+            "tournament": 31,
+            "group_stage": "G32",
+            "players": [
+                116,
+                117,
+                118
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 126,
+        "fields": {
+            "number": 6,
+            "tournament": 31,
+            "group_stage": "G32",
+            "players": [
+                119,
+                120,
+                121
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 127,
+        "fields": {
+            "number": 7,
+            "tournament": 31,
+            "group_stage": "G32",
+            "players": [
+                122,
+                123,
+                124
+            ]
+        }
+    },
+    {
+        "model": "clubs.group",
+        "pk": 128,
+        "fields": {
+            "number": 8,
+            "tournament": 31,
+            "group_stage": "G32",
+            "players": [
+                125,
+                126,
+                127
+            ]
+        }
+    }
+]

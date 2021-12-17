@@ -1,0 +1,162 @@
+[
+    {
+        "model": "clubs.club",
+        "pk": 17,
+        "fields": {
+            "name": "Kerbal Chess Club",
+            "city": "Kerbal",
+            "location": "",
+            "description": "Of finish few boy continue. Process or pull feel measure word. Suggest who crime explain first as second better. Article become expect west Mr apply power act."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 18,
+        "fields": {
+            "name": "Jimenez, Scott and Preston",
+            "city": "South Anna",
+            "location": "",
+            "description": "Return off use. Whole quickly rich. Get only sport remain. Father fall success wife vote parent five."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 19,
+        "fields": {
+            "name": "Jackson and Sons",
+            "city": "Port Amanda",
+            "location": "",
+            "description": "Color tree and already region. Manage increase standard win author knowledge. Least kind grow physical human. Whom under throughout quality of go whose. Require drive cell friend."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 20,
+        "fields": {
+            "name": "King Ltd",
+            "city": "East Jessica",
+            "location": "",
+            "description": "Major professor each mother performance pressure system. Affect surface include also performance. Now read no game various everything. Manage mother finally tonight matter indicate talk camera. Dream eight however daughter."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 21,
+        "fields": {
+            "name": "Thomas-Blankenship",
+            "city": "Monicaton",
+            "location": "",
+            "description": "Everybody true bad decade. Consider force find wrong language federal likely include. Speech since art spend reach assume. Contain single idea simply. Tough political official finally. Yourself than instead seek full."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 22,
+        "fields": {
+            "name": "Smith-Nelson",
+            "city": "North Emilyshire",
+            "location": "",
+            "description": "Know thousand threat arrive since me scientist. Major send prove manage thousand alone view. Into food series work. Make indeed large. Avoid site matter military reduce. Pm both space production democratic."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 23,
+        "fields": {
+            "name": "Bennett, Mitchell and Henry",
+            "city": "Lake Melissa",
+            "location": "",
+            "description": "All forget blood decade material government. Evening unit there member upon school dream record. Item military let rock cup serious employee television. Face if finally pattern. Order dark Congress serve wife from choose."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 24,
+        "fields": {
+            "name": "Taylor-Ballard",
+            "city": "Banksburgh",
+            "location": "",
+            "description": "Rule star commercial house. Heavy seek foreign population. Would site development something newspaper. Series rate ready couple listen whose conference."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 25,
+        "fields": {
+            "name": "French, Hodges and Jackson",
+            "city": "Williamsmouth",
+            "location": "",
+            "description": "All quickly light. Health beautiful performance quickly. Open set none. Author news manager believe happy other fine."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 26,
+        "fields": {
+            "name": "Hart-Rodriguez",
+            "city": "East Melissamouth",
+            "location": "",
+            "description": "True consumer you we involve our machine. Go animal again including. Nation share him save mission oil option born. Very away that right of. Action company recently clear outside. Read trouble also general set road improve."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 27,
+        "fields": {
+            "name": "Adams, Hammond and Scott",
+            "city": "Port Tylerstad",
+            "location": "",
+            "description": "Administration may late many series but. Tend adult easy model soldier. Determine employee various film seven physical form page. Local wide impact fish surface. About someone not tend seek night million."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 28,
+        "fields": {
+            "name": "Shah-Conrad",
+            "city": "Lake Courtneychester",
+            "location": "",
+            "description": "Source room charge box education for. Know action maybe knowledge term rest. Serious word all site member. Particular anyone woman building various me political mouth. Time crime choose plant black. Fly six expert clearly mother soldier join describe."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 29,
+        "fields": {
+            "name": "Valentine, Carter and Mckinney",
+            "city": "New Brettchester",
+            "location": "",
+            "description": "Everybody president field tend attack. Blood wide treatment note push increase majority agreement. Treat we hour partner issue along treatment."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 30,
+        "fields": {
+            "name": "Charles Inc",
+            "city": "Brianberg",
+            "location": "",
+            "description": "Most democratic air suffer western morning wind care. Seven big remember your suddenly character begin series. New read understand thought age southern. Music of themselves order interesting. Tax available fine main performance cut."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 31,
+        "fields": {
+            "name": "Mcdaniel Group",
+            "city": "Dannyview",
+            "location": "",
+            "description": "Weight fall begin feeling upon. Situation once board produce study line. Practice organization for price. However natural positive author effort near down. Commercial commercial probably throw bar indicate later. Management hour safe for believe old."
+        }
+    },
+    {
+        "model": "clubs.club",
+        "pk": 32,
+        "fields": {
+            "name": "Lewis, Wilson and Simon",
+            "city": "Jessicaview",
+            "location": "",
+            "description": "Turn message box task guess. Contain season or Republican address. Above baby system produce. Accept woman establish game."
+        }
+    }
+]

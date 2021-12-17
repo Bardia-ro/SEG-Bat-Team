@@ -1,0 +1,862 @@
+[
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 87,
+        "fields": {
+            "tournament": 28,
+            "match": 543,
+            "winner": 159,
+            "winner_next_match": null
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 88,
+        "fields": {
+            "tournament": 28,
+            "match": 544,
+            "winner": 159,
+            "winner_next_match": 543
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 89,
+        "fields": {
+            "tournament": 28,
+            "match": 545,
+            "winner": 120,
+            "winner_next_match": 543
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 90,
+        "fields": {
+            "tournament": 28,
+            "match": 546,
+            "winner": 132,
+            "winner_next_match": 544
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 91,
+        "fields": {
+            "tournament": 28,
+            "match": 547,
+            "winner": 159,
+            "winner_next_match": 544
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 92,
+        "fields": {
+            "tournament": 28,
+            "match": 548,
+            "winner": 114,
+            "winner_next_match": 545
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 93,
+        "fields": {
+            "tournament": 28,
+            "match": 549,
+            "winner": 120,
+            "winner_next_match": 545
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 94,
+        "fields": {
+            "tournament": 28,
+            "match": 550,
+            "winner": 120,
+            "winner_next_match": 549
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 95,
+        "fields": {
+            "tournament": 28,
+            "match": 551,
+            "winner": 161,
+            "winner_next_match": 549
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 96,
+        "fields": {
+            "tournament": 28,
+            "match": 552,
+            "winner": 114,
+            "winner_next_match": 548
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 97,
+        "fields": {
+            "tournament": 28,
+            "match": 553,
+            "winner": 148,
+            "winner_next_match": 548
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 98,
+        "fields": {
+            "tournament": 28,
+            "match": 554,
+            "winner": 106,
+            "winner_next_match": 547
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 99,
+        "fields": {
+            "tournament": 28,
+            "match": 555,
+            "winner": 159,
+            "winner_next_match": 547
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 100,
+        "fields": {
+            "tournament": 28,
+            "match": 556,
+            "winner": 132,
+            "winner_next_match": 546
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 101,
+        "fields": {
+            "tournament": 28,
+            "match": 557,
+            "winner": 157,
+            "winner_next_match": 546
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 102,
+        "fields": {
+            "tournament": 29,
+            "match": 654,
+            "winner": 137,
+            "winner_next_match": null
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 103,
+        "fields": {
+            "tournament": 29,
+            "match": 655,
+            "winner": 137,
+            "winner_next_match": 654
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 104,
+        "fields": {
+            "tournament": 29,
+            "match": 656,
+            "winner": 132,
+            "winner_next_match": 654
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 105,
+        "fields": {
+            "tournament": 29,
+            "match": 657,
+            "winner": 137,
+            "winner_next_match": 655
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 106,
+        "fields": {
+            "tournament": 29,
+            "match": 658,
+            "winner": 108,
+            "winner_next_match": 655
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 107,
+        "fields": {
+            "tournament": 29,
+            "match": 659,
+            "winner": 132,
+            "winner_next_match": 656
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 108,
+        "fields": {
+            "tournament": 29,
+            "match": 660,
+            "winner": 105,
+            "winner_next_match": 656
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 109,
+        "fields": {
+            "tournament": 29,
+            "match": 661,
+            "winner": 105,
+            "winner_next_match": 660
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 110,
+        "fields": {
+            "tournament": 29,
+            "match": 662,
+            "winner": 134,
+            "winner_next_match": 660
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 111,
+        "fields": {
+            "tournament": 29,
+            "match": 663,
+            "winner": 123,
+            "winner_next_match": 659
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 112,
+        "fields": {
+            "tournament": 29,
+            "match": 664,
+            "winner": 132,
+            "winner_next_match": 659
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 113,
+        "fields": {
+            "tournament": 29,
+            "match": 665,
+            "winner": 108,
+            "winner_next_match": 658
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 114,
+        "fields": {
+            "tournament": 29,
+            "match": 666,
+            "winner": 144,
+            "winner_next_match": 658
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 115,
+        "fields": {
+            "tournament": 29,
+            "match": 667,
+            "winner": 120,
+            "winner_next_match": 657
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 116,
+        "fields": {
+            "tournament": 29,
+            "match": 668,
+            "winner": 137,
+            "winner_next_match": 657
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 117,
+        "fields": {
+            "tournament": 30,
+            "match": 717,
+            "winner": 118,
+            "winner_next_match": null
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 118,
+        "fields": {
+            "tournament": 30,
+            "match": 718,
+            "winner": 108,
+            "winner_next_match": 717
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 119,
+        "fields": {
+            "tournament": 30,
+            "match": 719,
+            "winner": 118,
+            "winner_next_match": 717
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 120,
+        "fields": {
+            "tournament": 30,
+            "match": 720,
+            "winner": 120,
+            "winner_next_match": 718
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 121,
+        "fields": {
+            "tournament": 30,
+            "match": 721,
+            "winner": 108,
+            "winner_next_match": 718
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 122,
+        "fields": {
+            "tournament": 30,
+            "match": 722,
+            "winner": 124,
+            "winner_next_match": 719
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 123,
+        "fields": {
+            "tournament": 30,
+            "match": 723,
+            "winner": 118,
+            "winner_next_match": 719
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 124,
+        "fields": {
+            "tournament": 30,
+            "match": 724,
+            "winner": 111,
+            "winner_next_match": 723
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 125,
+        "fields": {
+            "tournament": 30,
+            "match": 725,
+            "winner": 118,
+            "winner_next_match": 723
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 126,
+        "fields": {
+            "tournament": 30,
+            "match": 726,
+            "winner": 124,
+            "winner_next_match": 722
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 127,
+        "fields": {
+            "tournament": 30,
+            "match": 727,
+            "winner": 135,
+            "winner_next_match": 722
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 128,
+        "fields": {
+            "tournament": 30,
+            "match": 728,
+            "winner": 108,
+            "winner_next_match": 721
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 129,
+        "fields": {
+            "tournament": 30,
+            "match": 729,
+            "winner": 114,
+            "winner_next_match": 721
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 130,
+        "fields": {
+            "tournament": 30,
+            "match": 730,
+            "winner": 120,
+            "winner_next_match": 720
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 131,
+        "fields": {
+            "tournament": 30,
+            "match": 731,
+            "winner": 134,
+            "winner_next_match": 720
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 132,
+        "fields": {
+            "tournament": 31,
+            "match": 756,
+            "winner": 114,
+            "winner_next_match": null
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 133,
+        "fields": {
+            "tournament": 31,
+            "match": 757,
+            "winner": 117,
+            "winner_next_match": 756
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 134,
+        "fields": {
+            "tournament": 31,
+            "match": 758,
+            "winner": 114,
+            "winner_next_match": 756
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 135,
+        "fields": {
+            "tournament": 31,
+            "match": 759,
+            "winner": 117,
+            "winner_next_match": 757
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 136,
+        "fields": {
+            "tournament": 31,
+            "match": 760,
+            "winner": 113,
+            "winner_next_match": 757
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 137,
+        "fields": {
+            "tournament": 31,
+            "match": 761,
+            "winner": 119,
+            "winner_next_match": 758
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 138,
+        "fields": {
+            "tournament": 31,
+            "match": 762,
+            "winner": 114,
+            "winner_next_match": 758
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 139,
+        "fields": {
+            "tournament": 31,
+            "match": 763,
+            "winner": 104,
+            "winner_next_match": 762
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 140,
+        "fields": {
+            "tournament": 31,
+            "match": 764,
+            "winner": 114,
+            "winner_next_match": 762
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 141,
+        "fields": {
+            "tournament": 31,
+            "match": 765,
+            "winner": 119,
+            "winner_next_match": 761
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 142,
+        "fields": {
+            "tournament": 31,
+            "match": 766,
+            "winner": 126,
+            "winner_next_match": 761
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 143,
+        "fields": {
+            "tournament": 31,
+            "match": 767,
+            "winner": 105,
+            "winner_next_match": 760
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 144,
+        "fields": {
+            "tournament": 31,
+            "match": 768,
+            "winner": 113,
+            "winner_next_match": 760
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 145,
+        "fields": {
+            "tournament": 31,
+            "match": 769,
+            "winner": 117,
+            "winner_next_match": 759
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 146,
+        "fields": {
+            "tournament": 31,
+            "match": 770,
+            "winner": 123,
+            "winner_next_match": 759
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 147,
+        "fields": {
+            "tournament": 32,
+            "match": 771,
+            "winner": 111,
+            "winner_next_match": null
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 148,
+        "fields": {
+            "tournament": 32,
+            "match": 772,
+            "winner": 119,
+            "winner_next_match": 771
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 149,
+        "fields": {
+            "tournament": 32,
+            "match": 773,
+            "winner": 111,
+            "winner_next_match": 771
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 150,
+        "fields": {
+            "tournament": 32,
+            "match": 774,
+            "winner": 119,
+            "winner_next_match": 772
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 151,
+        "fields": {
+            "tournament": 32,
+            "match": 775,
+            "winner": 114,
+            "winner_next_match": 772
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 152,
+        "fields": {
+            "tournament": 32,
+            "match": 776,
+            "winner": 111,
+            "winner_next_match": 773
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 153,
+        "fields": {
+            "tournament": 32,
+            "match": 777,
+            "winner": 105,
+            "winner_next_match": 773
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 154,
+        "fields": {
+            "tournament": 32,
+            "match": 778,
+            "winner": 105,
+            "winner_next_match": 777
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 155,
+        "fields": {
+            "tournament": 32,
+            "match": 779,
+            "winner": 106,
+            "winner_next_match": 777
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 156,
+        "fields": {
+            "tournament": 32,
+            "match": 780,
+            "winner": 109,
+            "winner_next_match": 776
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 157,
+        "fields": {
+            "tournament": 32,
+            "match": 781,
+            "winner": 111,
+            "winner_next_match": 776
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 158,
+        "fields": {
+            "tournament": 32,
+            "match": 782,
+            "winner": 112,
+            "winner_next_match": 775
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 159,
+        "fields": {
+            "tournament": 32,
+            "match": 783,
+            "winner": 114,
+            "winner_next_match": 775
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 160,
+        "fields": {
+            "tournament": 32,
+            "match": 784,
+            "winner": 116,
+            "winner_next_match": 774
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 161,
+        "fields": {
+            "tournament": 32,
+            "match": 785,
+            "winner": 119,
+            "winner_next_match": 774
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 162,
+        "fields": {
+            "tournament": 33,
+            "match": 786,
+            "winner": 111,
+            "winner_next_match": null
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 163,
+        "fields": {
+            "tournament": 33,
+            "match": 787,
+            "winner": 111,
+            "winner_next_match": 786
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 164,
+        "fields": {
+            "tournament": 33,
+            "match": 788,
+            "winner": 104,
+            "winner_next_match": 786
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 165,
+        "fields": {
+            "tournament": 33,
+            "match": 789,
+            "winner": 104,
+            "winner_next_match": 788
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 166,
+        "fields": {
+            "tournament": 33,
+            "match": 790,
+            "winner": 106,
+            "winner_next_match": 788
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 167,
+        "fields": {
+            "tournament": 33,
+            "match": 791,
+            "winner": 108,
+            "winner_next_match": 787
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 168,
+        "fields": {
+            "tournament": 33,
+            "match": 792,
+            "winner": 111,
+            "winner_next_match": 787
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 169,
+        "fields": {
+            "tournament": 34,
+            "match": 793,
+            "winner": 106,
+            "winner_next_match": null
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 170,
+        "fields": {
+            "tournament": 34,
+            "match": 794,
+            "winner": 104,
+            "winner_next_match": 793
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 171,
+        "fields": {
+            "tournament": 34,
+            "match": 795,
+            "winner": 106,
+            "winner_next_match": 793
+        }
+    },
+    {
+        "model": "clubs.eliminationmatch",
+        "pk": 172,
+        "fields": {
+            "tournament": 35,
+            "match": 796,
+            "winner": 105,
+            "winner_next_match": null
+        }
+    }
+]
