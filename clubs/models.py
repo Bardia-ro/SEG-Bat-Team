@@ -229,7 +229,7 @@ class UserInClub(models.Model):
         return self.role > 1
 
     def get_Officers(self):
-        """ Return all the officers of the club. """
+        """ Return all the officers of the club """
         officers = UserInClub.objects.all().filter(role = 3)
         return officers
 
