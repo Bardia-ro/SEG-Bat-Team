@@ -1,0 +1,3434 @@
+[
+    {
+        "model": "clubs.groupmatch",
+        "pk": 313,
+        "fields": {
+            "match": 399,
+            "group": 65,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 314,
+        "fields": {
+            "match": 400,
+            "group": 65,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 315,
+        "fields": {
+            "match": 401,
+            "group": 65,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 316,
+        "fields": {
+            "match": 402,
+            "group": 65,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 317,
+        "fields": {
+            "match": 403,
+            "group": 65,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 318,
+        "fields": {
+            "match": 404,
+            "group": 65,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 319,
+        "fields": {
+            "match": 405,
+            "group": 66,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 320,
+        "fields": {
+            "match": 406,
+            "group": 66,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 321,
+        "fields": {
+            "match": 407,
+            "group": 66,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 322,
+        "fields": {
+            "match": 408,
+            "group": 66,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 323,
+        "fields": {
+            "match": 409,
+            "group": 66,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 324,
+        "fields": {
+            "match": 410,
+            "group": 66,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 325,
+        "fields": {
+            "match": 411,
+            "group": 67,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 326,
+        "fields": {
+            "match": 412,
+            "group": 67,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 327,
+        "fields": {
+            "match": 413,
+            "group": 67,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 328,
+        "fields": {
+            "match": 414,
+            "group": 67,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 329,
+        "fields": {
+            "match": 415,
+            "group": 67,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 330,
+        "fields": {
+            "match": 416,
+            "group": 67,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 331,
+        "fields": {
+            "match": 417,
+            "group": 68,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 332,
+        "fields": {
+            "match": 418,
+            "group": 68,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 333,
+        "fields": {
+            "match": 419,
+            "group": 68,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 334,
+        "fields": {
+            "match": 420,
+            "group": 68,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 335,
+        "fields": {
+            "match": 421,
+            "group": 68,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 336,
+        "fields": {
+            "match": 422,
+            "group": 68,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 337,
+        "fields": {
+            "match": 423,
+            "group": 69,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 338,
+        "fields": {
+            "match": 424,
+            "group": 69,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 339,
+        "fields": {
+            "match": 425,
+            "group": 69,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 340,
+        "fields": {
+            "match": 426,
+            "group": 69,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 341,
+        "fields": {
+            "match": 427,
+            "group": 69,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 342,
+        "fields": {
+            "match": 428,
+            "group": 69,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 343,
+        "fields": {
+            "match": 429,
+            "group": 70,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 344,
+        "fields": {
+            "match": 430,
+            "group": 70,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 345,
+        "fields": {
+            "match": 431,
+            "group": 70,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 346,
+        "fields": {
+            "match": 432,
+            "group": 70,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 347,
+        "fields": {
+            "match": 433,
+            "group": 70,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 348,
+        "fields": {
+            "match": 434,
+            "group": 70,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 349,
+        "fields": {
+            "match": 435,
+            "group": 71,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 350,
+        "fields": {
+            "match": 436,
+            "group": 71,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 351,
+        "fields": {
+            "match": 437,
+            "group": 71,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 352,
+        "fields": {
+            "match": 438,
+            "group": 71,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 353,
+        "fields": {
+            "match": 439,
+            "group": 71,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 354,
+        "fields": {
+            "match": 440,
+            "group": 71,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 355,
+        "fields": {
+            "match": 441,
+            "group": 72,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 356,
+        "fields": {
+            "match": 442,
+            "group": 72,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 357,
+        "fields": {
+            "match": 443,
+            "group": 72,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 358,
+        "fields": {
+            "match": 444,
+            "group": 72,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 359,
+        "fields": {
+            "match": 445,
+            "group": 72,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 360,
+        "fields": {
+            "match": 446,
+            "group": 72,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 361,
+        "fields": {
+            "match": 447,
+            "group": 73,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 362,
+        "fields": {
+            "match": 448,
+            "group": 73,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 363,
+        "fields": {
+            "match": 449,
+            "group": 73,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 364,
+        "fields": {
+            "match": 450,
+            "group": 73,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 365,
+        "fields": {
+            "match": 451,
+            "group": 73,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 366,
+        "fields": {
+            "match": 452,
+            "group": 73,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 367,
+        "fields": {
+            "match": 453,
+            "group": 74,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 368,
+        "fields": {
+            "match": 454,
+            "group": 74,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 369,
+        "fields": {
+            "match": 455,
+            "group": 74,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 370,
+        "fields": {
+            "match": 456,
+            "group": 74,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 371,
+        "fields": {
+            "match": 457,
+            "group": 74,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 372,
+        "fields": {
+            "match": 458,
+            "group": 74,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 373,
+        "fields": {
+            "match": 459,
+            "group": 75,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 374,
+        "fields": {
+            "match": 460,
+            "group": 75,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 375,
+        "fields": {
+            "match": 461,
+            "group": 75,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 376,
+        "fields": {
+            "match": 462,
+            "group": 75,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 377,
+        "fields": {
+            "match": 463,
+            "group": 75,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 378,
+        "fields": {
+            "match": 464,
+            "group": 75,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 379,
+        "fields": {
+            "match": 465,
+            "group": 76,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 380,
+        "fields": {
+            "match": 466,
+            "group": 76,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 381,
+        "fields": {
+            "match": 467,
+            "group": 76,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 382,
+        "fields": {
+            "match": 468,
+            "group": 76,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 383,
+        "fields": {
+            "match": 469,
+            "group": 76,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 384,
+        "fields": {
+            "match": 470,
+            "group": 76,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 385,
+        "fields": {
+            "match": 471,
+            "group": 77,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 386,
+        "fields": {
+            "match": 472,
+            "group": 77,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 387,
+        "fields": {
+            "match": 473,
+            "group": 77,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 388,
+        "fields": {
+            "match": 474,
+            "group": 77,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 389,
+        "fields": {
+            "match": 475,
+            "group": 77,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 390,
+        "fields": {
+            "match": 476,
+            "group": 77,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 391,
+        "fields": {
+            "match": 477,
+            "group": 78,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 392,
+        "fields": {
+            "match": 478,
+            "group": 78,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 393,
+        "fields": {
+            "match": 479,
+            "group": 78,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 394,
+        "fields": {
+            "match": 480,
+            "group": 78,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 395,
+        "fields": {
+            "match": 481,
+            "group": 78,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 396,
+        "fields": {
+            "match": 482,
+            "group": 78,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 397,
+        "fields": {
+            "match": 483,
+            "group": 79,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 398,
+        "fields": {
+            "match": 484,
+            "group": 79,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 399,
+        "fields": {
+            "match": 485,
+            "group": 79,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 400,
+        "fields": {
+            "match": 486,
+            "group": 79,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 401,
+        "fields": {
+            "match": 487,
+            "group": 79,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 402,
+        "fields": {
+            "match": 488,
+            "group": 79,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 403,
+        "fields": {
+            "match": 489,
+            "group": 80,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 404,
+        "fields": {
+            "match": 490,
+            "group": 80,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 405,
+        "fields": {
+            "match": 491,
+            "group": 80,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 406,
+        "fields": {
+            "match": 492,
+            "group": 80,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 407,
+        "fields": {
+            "match": 493,
+            "group": 80,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 408,
+        "fields": {
+            "match": 494,
+            "group": 80,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 409,
+        "fields": {
+            "match": 495,
+            "group": 81,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 410,
+        "fields": {
+            "match": 496,
+            "group": 81,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 411,
+        "fields": {
+            "match": 497,
+            "group": 81,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 412,
+        "fields": {
+            "match": 498,
+            "group": 81,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 413,
+        "fields": {
+            "match": 499,
+            "group": 81,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 414,
+        "fields": {
+            "match": 500,
+            "group": 81,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 415,
+        "fields": {
+            "match": 501,
+            "group": 82,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 416,
+        "fields": {
+            "match": 502,
+            "group": 82,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 417,
+        "fields": {
+            "match": 503,
+            "group": 82,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 418,
+        "fields": {
+            "match": 504,
+            "group": 82,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 419,
+        "fields": {
+            "match": 505,
+            "group": 82,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 420,
+        "fields": {
+            "match": 506,
+            "group": 82,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 421,
+        "fields": {
+            "match": 507,
+            "group": 83,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 422,
+        "fields": {
+            "match": 508,
+            "group": 83,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 423,
+        "fields": {
+            "match": 509,
+            "group": 83,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 424,
+        "fields": {
+            "match": 510,
+            "group": 83,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 425,
+        "fields": {
+            "match": 511,
+            "group": 83,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 426,
+        "fields": {
+            "match": 512,
+            "group": 83,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 427,
+        "fields": {
+            "match": 513,
+            "group": 84,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 428,
+        "fields": {
+            "match": 514,
+            "group": 84,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 429,
+        "fields": {
+            "match": 515,
+            "group": 84,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 430,
+        "fields": {
+            "match": 516,
+            "group": 84,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 431,
+        "fields": {
+            "match": 517,
+            "group": 84,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 432,
+        "fields": {
+            "match": 518,
+            "group": 84,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 433,
+        "fields": {
+            "match": 519,
+            "group": 85,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 434,
+        "fields": {
+            "match": 520,
+            "group": 85,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 435,
+        "fields": {
+            "match": 521,
+            "group": 85,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 436,
+        "fields": {
+            "match": 522,
+            "group": 85,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 437,
+        "fields": {
+            "match": 523,
+            "group": 85,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 438,
+        "fields": {
+            "match": 524,
+            "group": 85,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 439,
+        "fields": {
+            "match": 525,
+            "group": 86,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 440,
+        "fields": {
+            "match": 526,
+            "group": 86,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 441,
+        "fields": {
+            "match": 527,
+            "group": 86,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 442,
+        "fields": {
+            "match": 528,
+            "group": 86,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 443,
+        "fields": {
+            "match": 529,
+            "group": 86,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 444,
+        "fields": {
+            "match": 530,
+            "group": 86,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 445,
+        "fields": {
+            "match": 531,
+            "group": 87,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 446,
+        "fields": {
+            "match": 532,
+            "group": 87,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 447,
+        "fields": {
+            "match": 533,
+            "group": 87,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 448,
+        "fields": {
+            "match": 534,
+            "group": 87,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 449,
+        "fields": {
+            "match": 535,
+            "group": 87,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 450,
+        "fields": {
+            "match": 536,
+            "group": 87,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 451,
+        "fields": {
+            "match": 537,
+            "group": 88,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 452,
+        "fields": {
+            "match": 538,
+            "group": 88,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 453,
+        "fields": {
+            "match": 539,
+            "group": 88,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 454,
+        "fields": {
+            "match": 540,
+            "group": 88,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 455,
+        "fields": {
+            "match": 541,
+            "group": 88,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 456,
+        "fields": {
+            "match": 542,
+            "group": 88,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 457,
+        "fields": {
+            "match": 558,
+            "group": 89,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 458,
+        "fields": {
+            "match": 559,
+            "group": 89,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 459,
+        "fields": {
+            "match": 560,
+            "group": 89,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 460,
+        "fields": {
+            "match": 561,
+            "group": 90,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 461,
+        "fields": {
+            "match": 562,
+            "group": 90,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 462,
+        "fields": {
+            "match": 563,
+            "group": 90,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 463,
+        "fields": {
+            "match": 564,
+            "group": 91,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 464,
+        "fields": {
+            "match": 565,
+            "group": 91,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 465,
+        "fields": {
+            "match": 566,
+            "group": 91,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 466,
+        "fields": {
+            "match": 567,
+            "group": 92,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 467,
+        "fields": {
+            "match": 568,
+            "group": 92,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 468,
+        "fields": {
+            "match": 569,
+            "group": 92,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 469,
+        "fields": {
+            "match": 570,
+            "group": 93,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 470,
+        "fields": {
+            "match": 571,
+            "group": 93,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 471,
+        "fields": {
+            "match": 572,
+            "group": 93,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 472,
+        "fields": {
+            "match": 573,
+            "group": 94,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 473,
+        "fields": {
+            "match": 574,
+            "group": 94,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 474,
+        "fields": {
+            "match": 575,
+            "group": 94,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 475,
+        "fields": {
+            "match": 576,
+            "group": 95,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 476,
+        "fields": {
+            "match": 577,
+            "group": 95,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 477,
+        "fields": {
+            "match": 578,
+            "group": 95,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 478,
+        "fields": {
+            "match": 579,
+            "group": 96,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 479,
+        "fields": {
+            "match": 580,
+            "group": 96,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 480,
+        "fields": {
+            "match": 581,
+            "group": 96,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 481,
+        "fields": {
+            "match": 582,
+            "group": 97,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 482,
+        "fields": {
+            "match": 583,
+            "group": 97,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 483,
+        "fields": {
+            "match": 584,
+            "group": 97,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 484,
+        "fields": {
+            "match": 585,
+            "group": 98,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 485,
+        "fields": {
+            "match": 586,
+            "group": 98,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 486,
+        "fields": {
+            "match": 587,
+            "group": 98,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 487,
+        "fields": {
+            "match": 588,
+            "group": 99,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 488,
+        "fields": {
+            "match": 589,
+            "group": 99,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 489,
+        "fields": {
+            "match": 590,
+            "group": 99,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 490,
+        "fields": {
+            "match": 591,
+            "group": 100,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 491,
+        "fields": {
+            "match": 592,
+            "group": 100,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 492,
+        "fields": {
+            "match": 593,
+            "group": 100,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 493,
+        "fields": {
+            "match": 594,
+            "group": 101,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 494,
+        "fields": {
+            "match": 595,
+            "group": 101,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 495,
+        "fields": {
+            "match": 596,
+            "group": 101,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 496,
+        "fields": {
+            "match": 597,
+            "group": 102,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 497,
+        "fields": {
+            "match": 598,
+            "group": 102,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 498,
+        "fields": {
+            "match": 599,
+            "group": 102,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 499,
+        "fields": {
+            "match": 600,
+            "group": 103,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 500,
+        "fields": {
+            "match": 601,
+            "group": 103,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 501,
+        "fields": {
+            "match": 602,
+            "group": 103,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 502,
+        "fields": {
+            "match": 603,
+            "group": 104,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 503,
+        "fields": {
+            "match": 604,
+            "group": 104,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 504,
+        "fields": {
+            "match": 605,
+            "group": 104,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 505,
+        "fields": {
+            "match": 606,
+            "group": 105,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 506,
+        "fields": {
+            "match": 607,
+            "group": 105,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 507,
+        "fields": {
+            "match": 608,
+            "group": 105,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 508,
+        "fields": {
+            "match": 609,
+            "group": 105,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 509,
+        "fields": {
+            "match": 610,
+            "group": 105,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 510,
+        "fields": {
+            "match": 611,
+            "group": 105,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 511,
+        "fields": {
+            "match": 612,
+            "group": 106,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 512,
+        "fields": {
+            "match": 613,
+            "group": 106,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 513,
+        "fields": {
+            "match": 614,
+            "group": 106,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 514,
+        "fields": {
+            "match": 615,
+            "group": 106,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 515,
+        "fields": {
+            "match": 616,
+            "group": 106,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 516,
+        "fields": {
+            "match": 617,
+            "group": 106,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 517,
+        "fields": {
+            "match": 618,
+            "group": 107,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 518,
+        "fields": {
+            "match": 619,
+            "group": 107,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 519,
+        "fields": {
+            "match": 620,
+            "group": 107,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 520,
+        "fields": {
+            "match": 621,
+            "group": 107,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 521,
+        "fields": {
+            "match": 622,
+            "group": 107,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 522,
+        "fields": {
+            "match": 623,
+            "group": 107,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 523,
+        "fields": {
+            "match": 624,
+            "group": 108,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 524,
+        "fields": {
+            "match": 625,
+            "group": 108,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 525,
+        "fields": {
+            "match": 626,
+            "group": 108,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 526,
+        "fields": {
+            "match": 627,
+            "group": 108,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 527,
+        "fields": {
+            "match": 628,
+            "group": 108,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 528,
+        "fields": {
+            "match": 629,
+            "group": 108,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 529,
+        "fields": {
+            "match": 630,
+            "group": 109,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 530,
+        "fields": {
+            "match": 631,
+            "group": 109,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 531,
+        "fields": {
+            "match": 632,
+            "group": 109,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 532,
+        "fields": {
+            "match": 633,
+            "group": 109,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 533,
+        "fields": {
+            "match": 634,
+            "group": 109,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 534,
+        "fields": {
+            "match": 635,
+            "group": 109,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 535,
+        "fields": {
+            "match": 636,
+            "group": 110,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 536,
+        "fields": {
+            "match": 637,
+            "group": 110,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 537,
+        "fields": {
+            "match": 638,
+            "group": 110,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 538,
+        "fields": {
+            "match": 639,
+            "group": 110,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 539,
+        "fields": {
+            "match": 640,
+            "group": 110,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 540,
+        "fields": {
+            "match": 641,
+            "group": 110,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 541,
+        "fields": {
+            "match": 642,
+            "group": 111,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 542,
+        "fields": {
+            "match": 643,
+            "group": 111,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 543,
+        "fields": {
+            "match": 644,
+            "group": 111,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 544,
+        "fields": {
+            "match": 645,
+            "group": 111,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 545,
+        "fields": {
+            "match": 646,
+            "group": 111,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 546,
+        "fields": {
+            "match": 647,
+            "group": 111,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 547,
+        "fields": {
+            "match": 648,
+            "group": 112,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 548,
+        "fields": {
+            "match": 649,
+            "group": 112,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 549,
+        "fields": {
+            "match": 650,
+            "group": 112,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 550,
+        "fields": {
+            "match": 651,
+            "group": 112,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 551,
+        "fields": {
+            "match": 652,
+            "group": 112,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 552,
+        "fields": {
+            "match": 653,
+            "group": 112,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 553,
+        "fields": {
+            "match": 669,
+            "group": 113,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 554,
+        "fields": {
+            "match": 670,
+            "group": 113,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 555,
+        "fields": {
+            "match": 671,
+            "group": 113,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 556,
+        "fields": {
+            "match": 672,
+            "group": 113,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 557,
+        "fields": {
+            "match": 673,
+            "group": 113,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 558,
+        "fields": {
+            "match": 674,
+            "group": 113,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 559,
+        "fields": {
+            "match": 675,
+            "group": 114,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 560,
+        "fields": {
+            "match": 676,
+            "group": 114,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 561,
+        "fields": {
+            "match": 677,
+            "group": 114,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 562,
+        "fields": {
+            "match": 678,
+            "group": 114,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 563,
+        "fields": {
+            "match": 679,
+            "group": 114,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 564,
+        "fields": {
+            "match": 680,
+            "group": 114,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 565,
+        "fields": {
+            "match": 681,
+            "group": 115,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 566,
+        "fields": {
+            "match": 682,
+            "group": 115,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 567,
+        "fields": {
+            "match": 683,
+            "group": 115,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 568,
+        "fields": {
+            "match": 684,
+            "group": 115,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 569,
+        "fields": {
+            "match": 685,
+            "group": 115,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 570,
+        "fields": {
+            "match": 686,
+            "group": 115,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 571,
+        "fields": {
+            "match": 687,
+            "group": 116,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 572,
+        "fields": {
+            "match": 688,
+            "group": 116,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 573,
+        "fields": {
+            "match": 689,
+            "group": 116,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 574,
+        "fields": {
+            "match": 690,
+            "group": 116,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 575,
+        "fields": {
+            "match": 691,
+            "group": 116,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 576,
+        "fields": {
+            "match": 692,
+            "group": 116,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 577,
+        "fields": {
+            "match": 693,
+            "group": 117,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 578,
+        "fields": {
+            "match": 694,
+            "group": 117,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 579,
+        "fields": {
+            "match": 695,
+            "group": 117,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 580,
+        "fields": {
+            "match": 696,
+            "group": 117,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 581,
+        "fields": {
+            "match": 697,
+            "group": 117,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 582,
+        "fields": {
+            "match": 698,
+            "group": 117,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 583,
+        "fields": {
+            "match": 699,
+            "group": 118,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 584,
+        "fields": {
+            "match": 700,
+            "group": 118,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 585,
+        "fields": {
+            "match": 701,
+            "group": 118,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 586,
+        "fields": {
+            "match": 702,
+            "group": 118,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 587,
+        "fields": {
+            "match": 703,
+            "group": 118,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 588,
+        "fields": {
+            "match": 704,
+            "group": 118,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 589,
+        "fields": {
+            "match": 705,
+            "group": 119,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 590,
+        "fields": {
+            "match": 706,
+            "group": 119,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 591,
+        "fields": {
+            "match": 707,
+            "group": 119,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 592,
+        "fields": {
+            "match": 708,
+            "group": 119,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 593,
+        "fields": {
+            "match": 709,
+            "group": 119,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 594,
+        "fields": {
+            "match": 710,
+            "group": 119,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 595,
+        "fields": {
+            "match": 711,
+            "group": 120,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 596,
+        "fields": {
+            "match": 712,
+            "group": 120,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 597,
+        "fields": {
+            "match": 713,
+            "group": 120,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 598,
+        "fields": {
+            "match": 714,
+            "group": 120,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 599,
+        "fields": {
+            "match": 715,
+            "group": 120,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 600,
+        "fields": {
+            "match": 716,
+            "group": 120,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 601,
+        "fields": {
+            "match": 732,
+            "group": 121,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 602,
+        "fields": {
+            "match": 733,
+            "group": 121,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 603,
+        "fields": {
+            "match": 734,
+            "group": 121,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 604,
+        "fields": {
+            "match": 735,
+            "group": 122,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 605,
+        "fields": {
+            "match": 736,
+            "group": 122,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 606,
+        "fields": {
+            "match": 737,
+            "group": 122,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 607,
+        "fields": {
+            "match": 738,
+            "group": 123,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 608,
+        "fields": {
+            "match": 739,
+            "group": 123,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 609,
+        "fields": {
+            "match": 740,
+            "group": 123,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 610,
+        "fields": {
+            "match": 741,
+            "group": 124,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 611,
+        "fields": {
+            "match": 742,
+            "group": 124,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 612,
+        "fields": {
+            "match": 743,
+            "group": 124,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 613,
+        "fields": {
+            "match": 744,
+            "group": 125,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 614,
+        "fields": {
+            "match": 745,
+            "group": 125,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 615,
+        "fields": {
+            "match": 746,
+            "group": 125,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 616,
+        "fields": {
+            "match": 747,
+            "group": 126,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 617,
+        "fields": {
+            "match": 748,
+            "group": 126,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 618,
+        "fields": {
+            "match": 749,
+            "group": 126,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 619,
+        "fields": {
+            "match": 750,
+            "group": 127,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 620,
+        "fields": {
+            "match": 751,
+            "group": 127,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 621,
+        "fields": {
+            "match": 752,
+            "group": 127,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 622,
+        "fields": {
+            "match": 753,
+            "group": 128,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 623,
+        "fields": {
+            "match": 754,
+            "group": 128,
+            "player1_points": 0.0,
+            "player2_points": 1.0,
+            "display": true
+        }
+    },
+    {
+        "model": "clubs.groupmatch",
+        "pk": 624,
+        "fields": {
+            "match": 755,
+            "group": 128,
+            "player1_points": 1.0,
+            "player2_points": 0.0,
+            "display": true
+        }
+    }
+]

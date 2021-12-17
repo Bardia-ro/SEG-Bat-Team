@@ -8,7 +8,8 @@ class TournamentTest(TestCase):
                 'clubs/tests/fixtures/default_club.json',
                 'clubs/tests/fixtures/other_users.json',
                 'clubs/tests/fixtures/other_clubs.json',
-                'clubs/tests/fixtures/default_tournament.json']
+                'clubs/tests/fixtures/default_tournament.json',
+    ]
 
     def setUp(self):
         super(TestCase, self).setUp()
