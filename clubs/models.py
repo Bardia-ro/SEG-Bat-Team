@@ -173,24 +173,29 @@ class UserInClub(models.Model):
 
     def user_email(self):
         """ Returns email of the user. """
+
         return self.user.email
 
     def approve_membership(self):
         """ Switches the role of a user from applicant to member. """
+
         self.role = UserInClub.MEMBER
         self.save()
 
     def reject_membership(self):
         """ Rejects the application of a user to a club. """
+
         self.delete()
 
     def promote_member_to_officer(self):
         """ Switches the role of a member to officer. """
+
         self.role = UserInClub.OFFICER
         self.save()
 
     def demote_officer_to_member(self):
         """ Switches the role of an officer to a member.  """
+
         self.role = UserInClub.MEMBER
         self.save()
 
@@ -300,7 +305,7 @@ class UserInClub(models.Model):
 
 
     def calculate_expected_scores(player_1, player_2, club_id):
-        """ calculate the expected scores with regard to opponents rating. """
+        """Calculate the expected scores with regard to opponents rating. """
 
         p1 = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = player_1.id)
         p2 = get_object_or_404(UserInClub.objects.all(), club_id=club_id, user_id = player_2.id)
