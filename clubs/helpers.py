@@ -2,6 +2,8 @@ from django.shortcuts import redirect
 from clubs.models import UserInClub, Tournament
 
 def redirect_authenticated_user(func):
+    """Redirects a logged in user back to their profile if they access login/signup page"""
+
     def wrapper(request):
         if request.user.is_authenticated:
             club_id = request.user.get_first_club_id_user_is_associated_with()

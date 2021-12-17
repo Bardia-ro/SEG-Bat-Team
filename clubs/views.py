@@ -59,8 +59,6 @@ def club_page(request, club_id):
     'user_is_owner': user_is_owner,
     })
 
-
-
 class LoginProhibitedMixin:
     """ Mixin redirects when a user is logged in. """
 
@@ -76,7 +74,7 @@ class LoginProhibitedMixin:
         return super().dispatch(*args, **kwargs)
 
     def redirect_when_logged_in_url(self):
-        """ Returns the url to redirect to when not logged in. """ 
+        """ Returns the url to redirect to when not logged in. """
 
         if self.redirect_when_logged_in_url is None:
             raise ImproperlyConfigured(
@@ -258,7 +256,8 @@ def profile(request, club_id, user_id):
     total_tournaments = Tournament.objects.filter(players = user).count()
     request_user_is_member = request_user_role_at_club >= 2
     user_role_at_club = user.get_role_at_club(club_id)
-    club_list = user.get_clubs_user_is_a_member()
+    club_list = request.user.get_clubs_user_is_a_member()
+    club_list_of_profile = user.get_clubs_user_is_a_member()
     total_points = matchWon.count() + matchDrawn.count() * 0.5
     average_point = 0
     if elo_rating.count() > 0:
@@ -273,6 +272,7 @@ def profile(request, club_id, user_id):
                            'request_user_role': request_user_role_at_club,
                            'user_role': user_role_at_club,
                            'club_list': club_list,
+                           'club_list_profile': club_list_of_profile,
                            'elo_rating' : elo_rating,
                            'tournaments' : tournaments,
                            'matchLost' : matchLost,
@@ -401,6 +401,8 @@ def apply_tournament_toggle(request, user_id, club_id, tournament_id):
 @login_required
 @member_only
 def match_schedule(request, club_id, tournament_id):
+    """View that displays the match schedule to members of a club"""
+
     club_list = request.user.get_clubs_user_is_a_member()
     tournament = Tournament.objects.get(id=tournament_id)
 
@@ -459,6 +461,8 @@ def match_schedule(request, club_id, tournament_id):
 @login_required
 @tournament_organiser_only
 def generate_next_matches(request, club_id, tournament_id):
+    """View that generates the next round of matches"""
+
     tournament = Tournament.objects.get(id=tournament_id)
     message = tournament.generate_next_matches()
     if message:
@@ -468,7 +472,7 @@ def generate_next_matches(request, club_id, tournament_id):
 @login_required
 @tournament_organiser_only
 def enter_match_results(request, club_id, tournament_id, match_id):
-    """Enter match results for a normal elimination round"""
+    """Enter match result for a normal elimination round. Adjusts the elo rating of the players"""
 
     match = EliminationMatch.objects.get(id=match_id)
     if request.method=="POST":
@@ -482,7 +486,7 @@ def enter_match_results(request, club_id, tournament_id, match_id):
 @login_required
 @tournament_organiser_only
 def enter_match_results_groups(request, club_id, tournament_id, match_id):
-    """Enter match results for group rounds. Adjusts the elo rating of the players"""
+    """Enter match result for group rounds. Adjusts the elo rating of the players"""
 
     group_match = GroupMatch.objects.get(id=match_id)
     match = group_match.match
@@ -515,7 +519,7 @@ def view_tournament_players(request,club_id, tournament_id):
 @login_required
 @tournament_organiser_only
 def remove_a_player(request,user_id,club_id,tournament_id):
-    """Removes a player from a tournament."""
+    """Removes a player from a tournament given the number of players is invalid """
 
     tournament = Tournament.objects.get(id=tournament_id)
     if tournament.valid_player_count() == False:
