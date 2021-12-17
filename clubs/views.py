@@ -272,7 +272,7 @@ def profile(request, club_id, user_id):
                            'request_user_role': request_user_role_at_club,
                            'user_role': user_role_at_club,
                            'club_list': club_list,
-                           'club_list_profile': club_list_of_profile,
+                           'club_list_of_profile': club_list_of_profile,
                            'elo_rating' : elo_rating,
                            'tournaments' : tournaments,
                            'matchLost' : matchLost,
