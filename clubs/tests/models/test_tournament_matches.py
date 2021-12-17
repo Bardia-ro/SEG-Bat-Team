@@ -57,9 +57,25 @@ class TournamentMatchesTest(TestCase):
         )
         self.assertEqual(groups.count(), 8)
 
+        group_stage_player_ids = []
+        first_group_stage_winner_and_runner_up_ids = []
+
+        first_group_stage_groups = Group.objects.filter(
+            tournament=self.tournament,
+            group_stage = 'G96'
+        )
+        for group in first_group_stage_groups:
+            group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
+            first_group_stage_winner_and_runner_up_ids.append(group_points_objects[0].player.id)
+            first_group_stage_winner_and_runner_up_ids.append(group_points_objects[1].player.id)
+
         for group in groups:
             group_players = group.players.all()
             self.assertEqual(group_players.count(), 4)
+
+            for group_player in group_players:
+                group_stage_player_ids.append(group_player.id)
+
             group_matches = GroupMatch.objects.filter(group=group)
             self.assertEqual(group_matches.count(), 6)
             for player in group_players:
@@ -76,6 +92,11 @@ class TournamentMatchesTest(TestCase):
                 self.assertEqual(count, 3)
                 opponent_ids_set = set(opponent_ids)
                 self.assertEqual(len(opponent_ids_set), 3)
+
+        self.assertEqual(len(group_stage_player_ids), 32)
+        group_stage_player_ids.sort()
+        first_group_stage_winner_and_runner_up_ids.sort()
+        self.assertEqual(group_stage_player_ids, first_group_stage_winner_and_runner_up_ids)
 
     def test_generation_first_group_stage_matches_48_people(self):
         self.tournament = Tournament.objects.get(id=29)
@@ -115,9 +136,25 @@ class TournamentMatchesTest(TestCase):
         )
         self.assertEqual(groups.count(), 8)
 
+        group_stage_player_ids = []
+        first_group_stage_winner_and_runner_up_ids = []
+
+        first_group_stage_groups = Group.objects.filter(
+            tournament=self.tournament,
+            group_stage = 'G96'
+        )
+        for group in first_group_stage_groups:
+            group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
+            first_group_stage_winner_and_runner_up_ids.append(group_points_objects[0].player.id)
+            first_group_stage_winner_and_runner_up_ids.append(group_points_objects[1].player.id)
+
         for group in groups:
             group_players = group.players.all()
             self.assertEqual(group_players.count(), 4)
+
+            for group_player in group_players:
+                group_stage_player_ids.append(group_player.id)
+
             group_matches = GroupMatch.objects.filter(group=group)
             self.assertEqual(group_matches.count(), 6)
             for player in group_players:
@@ -134,6 +171,11 @@ class TournamentMatchesTest(TestCase):
                 self.assertEqual(count, 3)
                 opponent_ids_set = set(opponent_ids)
                 self.assertEqual(len(opponent_ids_set), 3)
+
+        self.assertEqual(len(group_stage_player_ids), 32)
+        group_stage_player_ids.sort()
+        first_group_stage_winner_and_runner_up_ids.sort()
+        self.assertEqual(group_stage_player_ids, first_group_stage_winner_and_runner_up_ids)
 
     def test_generation_group_stage_matches_32_people(self):
         self.tournament = Tournament.objects.get(id=30)
@@ -164,6 +206,31 @@ class TournamentMatchesTest(TestCase):
                 opponent_ids_set = set(opponent_ids)
                 self.assertEqual(len(opponent_ids_set), 3)
 
+    def test_elim_rounds_have_correct_players_tournament_with_32_people(self):
+        self.tournament = Tournament.objects.get(id=30)
+
+        elim_rounds_player_ids = []
+        elim_matches = EliminationMatch.objects.filter(tournament=self.tournament).order_by('match__number')
+        for elim_match in elim_matches[0:8]:
+            elim_rounds_player_ids.append(elim_match.match.player1.id)
+            elim_rounds_player_ids.append(elim_match.match.player2.id)
+
+        group_stage_winner_and_runner_up_ids = []
+        
+        groups = Group.objects.filter(
+            tournament=self.tournament,
+            group_stage = 'G32'
+        )
+
+        for group in groups:
+            group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
+            group_stage_winner_and_runner_up_ids.append(group_points_objects[0].player.id)
+            group_stage_winner_and_runner_up_ids.append(group_points_objects[1].player.id)
+
+        elim_rounds_player_ids.sort()
+        group_stage_winner_and_runner_up_ids.sort()
+        self.assertEqual(elim_rounds_player_ids, group_stage_winner_and_runner_up_ids)
+
     def test_generation_group_stage_matches_24_people(self):
         self.tournament = Tournament.objects.get(id=31)
 
@@ -192,6 +259,31 @@ class TournamentMatchesTest(TestCase):
                 self.assertEqual(count, 2)
                 opponent_ids_set = set(opponent_ids)
                 self.assertEqual(len(opponent_ids_set), 2)
+
+    def test_elim_rounds_have_correct_players_tournament_with_24_people(self):
+        self.tournament = Tournament.objects.get(id=31)
+
+        elim_rounds_player_ids = []
+        elim_matches = EliminationMatch.objects.filter(tournament=self.tournament).order_by('match__number')
+        for elim_match in elim_matches[0:8]:
+            elim_rounds_player_ids.append(elim_match.match.player1.id)
+            elim_rounds_player_ids.append(elim_match.match.player2.id)
+
+        group_stage_winner_and_runner_up_ids = []
+        
+        groups = Group.objects.filter(
+            tournament=self.tournament,
+            group_stage = 'G32'
+        )
+
+        for group in groups:
+            group_points_objects = GroupPoints.objects.filter(group=group).order_by('-total_group_points')
+            group_stage_winner_and_runner_up_ids.append(group_points_objects[0].player.id)
+            group_stage_winner_and_runner_up_ids.append(group_points_objects[1].player.id)
+
+        elim_rounds_player_ids.sort()
+        group_stage_winner_and_runner_up_ids.sort()
+        self.assertEqual(elim_rounds_player_ids, group_stage_winner_and_runner_up_ids)
 
     def test_generation_elim_matches_16_people(self):
         self.tournament = Tournament.objects.get(id=32)
@@ -336,3 +428,12 @@ class TournamentMatchesTest(TestCase):
                 player_id_list.append(player2_id)
 
         self.assertEqual(len(player_id_list), 2)
+
+    def test_correct_players_in_certain_elim_match(self):
+        self.tournament = Tournament.objects.get(id=34)
+
+        elim_matches = EliminationMatch.objects.filter(tournament = self.tournament).order_by('match__number')
+        self.assertEqual(elim_matches.count(), 3)
+
+        self.assertEqual(elim_matches[2].match.player1, elim_matches[0].winner)
+        self.assertEqual(elim_matches[2].match.player2, elim_matches[1].winner)
