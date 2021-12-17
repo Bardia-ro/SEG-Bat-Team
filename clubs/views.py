@@ -304,11 +304,15 @@ def member_list(request, club_id):
     users = User.objects.filter(club__id= club_id, userinclub__role=4).union(members, officers)
     club = Club.objects.get(id=club_id)
     club_list = request.user.get_clubs_user_is_a_member()
+    user_is_officer = get_is_user_officer(club_id, request. user)
+    user_is_owner = get_is_user_owner(club_id, request.user)
     return render(request, 'member_list.html', {'users': users,
     'request_user_is_member': True,
     'club_id': club_id,
     'club_list': club_list,
-    'club': club})
+    'club': club,
+    'user_is_officer': user_is_officer,
+    'user_is_owner': user_is_owner })
 
 @login_required
 def approve_member(request, club_id, applicant_id):

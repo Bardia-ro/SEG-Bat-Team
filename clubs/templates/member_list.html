@@ -10,7 +10,12 @@
             <td>
               <img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle" >
             </td>
+            {% if user_is_officer or user_is_owner %}
             <td><a href="{% url 'profile' club_id=club_id user_id=user.id %}">{{ user.full_name }}</a> </td>
+            {% else %}
+            <td>{{ user.full_name }} </td>
+            {% endif %}
+            
             <td>{{ user.bio }}</td>
           </tr>
         {% endfor %}
