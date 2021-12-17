@@ -107,7 +107,7 @@ class Command(BaseCommand):
                 if counter ==3:
                     UserInClub.objects.create(club=a_club, user=User.objects.get(email="billie@example.org"), role=2)
                 
-                for i in range(35):
+                for i in range(75):
                         UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=2)
             for i in range(3):
                 UserInClub.objects.create(club=a_club, user=self.get_random_user(users, a_club), role=1)
@@ -128,15 +128,15 @@ class Command(BaseCommand):
                     return a_user
 
     def get_random_capacity(self):
-        list= [2,4,8,16,32,64]
+        list= [2,4,8,16,24,32,48,64]
         return random.choice(list)
 
-    def get_tournament_players(self,club,organiser):
+    def get_tournament_players(self,club, the_tournament):
         found=False
         users=UserInClub.objects.filter(club=club)
         while(found==False):
             a_user=random.choice(users)
-            if a_user.user!=organiser:
+            if (a_user.user!= the_tournament.organiser) and (a_user.user not in the_tournament.players.all()):
                 found=True
                 return a_user.user
 
@@ -148,8 +148,8 @@ class Command(BaseCommand):
                 deadline=fake.future_datetime(tzinfo=timezone.utc),
                 club=a_club,
                 organiser = UserInClub.objects.filter(club=a_club, role=3).first().user)
-            for i in range(0,the_tournament.capacity+1):
-                the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
+            for i in range(0,the_tournament.capacity):
+                the_tournament.players.add(self.get_tournament_players(a_club, the_tournament))
         else:
             the_tournament = Tournament.objects.create(name=f'Tournament 1',
                 description= fake.paragraph(nb_sentences=5),
@@ -161,8 +161,8 @@ class Command(BaseCommand):
                 jeb = User.objects.get(email="jeb@example.org")
                 found = False
                 while(not found):
-                    not_jeb = self.get_tournament_players(a_club, the_tournament.organiser)
-                    if (not_jeb!=jeb and not_jeb not in the_tournament.players.all()):
+                    not_jeb = self.get_tournament_players(a_club, the_tournament)
+                    if (not_jeb!=jeb):
                         found=True
                 the_tournament.players.add(not_jeb)
 
@@ -174,7 +174,7 @@ class Command(BaseCommand):
                 organiser = User.objects.get(email="val@example.org"))
             the_tournament.players.add(User.objects.get(email="jeb@example.org"))
             for i in range(0,the_tournament.capacity-1):
-                the_tournament.players.add(self.get_tournament_players(a_club, the_tournament.organiser))
+                the_tournament.players.add(self.get_tournament_players(a_club, the_tournament))
 
             the_tournament = Tournament.objects.create(
                 name='Tournament 3',
@@ -308,25 +308,23 @@ class Command(BaseCommand):
         for group in groups:
             group_matches = GroupMatch.objects.filter(group=group)
             for group_match in group_matches:
-                user_in_club = UserInClub.objects.get(club = tournament.club, user = group_match.match.player1)
-                expected_scores = user_in_club.calculate_expected_scores(group_match.match.player1, group_match.match.player2, tournament.club.id)
+                expected_scores = UserInClub.calculate_expected_scores(group_match.match.player1, group_match.match.player2, tournament.club.id)
                 rand_float = random.random()
                 if rand_float >= (1 - expected_scores[0]):
                     group_match.player1_won_points()
-                    user_in_club.adjust_elo_rating(group_match, tournament.club.id, group_match.match.player1)
+                    UserInClub.adjust_elo_rating(group_match, tournament.club.id, group_match.match.player1)
                 else:
                     group_match.player2_won_points()
-                    user_in_club.adjust_elo_rating(group_match, tournament.club.id, group_match.match.player2)
+                    UserInClub.adjust_elo_rating(group_match, tournament.club.id, group_match.match.player2)
 
     def _generate_elim_stage_match_outcomes(self, tournament):
         elim_matches = EliminationMatch.objects.filter(tournament=tournament).order_by('match__number')
         for elim_match in elim_matches:
-            user_in_club = UserInClub.objects.get(club = tournament.club, user = elim_match.match.player1)
-            expected_scores = user_in_club.calculate_expected_scores(elim_match.match.player1, elim_match.match.player2, tournament.club.id)
+            expected_scores = UserInClub.calculate_expected_scores(elim_match.match.player1, elim_match.match.player2, tournament.club.id)
             rand_float = random.random()
             if rand_float >= (1 - expected_scores[0]):
                 elim_match.set_winner(elim_match.match.player1)
-                user_in_club.adjust_elo_rating(elim_match,tournament.club.id,elim_match.match.player1)
+                UserInClub.adjust_elo_rating(elim_match,tournament.club.id,elim_match.match.player1)
             else:
                 elim_match.set_winner(elim_match.match.player2)
-                user_in_club.adjust_elo_rating(elim_match,tournament.club.id,elim_match.match.player2)
+                UserInClub.adjust_elo_rating(elim_match,tournament.club.id,elim_match.match.player2)
