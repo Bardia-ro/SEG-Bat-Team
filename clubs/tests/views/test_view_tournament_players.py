@@ -1,9 +1,10 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib import messages
 from clubs.models import User, Club, Tournament
 from clubs.tests.helpers import reverse_with_next
 
-class ClubListTest(TestCase):
+class TournamentPlayersTest(TestCase):
 
     fixtures = ['clubs/tests/fixtures/default_user.json',
                 'clubs/tests/fixtures/other_users.json',
@@ -33,3 +34,25 @@ class ClubListTest(TestCase):
         redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+    
+    def test_remove_players_toggle_rejects_when_capacity_valid(self):
+        self.client.login(email=self.user.email, password='Password123')
+        before_count=self.tournament.players.all().count()
+        url= reverse('remove_a_player', kwargs={ "user_id":2,"club_id": 0, "tournament_id": 1})
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        after_count=self.tournament.players.all().count()
+        self.assertEqual(after_count, before_count)
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list), 1)
+        self.assertEqual(messages_list[0].level, messages.ERROR)
+
+    def test_remove_players_toggle(self):
+        self.client.login(email=self.user.email, password='Password123')
+        before_count=self.tournament.players.all().count()
+        url= reverse('remove_a_player', kwargs={ "user_id":2,"club_id": 0, "tournament_id": 2})
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        after_count=self.tournament.players.all().count()
+        self.assertEqual(after_count, before_count)
+    

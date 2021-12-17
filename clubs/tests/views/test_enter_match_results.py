@@ -6,6 +6,7 @@ from clubs.forms import LogInForm
 from clubs.helpers import tournament_organiser_only
 from clubs.models import Tournament, User, Club,EliminationMatch,Match
 from clubs.tests.helpers import LogInTester, reverse_with_next
+from urllib.parse import urlencode
 
 class EnterMatchResultsTestCase(TestCase, LogInTester):
     """Tests of the match schedule view."""
@@ -29,12 +30,11 @@ class EnterMatchResultsTestCase(TestCase, LogInTester):
         self.assertRedirects(response, expected_url)
         self.assertTemplateUsed(response, 'log_in.html')
 
-    #def test_get_match_schedule(self):
-        #self.client.login(email='tomdoe@example.org', password='Password123')
-        #elimination_match = EliminationMatch.objects.get(pk=1)
-        #self.assertEqual(elimination_match.winner,None)
-        #response = self.client.get(self.url)
-
-        #self.assertEqual(response.status_code, 200)
-        #elimination_match
-        #self.assertEqual(elimination_match.winner)
+    # def test_post_elimination_match_result(self):
+    #     self.client.login(email='tomdoe@example.org', password='Password123')
+    #     elimination_match = EliminationMatch.objects.get(pk=1)
+    #     elimination_match.winner=None
+    #     self.assertIsNone(elimination_match.winner)
+    #     response = self.client.post(self.url, {'winner': 2},follow=True)
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(elimination_match.winner, 2)
